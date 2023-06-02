@@ -1,19 +1,32 @@
 {
-    "manifest_version": 2,
-    "name": "BGA2MyLudo",
-    "version": "0.1",
-    "permissions": [
-      "activeTab",
-      "tabs"
-    ],
-    "content_scripts": [
-      {
-        "matches": [
-          "https://boardgamearena.com/table?table=*"
-        ],
-        "js": [
-          "contentScript.js"
-        ]
-      }
-    ]
-  }
+  "manifest_version": 3,
+  "name": "BGA2MyLudo",
+  "version": "0.1",
+  "author": "Benjamin Bigot",
+  "homepage_url": "https://github.com/therealhnk/bga2myludo-chrome-extension",
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://boardgamearena.com/table?table=*"
+      ],
+      "js": [
+        "contentScript.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "locales/fr.json",
+        "locales/en.json"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
