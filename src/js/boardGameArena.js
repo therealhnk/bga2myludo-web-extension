@@ -11,16 +11,16 @@ function patch() {
 
     if (scores.length === 0) return;
 
-    var rematchButton = document.getElementById("rematch");
+    const rematchButton = document.getElementById("rematch");
 
     if (rematchButton !== null) {
-        var displayStyle = window.getComputedStyle(rematchButton).display;
+        const displayStyle = window.getComputedStyle(rematchButton).display;
 
         if (displayStyle !== 'none' || displayStyle !== 'hide') {
-            var bgaButtonBar = document.getElementsByClassName("bgabuttonbar");
+            const bgaButtonBar = document.getElementsByClassName("bgabuttonbar");
 
             if (bgaButtonBar !== null && bgaButtonBar.length > 0) {
-                var game = document.getElementById('table_name');
+                const game = document.getElementById('table_name');
 
                 if (game !== null) {
                     const jsonFileURL = chrome.runtime.getURL('locales/fr.json');
@@ -34,6 +34,8 @@ function patch() {
                                 return;
                             }
 
+                            const connectedUser = document.getElementById('connected_username').innerText;
+
                             const result = [];
 
                             if (scores !== null) {
@@ -41,11 +43,11 @@ function patch() {
                                     const playerName = elt.getElementsByClassName('name')[0].innerText.trim();
                                     const playerScore = elt.getElementsByClassName('score')[0].innerText.trim();
 
-                                    result.push(`${playerName}=${playerScore}`);
+                                    result.push(`${playerName === connectedUser ? "Moi" : playerName}=${playerScore}`);
                                 }
                             }
 
-                            var link = document.createElement("a");
+                            const link = document.createElement("a");
                             link.href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&${result.join("&")}`;
                             link.textContent = "Enregistrer la partie sur MyLudo";
                             link.target = "_blank"
