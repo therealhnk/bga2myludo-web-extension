@@ -11,6 +11,11 @@ let intervalID = setInterval(patch, 125);
 function patch() {
     console.log("boardGameArena.js");
 
+    if (!window.location.href.startsWith("https://boardgamearena.com/table?table=")) {
+        clearInterval(intervalID);
+        return;
+    }
+
     const scores = document.getElementsByClassName('score-entry');
 
     if (scores.length === 0) return;

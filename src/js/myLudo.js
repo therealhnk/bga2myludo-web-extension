@@ -11,6 +11,11 @@ const intervalID = setInterval(patch, 125);
 function patch() {
     console.log("myLudo.js");
 
+    if (!window.location.href.startsWith("https://www.myludo.fr/#!/game/")) {
+        clearInterval(intervalID);
+        return;
+    }
+
     const url = window.location.href;
 
     const addPlayButton = document.getElementsByClassName('btn-play-open');
