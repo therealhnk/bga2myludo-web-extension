@@ -5,21 +5,18 @@ chrome.runtime.onMessage.addListener(
         }
     });
 
-const intervalID = setInterval(patch, 125);
+let intervalID = setInterval(patch, 250);
 
 function patch() {
-    console.log("boardGameArena.js");
-
     if (!window.location.href.startsWith("https://boardgamearena.com/table?table=")) {
-        clearInterval(intervalID);
         return;
     }
+
+    if (document.getElementById("myludo_browserextension") !== null) return;
 
     const scores = document.getElementsByClassName('score-entry');
 
     if (scores.length === 0) return;
-
-    clearInterval(intervalID);
 
     var rematchButton = document.getElementById("rematch");
 
@@ -43,7 +40,6 @@ function patch() {
                                 console.log(`[bga2myludo]missing myludo id for ${game.innerText}`);
                                 return;
                             }
-
 
                             const result = [];
 
