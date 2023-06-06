@@ -1,16 +1,6 @@
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        if (request.message === 'myLudoUpdated') {
-            patch()
-        }
-    }
-);
-
 const intervalID = setInterval(patch, 125);
 
 function patch() {
-    console.log("myLudo.js");
-
     if (!window.location.href.startsWith("https://www.myludo.fr/#!/game/")) {
         clearInterval(intervalID);
         return;

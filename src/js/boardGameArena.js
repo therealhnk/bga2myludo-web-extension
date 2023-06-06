@@ -1,10 +1,3 @@
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        if (request.message === 'bgaUpdated') {
-            patch();
-        }
-    });
-
 let intervalID = setInterval(patch, 250);
 
 function patch() {

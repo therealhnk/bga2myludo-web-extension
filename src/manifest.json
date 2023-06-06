@@ -4,16 +4,6 @@
   "version": "0.1",
   "author": "Benjamin Bigot",
   "homepage_url": "https://github.com/therealhnk/bga2myludo-chrome-extension",
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "webNavigation",
-    "scripting"
-  ],
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
   "content_scripts": [
     {
       "matches": [
