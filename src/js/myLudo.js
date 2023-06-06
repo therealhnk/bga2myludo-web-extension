@@ -26,7 +26,7 @@ function patch() {
         let parameters = [];
         url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (match, name, value) {
             if (name != "bga2myludo") {
-                parameters.push({ player: name, score: decodeURIComponent(value) });
+                parameters.push({ player: decodeURIComponent(name), score: decodeURIComponent(value) });
             }
         });
 
