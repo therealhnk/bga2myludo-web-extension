@@ -52,7 +52,7 @@ function patch() {
                             }
 
                             var link = document.createElement("a");
-                            link.href = `https://www.myludo.fr/#!/game/${myludoId}?${result.join("&")}`;
+                            link.href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&${result.join("&")}`;
                             link.textContent = "Enregistrer la partie sur MyLudo";
                             link.target = "_blank"
                             link.classList.add("bgabutton");
