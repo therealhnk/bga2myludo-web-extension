@@ -5,7 +5,8 @@ chrome.runtime.onMessage.addListener(
         }
     });
 
-let intervalID = setInterval(patch, 250);
+patch();
+let intervalID = setInterval(patch, 125);
 
 function patch() {
     console.log("boardGameArena.js");

@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-const intervalID = setInterval(patch, 250);
+const intervalID = setInterval(patch, 125);
 
 function patch() {
     console.log("myLudo.js");
@@ -37,14 +37,18 @@ function patch() {
 
                     const currentPlayer = document.getElementById(`name-${index}`);
                     const currentScore = document.getElementById(`score-${index}`);
+                    const currentScoreLabel = document.querySelectorAll(`label[for="score-${index}"]`);
 
                     currentPlayer.value = elt.player;
                     currentScore.value = elt.score;
+                    currentScoreLabel[0].classList.add("active");
                 });
+
+                document.getElementsByClassName('modal-content').item(0).scrollIntoView();
 
                 clearInterval(intervalPopupID);
             }
-        }, 250);
+        }, 125);
 
         window.location.href = window.location.href.replace(/[?&][^=]+=[^&]+/g, "");
     }
