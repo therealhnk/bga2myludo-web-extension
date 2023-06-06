@@ -6,15 +6,29 @@
   "homepage_url": "https://github.com/therealhnk/bga2myludo-chrome-extension",
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "webNavigation",
+    "scripting"
   ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "content_scripts": [
     {
       "matches": [
-        "https://boardgamearena.com/table?table=*"
+        "https://boardgamearena.com/*"
       ],
       "js": [
-        "contentScript.js"
+        "js/boardGameArena.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.myludo.fr/*"
+      ],
+      "js": [
+        "js/myLudo.js"
       ]
     }
   ],
