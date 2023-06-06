@@ -5,8 +5,17 @@ chrome.runtime.onMessage.addListener(
         }
     });
 
+let intervalID = setInterval(patch, 250);
+
 function patch() {
     console.log("boardGameArena.js");
+
+    const scores = document.getElementsByClassName('score-entry');
+
+    if (scores.length === 0) return;
+
+    clearInterval(intervalID);
+
     var rematchButton = document.getElementById("rematch");
 
     if (rematchButton !== null) {
@@ -26,12 +35,24 @@ function patch() {
                             const myludoId = data[game.innerText];
 
                             if (!myludoId) {
-                                console.warn(`[bga2myludo]missing myludo id for ${game.innerText}`);
+                                console.log(`[bga2myludo]missing myludo id for ${game.innerText}`);
                                 return;
                             }
 
+
+                            const result = [];
+
+                            if (scores !== null) {
+                                for (let elt of scores) {
+                                    const playerName = elt.getElementsByClassName('name')[0].innerText.trim();
+                                    const playerScore = elt.getElementsByClassName('score')[0].innerText.trim();
+
+                                    result.push(`${playerName}=${playerScore}`);
+                                }
+                            }
+
                             var link = document.createElement("a");
-                            link.href = `https://www.myludo.fr/#!/game/${myludoId}`;
+                            link.href = `https://www.myludo.fr/#!/game/${myludoId}?${result.join("&")}`;
                             link.textContent = "Enregistrer la partie sur MyLudo";
                             link.target = "_blank"
                             link.classList.add("bgabutton");
@@ -48,5 +69,3 @@ function patch() {
         }
     }
 }
-
-patch();
