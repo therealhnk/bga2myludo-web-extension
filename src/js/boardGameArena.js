@@ -32,12 +32,10 @@ function patchTablePage() {
             const bgaButtonBar = document.getElementsByClassName("bgabuttonbar");
 
             if (bgaButtonBar !== null && bgaButtonBar.length > 0) {
-                const game = document.getElementById('table_name');
+                const gameName = getGameName();
 
-                if (game !== null) {
-                    const gameName = game.innerText;
-
-                    const jsonFileURL = chrome.runtime.getURL('locales/fr.json');
+                if (gameName !== null) {
+                    const jsonFileURL = chrome.runtime.getURL('data/table.json');
 
                     fetch(jsonFileURL).then(response => response.json())
                         .then(data => {
@@ -96,12 +94,11 @@ function patchEndGamePage() {
             const bgaButtonBar = document.getElementById("generalactions");
 
             if (bgaButtonBar !== null) {
-                const metaElement = document.querySelector('meta[property="og:title"]');
+                const gameNameMatch = window.location.href.match(/\/([^/?]+)\?/)
+                const gameName = gameNameMatch ? gameNameMatch[1] : null;
 
-                if (metaElement !== null) {
-                    const gameName = metaElement.content;
-
-                    const jsonFileURL = chrome.runtime.getURL('locales/fr.json');
+                if (gameName !== null) {
+                    const jsonFileURL = chrome.runtime.getURL('data/table.json');
 
                     fetch(jsonFileURL).then(response => response.json())
                         .then(data => {
@@ -141,4 +138,20 @@ function patchEndGamePage() {
             }
         }
     }
+}
+
+function getGameName() {
+    const element = document.getElementById("table-module");
+    const classValue = element.getAttribute("class");
+    const classes = classValue.split(" ");
+    const searchingTag = "tablewithgame_";
+
+    for (var i = 0; i < classes.length; i++) {
+        if (classes[i].indexOf(searchingTag) !== -1) {
+            var termIndex = classes[i].indexOf(searchingTag) + searchingTag.length;
+            return classes[i].substring(termIndex);
+        }
+    }
+
+    return null;
 }
