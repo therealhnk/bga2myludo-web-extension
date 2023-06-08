@@ -38,6 +38,8 @@ function patch() {
                     currentScore.value = elt.score;
                     currentScoreLabel[0].classList.add("active");
                 });
+				
+				document.getElementById(`location`).value = "Board Game Arena";
 
                 document.getElementsByClassName('modal-content').item(0).scrollIntoView();
 
