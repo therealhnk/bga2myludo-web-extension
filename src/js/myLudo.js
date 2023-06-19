@@ -27,43 +27,39 @@ function patch() {
                 if (data.isCooperative) document.getElementById('coop').click();
                 if (data.isSolo) document.getElementById('solo').click();
                 if (data.isAbandoned) document.getElementById('incomplete').click();
-                // Reste à ajouter :
-                // - La date via data.end
 
                 if (data.isSolo) {
-                    const currentPlayer = document.getElementById(`name-0`);
                     document.querySelectorAll(`label[for="name-0"]`)[0].click();
-                    currentPlayer.value = data.players[0].name;
+                    document.getElementById(`name-0`).value = data.players[0].name;
 
-                    const currentScore = document.getElementById(`score-0`);
                     document.querySelectorAll(`label[for="score-0"]`)[0].click();
-                    currentScore.value = data.players[0].score;
+                    document.getElementById(`score-0`).value = data.players[0].score;
                 }
                 else {
                     data.players.forEach((elt, index) => {
                         addPlayerButton.item(0).click();
 
-                        const currentPlayer = document.getElementById(`name-${index}`);
                         document.querySelectorAll(`label[for="name-${index}"]`)[0].click();
-                        currentPlayer.value = elt.name;
 
-                        const currentScore = document.getElementById(`score-${index}`);
-                        document.querySelectorAll(`label[for="score-${index}"]`)[0].click();
-                        currentScore.value = elt.score;
+                        const currentPlayer = document.getElementById(`name-${index}`);
+                        currentPlayer.value = elt.name;
 
                         if (elt.rank === "1") {
                             currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0].click();
                         }
+
+                        document.querySelectorAll(`label[for="score-${index}"]`)[0].click();
+                        document.getElementById(`score-${index}`).value = elt.score;
                     });
                 }
 
-                const location = document.getElementById(`location`);
-                document.querySelectorAll(`label[for="location"]`)[0].click();
-                location.value = "Board Game Arena";
+                document.getElementById(`date`).value = new Date(data.end).toISOString().split('T')[0];
 
-                const message = document.getElementById(`message`);
+                document.querySelectorAll(`label[for="location"]`)[0].click();
+                document.getElementById(`location`).value = "Board Game Arena";
+
                 document.querySelectorAll(`label[for="message"]`)[0].click();
-                message.value = "Créé à l'aide de BGA2MyLudo";
+                document.getElementById(`message`).value = "Créé à l'aide de BGA2MyLudo";
             }
         }, 500);
 
