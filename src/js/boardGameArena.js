@@ -53,7 +53,13 @@ async function patchTablePage() {
                                 href = `https://www.myludo.fr/#!/search/${gameName}`;
                             }
                             else {
-                                const result = [];
+                                const result = {
+                                    players: [],
+                                    end: '',
+                                    isCooperative: false,
+                                    isSolo: false,
+                                    isAbandoned: false
+                                };
 
                                 const resultUser = await fetch(`https://boardgamearena.com/my?who`, { headers })
                                     .then(response => response.json())
@@ -62,17 +68,19 @@ async function patchTablePage() {
                                 const connectedUser = resultUser.n; // username 
 
                                 resultTable.data.result.player.forEach((item) => {
-                                    result.push(`${item.name === connectedUser ? "Moi" : item.name}=${item.score}`);
-                                    console.log(`${item.name} - place : ${item.gamerank} - score : ${item.score}`);
+                                    result.players.push({
+                                        name: item.name === connectedUser ? "Moi" : item.name,
+                                        score: item.score,
+                                        rank: item.gamerank
+                                    });
                                 });
 
-                                console.log("date de fin : " + resultTable.data.result.time_end);
-                                console.log("coop : " + resultTable.data.result.is_coop);
-                                // abandon_by_decision => partie pas terminé
-                                // normal_end => partie terminé
-                                console.log("endgame_reason : " + resultTable.data.result.endgame_reason);
+                                result.end = resultTable.data.result.time_end;
+                                result.isCooperative = resultTable.data.result.is_coop;
+                                result.isSolo = resultTable.data.result.is_solo;
+                                result.isAbandoned = resultTable.data.result.endgame_reason !== 'normal_end';
 
-                                href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&${result.join("&")}`
+                                href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&bga2myludo_data=${encodeURIComponent(JSON.stringify(result))}`
                             }
 
                             const link = document.createElement("a");
