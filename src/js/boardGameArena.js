@@ -24,11 +24,9 @@ async function patchTablePage() {
             const bgaButtonBar = document.getElementsByClassName("bgabuttonbar");
 
             if (bgaButtonBar !== null && bgaButtonBar.length > 0) {
-
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString);
                 const tableId = urlParams.get("table");
-
 
                 const result = await fetch(`https://boardgamearena.com/account/account/getRequestToken.html?bgachromeext`)
                     .then(response => response.json())
@@ -49,30 +47,32 @@ async function patchTablePage() {
                     fetch(jsonFileURL).then(response => response.json())
                         .then(data => {
                             const myludoId = data[gameName];
+                            let href = '';
 
                             if (!myludoId) {
-                                console.log(`[bga2myludo]missing myludo id for ${gameName}`);
-                                return;
+                                href = `https://www.myludo.fr/#!/search/${gameName}`;
+                            }
+                            else {
+                                const connectedUser = document.getElementById('connected_username').innerText;
+
+                                const result = [];
+
+                                resultTable.data.result.player.forEach((item) => {
+                                    result.push(`${item.name === connectedUser ? "Moi" : item.name}=${item.score}`);
+                                    console.log(`${item.name} - place : ${item.gamerank} - score : ${item.score}`);
+                                });
+
+                                console.log("date de fin : " + resultTable.data.result.time_end);
+                                console.log("coop : " + resultTable.data.result.is_coop);
+                                // abandon_by_decision => partie pas terminé
+                                // normal_end => partie terminé
+                                console.log("endgame_reason : " + resultTable.data.result.endgame_reason);
+
+                                href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&${result.join("&")}`
                             }
 
-                            const connectedUser = document.getElementById('connected_username').innerText;
-
-                            const result = [];
-
-                            resultTable.data.result.player.forEach((item) => {
-                                result.push(`${item.name === connectedUser ? "Moi" : item.name}=${item.score}`);
-                                console.log(`${item.name} - place : ${item.gamerank} - score : ${item.score}`);
-                            });
-
-
-                            console.log("date de fin : " + resultTable.data.result.time_end);
-                            console.log("coop : " + resultTable.data.result.is_coop);
-                            // abandon_by_decision => partie pas terminé
-                            // normal_end => partie terminé
-                            console.log("endgame_reason : " + resultTable.data.result.endgame_reason);
-
                             const link = document.createElement("a");
-                            link.href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&${result.join("&")}`;
+                            link.href = href;
                             link.textContent = "Enregistrer la partie sur MyLudo";
                             link.target = "_blank"
                             link.classList.add("bgabutton");
