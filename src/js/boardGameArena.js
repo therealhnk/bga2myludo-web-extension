@@ -45,7 +45,7 @@ async function patchTablePage() {
                     const jsonFileURL = chrome.runtime.getURL('data/table.json');
 
                     fetch(jsonFileURL).then(response => response.json())
-                        .then(data => {
+                        .then(async data => {
                             const myludoId = data[gameName];
                             let href = '';
 
@@ -53,9 +53,13 @@ async function patchTablePage() {
                                 href = `https://www.myludo.fr/#!/search/${gameName}`;
                             }
                             else {
-                                const connectedUser = document.getElementById('connected_username').innerText;
-
                                 const result = [];
+
+                                const resultUser = await fetch(`https://boardgamearena.com/my?who`, { headers })
+                                    .then(response => response.json())
+                                    .then(data => { return data; });
+
+                                const connectedUser = resultUser.n; // username 
 
                                 resultTable.data.result.player.forEach((item) => {
                                     result.push(`${item.name === connectedUser ? "Moi" : item.name}=${item.score}`);
