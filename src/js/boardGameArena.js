@@ -1,11 +1,8 @@
 let intervalID = setInterval(patch, 500);
 
 function patch() {
-    const regexTablePage = /^https:\/\/boardgamearena\.com\/table\?table=/;
-    const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/(?!(?:.*\btable\?\b.*))\S*table=\d+$/;
 
-
-    if (regexTablePage.test(window.location.href) || regexpEndGamePage.test(window.location.href)) {
+    if (window.location.href.indexOf('?table=') > -1) {
         patchTablePage()
     }
 
@@ -16,8 +13,9 @@ async function patchTablePage() {
     if (document.getElementById("myludo_browserextension") !== null) return;
 
     const rematchButton = document.getElementById("rematch");
+	const revengeButton = document.getElementById("revenge_btn");
 
-    if (rematchButton !== null) {
+    if (rematchButton !== null || revengeButton != null) {
         const displayStyle = window.getComputedStyle(rematchButton).display;
 
         if (displayStyle !== 'none' && displayStyle !== 'hide') {
