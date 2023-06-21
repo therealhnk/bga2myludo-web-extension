@@ -11,10 +11,10 @@ async function patch() {
             const displayStyle = window.getComputedStyle(rematchButton).display;
 
             if (displayStyle !== 'none' && displayStyle !== 'hide') {
-                let bgaButtonBar = document.getElementsByClassName("bgabuttonbar");;
-                bgaButtonBar = bgaButtonBar.length === 0 ? document.getElementById("generalactions") : bgaButtonBar;
+                const bgaButtonsBar = document.getElementsByClassName("bgabuttonbar");
+                const bgaButtonBar = bgaButtonsBar.length === 0 ? document.getElementById("generalactions") : bgaButtonsBar[0];
 
-                if (bgaButtonBar.length > 0) {
+                if (bgaButtonBar) {
                     const queryString = window.location.search;
                     const urlParams = new URLSearchParams(queryString);
                     const tableId = urlParams.get("table");
@@ -78,14 +78,13 @@ async function patch() {
                                 link.href = href;
                                 link.textContent = "Enregistrer la partie sur MyLudo";
                                 link.target = "_blank"
+                                link.classList.add("action-button");
                                 link.classList.add("bgabutton");
                                 link.classList.add("bgabutton_darkgray");
                                 link.id = "myludo_browserextension";
                                 link.style = "display: inline;"
 
-                                Array.from(bgaButtonBar).forEach((element) => {
-                                    element.appendChild(link);
-                                });
+                                bgaButtonBar.appendChild(link);
                             });
                     }
                 }
