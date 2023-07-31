@@ -18,10 +18,10 @@ function patch() {
 async function patchTablePage() {
     if (document.getElementById(myLudoEltId) !== null) return;
 
-    const rematchButton = document.getElementById("rematch");
+    const reviewgameButton = document.getElementById("reviewgame");
 
-    if (rematchButton !== null) {
-        const displayStyle = window.getComputedStyle(rematchButton).display;
+    if (reviewgameButton !== null) {
+        const displayStyle = window.getComputedStyle(reviewgameButton).display;
 
         if (displayStyle !== 'none' && displayStyle !== 'hide') {
             const bgaButtonBar = document.getElementsByClassName("bgabuttonbar");
