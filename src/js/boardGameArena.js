@@ -80,12 +80,12 @@ async function getMyLudoLink() {
     const urlParams = new URLSearchParams(queryString);
     const tableId = urlParams.get("table");
 
-    const result = await fetch(`https://boardgamearena.com/account/account/getRequestToken.html?bgachromeext`)
-        .then(response => response.json())
-        .then(data => { return data; });
+    const requestToken = getRequestToken();
+
+    if (requestToken === null) return null;
 
     const headers = {};
-    headers["x-request-token"] = result.data.request_token;
+    headers["x-request-token"] = requestToken
 
     const resultTable = await fetch(`https://boardgamearena.com/table/table/tableinfos.html?id=${tableId}`, { headers })
         .then(response => response.json())
@@ -151,4 +151,16 @@ async function getMyLudoLink() {
     }
 
     return null;
+}
+
+function getRequestToken() {
+    const regex = /requestToken:\s+'([^']+)'/;
+
+    const requestToken = document.documentElement.outerHTML.match(regex);
+
+    if (requestToken) {
+        return requestToken[1];
+    } else {
+        return null;
+    }
 }
