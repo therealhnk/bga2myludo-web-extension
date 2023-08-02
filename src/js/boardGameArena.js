@@ -1,18 +1,21 @@
 const myLudoEltId = "myludo_browserextension";
-let intervalID = setInterval(patch, 500);
 
-function patch() {
+patch();
+
+async function patch() {
     const regexTablePage = /^https:\/\/boardgamearena\.com\/table\?table=\d+#?$/;
     const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/(?!(?:.*\btable\?\b.*))\S*table=\d+#?$/;
 
 
     if (regexTablePage.test(window.location.href)) {
-        patchTablePage();
+        await patchTablePage();
     }
 
     if (regexpEndGamePage.test(window.location.href)) {
-        patchEndGamePage();
+        await patchEndGamePage();
     }
+
+    setTimeout(() => patch(), 500)
 }
 
 async function patchTablePage() {
