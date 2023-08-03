@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "BGA2MyLudo",
-  "version": "0.0.0.2",
+  "version": "0.0.0.6",
   "author": "Benjamin Bigot",
-  "description": "Automate the entry on MyLudo of games played on Board Game Arena",
+  "description": "Facilitez vous la saisie des parties de BGA sur MyLudo !",
   "homepage_url": "https://github.com/therealhnk/bga2myludo-chrome-extension",
   "browser_specific_settings": {
     "gecko": {
