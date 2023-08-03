@@ -1,11 +1,10 @@
-name: CI	# Name of your workflow
+name: CI
 
 on:
-  workflow_dispatch:	# Allows you to manually trigger workflow
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      # Triggers workflow only if manifest content is changed
       - 'src/manifest.json'
 
 jobs:
@@ -52,7 +51,7 @@ jobs:
     - name: Publish to Chrome Webstore
       uses: SebastienGllmt/chrome-addon@v3
       with:
-        extension: yourextensionidhere
+        extension: milabpkocghjifbnhfpglfdljnljagfj
         zip: ./Package.zip
         client-id: ${{ secrets.CHROME_CLIENT_ID }}
         client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
