@@ -159,7 +159,7 @@ async function getMyLudoLink() {
 function getRequestToken() {
     const regex = /requestToken:\s+'([^']+)'/;
 
-    const requestToken = document.documentElement.outerHTML.match(regex);
+    const requestToken = document.head.outerHTML.match(regex);
 
     if (requestToken) {
         return requestToken[1];
