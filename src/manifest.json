@@ -43,5 +43,9 @@
         "<all_urls>"
       ]
     }
+  ],
+  "host_permissions": [
+    "https://boardgamearena.com/*",
+    "https://www.myludo.fr/*"
   ]
 }
