@@ -24,6 +24,8 @@ function patch() {
             if (addPlayerButton.length > 0) {
                 clearInterval(intervalPopupID);
 
+                document.getElementById('online').click();
+
                 if (data.isCooperative) document.getElementById('coop').click();
                 if (data.isSolo) document.getElementById('solo').click();
                 if (data.isAbandoned) document.getElementById('incomplete').click();
