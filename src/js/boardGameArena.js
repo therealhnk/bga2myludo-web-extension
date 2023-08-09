@@ -4,14 +4,12 @@ patch();
 
 async function patch() {
     const regexTablePage = /^https:\/\/boardgamearena\.com\/table\?table=\d+#?$/;
-    const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/(?!(?:.*\btable\?\b.*))\S*table=\d+(?:&\S*)?$/;
+    const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/.*\btable=\d+.*$/;
 
 
     if (regexTablePage.test(window.location.href)) {
         await patchTablePage();
-    }
-
-    if (regexpEndGamePage.test(window.location.href)) {
+    }else if (regexpEndGamePage.test(window.location.href)) {
         await patchEndGamePage();
     }
 
