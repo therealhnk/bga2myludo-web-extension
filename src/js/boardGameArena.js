@@ -4,14 +4,12 @@ patch();
 
 async function patch() {
     const regexTablePage = /^https:\/\/boardgamearena\.com\/table\?table=\d+#?$/;
-    const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/(?!(?:.*\btable\?\b.*))\S*table=\d+#?$/;
+    const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/.*\btable=\d+.*$/;
 
 
     if (regexTablePage.test(window.location.href)) {
         await patchTablePage();
-    }
-
-    if (regexpEndGamePage.test(window.location.href)) {
+    } else if (regexpEndGamePage.test(window.location.href)) {
         await patchEndGamePage();
     }
 
@@ -141,7 +139,7 @@ async function getMyLudoLink() {
 
                 const link = document.createElement("a");
                 link.href = href;
-                link.textContent = "Enregistrer la partie sur MyLudo";
+                link.textContent = "Enregistrer la partie sur Myludo";
                 link.target = "_blank"
                 link.classList.add("action-button");
                 link.classList.add("bgabutton");

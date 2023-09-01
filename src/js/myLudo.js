@@ -24,6 +24,8 @@ function patch() {
             if (addPlayerButton.length > 0) {
                 clearInterval(intervalPopupID);
 
+                document.getElementById('online').click();
+
                 if (data.isCooperative) document.getElementById('coop').click();
                 if (data.isSolo) document.getElementById('solo').click();
                 if (data.isAbandoned) document.getElementById('incomplete').click();
@@ -59,7 +61,7 @@ function patch() {
                 document.getElementById(`location`).value = "Board Game Arena";
 
                 document.querySelectorAll(`label[for="message"]`)[0].click();
-                document.getElementById(`message`).value = "Créé à l'aide de BGA2MyLudo";
+                document.getElementById(`message`).value = "Créé à l'aide de BGA2Myludo";
             }
         }, 500);
 
