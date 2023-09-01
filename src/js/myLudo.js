@@ -61,7 +61,7 @@ function patch() {
                 document.getElementById(`location`).value = "Board Game Arena";
 
                 document.querySelectorAll(`label[for="message"]`)[0].click();
-                document.getElementById(`message`).value = "Créé à l'aide de BGA2MyLudo";
+                document.getElementById(`message`).value = "Créé à l'aide de BGA2Myludo";
             }
         }, 500);
 
