@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BGA2Myludo",
-  "version": "1.0.0.12",
+  "version": "1.0.0.13",
   "author": "Benjamin Bigot",
   "description": "Facilitez vous la saisie des parties de Board Game Arena sur Myludo !",
   "homepage_url": "https://github.com/therealhnk/bga2myludo-chrome-extension",
