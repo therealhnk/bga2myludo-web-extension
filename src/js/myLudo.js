@@ -14,7 +14,8 @@ function patch() {
         clearInterval(intervalID);
 
         const urlParams = new URL(`https://fake.com?${url.split("?")[1]}`).searchParams;
-        const data = JSON.parse(urlParams.get("bga2myludo_data"));
+        const json = atob(urlParams.get("bga2myludo_data"));
+        const data = JSON.parse(json);
 
         addPlayButton.item(0).click();
 

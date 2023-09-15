@@ -134,7 +134,10 @@ async function getMyLudoLink() {
                     result.isSolo = resultTable.data.result.is_solo;
                     result.isAbandoned = resultTable.data.result.endgame_reason !== 'normal_end';
 
-                    href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&bga2myludo_data=${encodeURIComponent(JSON.stringify(result))}`
+                    const json = JSON.stringify(result);
+                    const data = btoa(json);
+
+                    href = `https://www.myludo.fr/#!/game/${myludoId}?bga2myludo=1&bga2myludo_data=${data}`
                 }
 
                 const link = document.createElement("a");
