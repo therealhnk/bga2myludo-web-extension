@@ -110,7 +110,7 @@ async function loadPlays(callback) {
                         const counter = elt.querySelector('.counter');
                         play.players.push({
                             name: elt.getAttribute('title'),
-                            score: counter.textContent
+                            score: counter ? counter.textContent : null
                         })
                     });
 
@@ -150,7 +150,19 @@ function trunkDateToDay(dateString) {
 }
 
 function hasBeenAlreadyPlayed(currentPlay, plays) {
-    const currentPlayersFootPrint = JSON.stringify(currentPlay.players.map(o => { return { name: o.name, score: o.score }; }));
+    const currentPlayersFootPrint = JSON.stringify(
+        currentPlay.players
+            .map(o => { return { name: o.name, score: o.score }; })
+            .sort(function (a, b) {// on effectue d'abord un tri par score descendant puis un tri alpha des pseudos
+                if (a.score < b.score) return 1;
+                if (a.score > b.score) return -1;
+                if (a.name < b.name) return -1;
+                if (a.name > b.name) return 1;
+                return 0
+            })
+    );
+
+    console.log(currentPlayersFootPrint);
 
     return plays.some(o =>
         trunkDateToDay(o.end).getTime() === trunkDateToDay(currentPlay.end).getTime() &&
@@ -190,5 +202,6 @@ function addWarning() {
     const modalContent = document.querySelector("#form-play .modal-content");
     modalContent.appendChild(divider);
     modalContent.appendChild(row);
-    modalContent.scrollTop = modalContent.scrollHeight;
+
+    warningIcon.scrollIntoView();
 }
