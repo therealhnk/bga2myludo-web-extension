@@ -108,9 +108,10 @@ try {
                         }
 
                         currentPlay.querySelectorAll('.play-player').forEach((elt) => {
+                            const counter = elt.querySelector('.counter');
                             play.players.push({
                                 name: elt.getAttribute('title'),
-                                score: elt.querySelector('.counter').textContent
+                                score: counter ? counter.textContent : null
                             })
                         });
 
