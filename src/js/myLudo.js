@@ -160,11 +160,11 @@ function hasBeenAlreadyPlayed(currentPlay, plays) {
                 if (a.name > b.name) return 1;
                 return 0
             })
-    );
+    ).toLowerCase();
 
     return plays.some(o =>
         trunkDateToDay(o.end).getTime() === trunkDateToDay(currentPlay.end).getTime() &&
-        JSON.stringify(o.players) === currentPlayersFootPrint
+        JSON.stringify(o.players).toLowerCase() === currentPlayersFootPrint
     );
 }
 
