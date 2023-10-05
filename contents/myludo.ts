@@ -1,3 +1,10 @@
+import type { PlasmoCSConfig } from "plasmo";
+import myludoHelper from "~core/helpers/myludoHelper";
+
+export const config: PlasmoCSConfig = {
+    matches: ["https://www.myludo.fr/*"]
+}
+
 const intervalID = setInterval(patch, 125);
 
 async function patch() {
@@ -14,7 +21,7 @@ async function patch() {
         const data = getDataFromBGA();
 
         await loadPlays((plays => {
-            const hasBeenPlayed = hasBeenAlreadyPlayed(data, plays);
+            const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(data, plays);
 
             addPlayButton.item(0).click();
 
@@ -48,7 +55,7 @@ async function patch() {
                             const currentPlayer = document.getElementById(`name-${index}`);
                             currentPlayer.value = elt.name;
 
-                            if (elt.rank === "1") {
+                            if (elt.rank === 1) {
                                 currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0].click();
                             }
 
@@ -63,7 +70,7 @@ async function patch() {
                     document.getElementById(`location`).value = "Board Game Arena";
 
                     document.querySelector(`label[for="message"]`).click();
-                    document.getElementById(`message`).value = `Table : https://www.boardgamearena.com/table?table=${data.table.id}\r\n\r\nCréé à l'aide de BGA2Myludo`;
+                    document.getElementById(`message`).value = `Table : https://www.boardgamearena.com/table?table=${data.tableId}\r\n\r\nCréé à l'aide de BGA2Myludo`;
 
                     const modalContent = document.querySelector("#form-play .modal-content");
                     modalContent.scrollTop = modalContent.scrollHeight;
@@ -102,7 +109,7 @@ async function loadPlays(callback) {
 
                 playsContent.forEach((currentPlay) => {
                     const play = {
-                        end: convertToDate(currentPlay.querySelector('h4').textContent),
+                        end: myludoHelper.convertToDate(currentPlay.querySelector('h4').textContent),
                         players: []
                     }
 
@@ -110,7 +117,7 @@ async function loadPlays(callback) {
                         const counter = elt.querySelector('.counter');
                         play.players.push({
                             name: elt.getAttribute('title'),
-                            score: counter ? counter.textContent : null
+                            score: counter ? Number(counter.textContent) : null
                         })
                     });
 
@@ -124,48 +131,6 @@ async function loadPlays(callback) {
     else {
         callback(plays);
     }
-}
-
-function convertToDate(text) {
-    const monthText = ["janv", "févr", "mars", "avr", "mai", "juin", "juill", "août", "sept", "oct", "nov", "déc"];
-    let result = new Date(1900, 0, 1);
-
-    text.replace(/(\d+) ([\p{L}\s]+) (\d+)/u, (match, day, month, year) => {
-        const monthIndex = monthText.indexOf(month);
-
-        if (monthIndex >= 0) {
-            result = new Date(
-                year,
-                monthIndex,
-                day
-            );
-        }
-    });
-
-    return result;
-}
-
-function trunkDateToDay(dateString) {
-    return new Date(new Date(dateString).toDateString());
-}
-
-function hasBeenAlreadyPlayed(currentPlay, plays) {
-    const currentPlayersFootPrint = JSON.stringify(
-        currentPlay.players
-            .map(o => { return { name: o.name, score: o.score }; })
-            .sort(function (a, b) {// on effectue d'abord un tri par score descendant puis un tri alpha des pseudos
-                if (Number(a.score) < Number(b.score)) return 1;
-                if (Number(a.score) > Number(b.score)) return -1;
-                if (a.name < b.name) return -1;
-                if (a.name > b.name) return 1;
-                return 0
-            })
-    ).toLowerCase();
-
-    return plays.some(o =>
-        trunkDateToDay(o.end).getTime() === trunkDateToDay(currentPlay.end).getTime() &&
-        JSON.stringify(o.players).toLowerCase() === currentPlayersFootPrint
-    );
 }
 
 function addWarning() {
@@ -182,7 +147,7 @@ function addWarning() {
 
     const label = document.createElement("div");
     label.textContent = "BGA2Myludo";
-    label.style = "padding-left:12px; font-size: .8rem; color: #9e9e9e;";
+    label.style.cssText = "padding-left:12px; font-size: .8rem; color: #9e9e9e;";
 
     const warningIcon = document.createElement("i");
     warningIcon.classList.add("material-icons");
