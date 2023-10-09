@@ -29,10 +29,10 @@ jobs:
           node-version: 16.x
           cache: "pnpm"
       - name: Build the extension
-        run: pnpm build --zip
+        run: pnpm build --zip --target=firefox-mv3
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
-          artifact: build/chrome-mv3-prod.zip
+          artifact: build/firefox-mv3-prod.zip
           verbose: true
