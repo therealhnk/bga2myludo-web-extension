@@ -18,6 +18,7 @@ Edge : N/A
 # Ca ne fonctionne pas sur Firefox :-(
 
 Si si ça fonctionne, c'est juste un peu plus complexe :-)
+
 Il faut donner les droits au plugin d'accéder aux données du site www.myludo.fr et www.boardgamearena.com
 ![unnamed](https://github.com/therealhnk/bga2myludo-chrome-extension/assets/4628609/ab29c267-578e-49ca-963e-f6e06e6b6f55)
 
