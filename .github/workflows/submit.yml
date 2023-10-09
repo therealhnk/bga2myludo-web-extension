@@ -1,6 +1,11 @@
 name: "Submit to Web Store"
+
 on:
   workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/manifest.json'
 
 jobs:
   build:
