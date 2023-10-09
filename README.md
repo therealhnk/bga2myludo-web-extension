@@ -2,6 +2,8 @@
 
 Facilitez vous la saisie des parties de Board Game Arena sur Myludo !
 
+[![demo](https://img.youtube.com/vi/NAIOlyNR2dQ/0.jpg)](https://www.youtube.com/watch?v=NAIOlyNR2dQ)
+
 L'extension BGA2Myludo permet de faciliter la saisie sur le site Myludo des parties jouées sur le site Board Game Arena.
 
 Une fois l'extension installée, à la fin de vos parties sur BGA, vous verrez apparaitre un nouveau bouton "Enregistrer sur Myludo". En cliquant dessus, une fenêtre sur Myludo s'ouvrira avec l'ensemble des informations saisies, il ne vous restera qu'à cliquer sur valider !
