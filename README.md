@@ -8,14 +8,14 @@ Une fois l'extension installée, à la fin de vos parties sur BGA, vous verrez a
 
 Nb : je fais cette extension sur mon temps libre afin de gagner du temps lors des saisies de parties. N'hésitez pas à me contacter si vous constatez des bugs ou améliorations à apporter😘
 
-# Liens vers l'extension
+## Liens vers l'extension
 Chrome : https://chrome.google.com/webstore/detail/bga2myludo/milabpkocghjifbnhfpglfdljnljagfj
 
 Firefox : https://addons.mozilla.org/af/firefox/addon/bga2myludo
 
 Edge : N/A
 
-# Ca ne fonctionne pas sur Firefox :-(
+## Ca ne fonctionne pas sur Firefox :-(
 
 Si si ça fonctionne, c'est juste un peu plus complexe :-)
 
