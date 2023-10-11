@@ -70,14 +70,12 @@ async function patch() {
                     document.getElementById(`location`).value = "Board Game Arena";
 
                     document.querySelector(`label[for="message"]`).click();
-                    document.getElementById(`message`).value = `Table : https://www.boardgamearena.com/table?table=${data.tableId}\r\n\r\nCréé à l'aide de BGA2Myludo`;
+                    document.getElementById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId);
 
                     const modalContent = document.querySelector("#form-play .modal-content");
                     modalContent.scrollTop = modalContent.scrollHeight;
                 }
             }, 500);
-
-
         }));
     }
 }
@@ -157,7 +155,7 @@ function addWarning() {
     warningIcon.textContent = "warning";
 
     warning.appendChild(warningIcon);
-    warning.append("Une partie similaire a déjà été saisie (date/joueurs/scores identiques)");
+    warning.append(chrome.i18n.getMessage("warningAlreadyPlayed"));
 
     row.appendChild(label);
     row.appendChild(warning);
