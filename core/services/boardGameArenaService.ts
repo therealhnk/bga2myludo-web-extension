@@ -1,13 +1,13 @@
 import type { GameStatsParameters } from "~core/models/boardGameArena/gameStatsParameters";
-import type { GetGamesResponse, Table } from "~core/models/boardGameArena/getGamesResponse";
+import type { GetGamesResponse } from "~core/models/boardGameArena/getGamesResponse";
 import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse";
 import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
-import type { Game } from "~core/models/table";
+import type { Table } from "~core/models/table";
 import type { User } from "~core/models/user";
 
 export default class boardGameArenaService {
     static async getGameStats(requestToken: string, connectedUser: User, parameters: GameStatsParameters) {
-        const games: Game[] = [];
+        const tables: Table[] = [];
 
         let url = `https://boardgamearena.com/gamestats/gamestats/getGames.html?`;
         url += `player=${parameters.player}`;
@@ -22,33 +22,33 @@ export default class boardGameArenaService {
         return boardGameArenaService
             .fetch<GetGamesResponse>(url, requestToken)
             .then(response => {
-                response.data.tables.forEach(table => {
-                    const player_names = table.player_names.split(',');
-                    const ranks = table.ranks ? table.ranks.split(',') : null;
-                    const scores = table.scores ? table.scores.split(',') : null;
+                response.data.tables.forEach(current => {
+                    const player_names = current.player_names.split(',');
+                    const ranks = current.ranks ? current.ranks.split(',') : null;
+                    const scores = current.scores ? current.scores.split(',') : null;
 
-                    const game: Game = {
-                        tableId: table.table_id,
+                    const table: Table = {
+                        tableId: current.table_id,
                         players: [],
-                        end: new Date(Number(table.end) * 1000),
+                        end: new Date(Number(current.end) * 1000),
                         isCooperative: false,
                         isSolo: false,
-                        isAbandoned: table.normalend === 0,
-                        gameId: table.game_name
+                        isAbandoned: current.normalend === "0",
+                        gameId: current.game_name
                     };
 
                     player_names.forEach((value, index) => {
-                        game.players.push({
+                        table.players.push({
                             name: value === connectedUser.nickname ? "Moi" : value,
                             score: scores ? Number(scores[index]) : null,
                             rank: ranks ? Number(ranks[index]) : null
                         });
                     });
 
-                    games.push(game);
+                    tables.push(table);
                 });
 
-                return games;
+                return tables;
             });
     }
 
@@ -58,7 +58,7 @@ export default class boardGameArenaService {
         return boardGameArenaService
             .fetch<TableInfos>(url, requestToken)
             .then(response => {
-                const game: Game = {
+                const table: Table = {
                     tableId: tableId,
                     players: [],
                     end: response.data.result.time_end,
@@ -69,14 +69,14 @@ export default class boardGameArenaService {
                 };
 
                 response.data.result.player.forEach((item) => {
-                    game.players.push({
+                    table.players.push({
                         name: item.name === connectedUser.nickname ? "Moi" : item.name,
                         score: item.score ? Number(item.score) : null,
                         rank: item.gamerank ? Number(item.gamerank) : null
                     });
                 });
 
-                return game;
+                return table;
             });
     }
 
