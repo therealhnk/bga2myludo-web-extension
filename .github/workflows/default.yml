@@ -40,7 +40,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get-version.outputs.version }}
-          files: build/firefox-mv3-prod.zip
+          files: ./build/firefox-mv3-prod.zip
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
