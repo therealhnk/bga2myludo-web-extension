@@ -15,6 +15,7 @@ jobs:
         id: read-json
         shell: pwsh
         run: |
+          echo ls
           $json = Get-Content ./packages.json | ConvertFrom-Json
           echo "::set-output name=prop::$(echo $json.prop)"
       - run: echo ${{ steps.read-json.outputs.prop}}
