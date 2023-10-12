@@ -1,4 +1,4 @@
-name: "Submit to Chrome/Edge/Firefox Stores"
+name: "default"
 
 on:
   workflow_dispatch:
