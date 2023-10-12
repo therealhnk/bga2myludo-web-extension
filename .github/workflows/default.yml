@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Read json
-        id: read-json
+      - name: Get version
+        id: get-version
         shell: pwsh
         run: |
           $json = Get-Content package.json | ConvertFrom-Json
           echo "::set-output name=version::$(echo $json.version)"
-      - run: echo ${{ steps.read-json.outputs.version}}      
+      - run: echo ${{ steps.get-version.outputs.version}}      
       - name: Cache pnpm modules
         uses: actions/cache@v3
         with:
@@ -37,6 +37,11 @@ jobs:
           cache: "pnpm"
       - name: Build the extension
         run: pnpm build --zip --target=firefox-mv3
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: steps.get-version.outputs.version
+          files: firefox-mv3-prod.zip
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
