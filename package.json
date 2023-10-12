@@ -28,7 +28,9 @@
       "gecko": {
         "id": "{656df118-b90b-4265-86e8-8024eb7281cd}"
       },
-      "gecko_android": {}
+      "gecko_android": {
+        "strict_min_version": "113.0"
+      }
     },
     "host_permissions": [
       "https://*/*"
