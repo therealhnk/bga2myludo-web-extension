@@ -19,7 +19,6 @@ export default class myludoHelper {
     }
 
     static hasBeenAlreadyPlayed(currentPlay, plays) {
-        console.log(plays);
         const currentPlayersFootPrint = JSON.stringify(
             currentPlay.players
                 .map(o => { return { name: o.name, score: o.score }; })
