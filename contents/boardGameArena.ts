@@ -46,15 +46,15 @@ async function patchTablePage() {
                 const urlParams = new URLSearchParams(queryString);
                 const tableId = Number(urlParams.get("table"));
 
-                boardGameArenaService
+                await boardGameArenaService
                     .getUser(requestToken)
-                    .then(user => {
-                        boardGameArenaService
+                    .then(async user => {
+                        await boardGameArenaService
                             .getGamesFromTable(requestToken, user, tableId)
-                            .then(table => {
+                            .then(async table => {
                                 const myludoId = games[table.gameId];
 
-                                boardGameArenaHelper
+                                await boardGameArenaHelper
                                     .getMyLudoLink(myludoId, table)
                                     .then(link => {
                                         if (link === null) {
@@ -87,15 +87,15 @@ async function patchEndGamePage() {
                 const urlParams = new URLSearchParams(queryString);
                 const tableId = Number(urlParams.get("table"));
 
-                boardGameArenaService
+                await boardGameArenaService
                     .getUser(requestToken)
-                    .then(user => {
-                        boardGameArenaService
+                    .then(async user => {
+                        await boardGameArenaService
                             .getGamesFromTable(requestToken, user, tableId)
-                            .then(table => {
+                            .then(async table => {
                                 const myludoId = games[table.gameId];
 
-                                boardGameArenaHelper
+                                await boardGameArenaHelper
                                     .getMyLudoLink(myludoId, table)
                                     .then(link => {
                                         if (link === null) {
@@ -121,9 +121,7 @@ async function patchGameStatsPage() {
 
     if (displayStyle !== 'none' && displayStyle !== 'hide') return;
 
-    addMyLudoField()
-
-    boardGameArenaService
+    await boardGameArenaService
         .getUser(requestToken)
         .then(user => {
             let page = 1;
@@ -150,7 +148,7 @@ async function fetchAndFeedStatsPage(connectedUser: User, page: number) {
         page: page
     };
 
-    boardGameArenaService
+    await boardGameArenaService
         .getGameStats(requestToken, connectedUser, parameters)
         .then(tables => {
             const timeout = setTimeout(() => {
@@ -159,8 +157,8 @@ async function fetchAndFeedStatsPage(connectedUser: User, page: number) {
 
                 clearTimeout(timeout);
 
-                tables.forEach((table) => {
-                    boardGameArenaHelper
+                tables.forEach(async (table) => {
+                    await boardGameArenaHelper
                         .getMyLudoLink(games[table.gameId], table)
                         .then(link => {
                             if (link === null) {
