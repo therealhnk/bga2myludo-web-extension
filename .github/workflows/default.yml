@@ -18,7 +18,6 @@ jobs:
         run: |
           $json = Get-Content package.json | ConvertFrom-Json
           echo "::set-output name=version::$(echo $json.version)"
-      - run: echo ${{ steps.get-version.outputs.version}}      
       - name: Cache pnpm modules
         uses: actions/cache@v3
         with:
@@ -37,11 +36,11 @@ jobs:
           cache: "pnpm"
       - name: Build the extension
         run: pnpm build --zip --target=firefox-mv3
-      - name: Release
+      - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get-version.outputs.version }}
-          files: firefox-mv3-prod.zip
+          files: build/firefox-mv3-prod.zip
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
