@@ -11,6 +11,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
+      - run: echo '${{ fromJson(env.PACKAGE_JSON).version }}'
       - uses: actions/checkout@v3
       - name: Cache pnpm modules
         uses: actions/cache@v3
