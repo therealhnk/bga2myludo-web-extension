@@ -39,14 +39,16 @@ jobs:
           cache: "pnpm"
       - name: Build the extension
         run: pnpm build --zip --target=firefox-mv3
+      - name: Rename extension file 
+        run: mv build/firefox-mv3-prod.zip build/${{ steps.get-version.outputs.version }}.zip
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get-version.outputs.version }}
-          files: ./build/firefox-mv3-prod.zip
+          files: build/${{ steps.get-version.outputs.version }}.zip
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
-          artifact: build/firefox-mv3-prod.zip
+          artifact: build/${{ steps.get-version.outputs.version }}.zip
           verbose: true
