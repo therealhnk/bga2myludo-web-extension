@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls -la
       - name: Read json
         id: read-json
         shell: pwsh
