@@ -8,6 +8,9 @@ export const config: PlasmoCSConfig = {
 const intervalID = setInterval(patch, 125);
 
 async function patch() {
+    // si l'onglet n'est pas actif, on ne présaisie pas les données
+    if (document.visibilityState === "hidden") return;
+
     if (!window.location.href.startsWith("https://www.myludo.fr/#!/game/")) {
         clearInterval(intervalID);
         return;
