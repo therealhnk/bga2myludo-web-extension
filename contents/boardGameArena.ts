@@ -123,10 +123,10 @@ async function patchGameStatsPage() {
 
     await boardGameArenaService
         .getUser(requestToken)
-        .then(user => {
+        .then(async user => {
             let page = 1;
 
-            fetchAndFeedStatsPage(user, page);
+            await fetchAndFeedStatsPage(user, page);
 
             document.querySelector("#see_more_tables").addEventListener("click", () => {
                 fetchAndFeedStatsPage(user, ++page);
