@@ -8,4 +8,5 @@ export class Table {
     isSolo: boolean;
     isAbandoned: boolean;
     gameId: string;
+    duration?: number;
 }

@@ -1,5 +1,7 @@
 import type { PlasmoCSConfig } from "plasmo";
+import documentHelper from "~core/helpers/documentHelper";
 import myludoHelper from "~core/helpers/myludoHelper";
+import type { Table } from "~core/models/table";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://www.myludo.fr/*"]
@@ -16,7 +18,7 @@ async function patch() {
         return;
     }
 
-    const addPlayButton = document.getElementsByClassName('btn-play-open');
+    const addPlayButton = document.getElementsByClassName('btn-play-open') as HTMLCollectionOf<HTMLElement>;
 
     if (window.location.href.includes("bga2myludo") && addPlayButton.length > 0) {
         clearInterval(intervalID);
@@ -29,7 +31,7 @@ async function patch() {
             addPlayButton.item(0).click();
 
             const intervalPopupID = setInterval(() => {
-                const addPlayerButton = document.getElementsByClassName('btn-add-player');
+                const addPlayerButton = document.getElementsByClassName('btn-add-player') as HTMLCollectionOf<HTMLElement>;
 
                 if (addPlayerButton.length > 0) {
                     clearInterval(intervalPopupID);
@@ -42,38 +44,44 @@ async function patch() {
                     if (data.isSolo) document.getElementById('solo').click();
                     if (data.isAbandoned) document.getElementById('incomplete').click();
 
-                    if (data.isSolo) {
-                        document.querySelector(`label[for="name-0"]`).click();
-                        document.getElementById(`name-0`).value = data.players[0].name;
+                    if (data.duration) {
+                        documentHelper.getFirstInputByName(`time`).value = data.duration.toString();
+                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = (Math.floor(data.duration / 60)).toString().padStart(2, "0");
+                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = (data.duration % 60).toString().padStart(2, "0");
+                    }
 
-                        document.querySelector(`label[for="score-0"]`).click();
-                        document.getElementById(`score-0`).value = data.players[0].score;
+                    if (data.isSolo) {
+                        documentHelper.getFirstHtmlElementByQuery(`label[for="name-0"]`).click();
+                        documentHelper.getInputById(`name-0`).value = data.players[0].name;
+
+                        documentHelper.getFirstHtmlElementByQuery(`label[for="score-0"]`).click();
+                        documentHelper.getInputById(`score-0`).value = data.players[0].score.toString();
                     }
                     else {
                         data.players.forEach((elt, index) => {
                             addPlayerButton.item(0).click();
 
-                            document.querySelector(`label[for="name-${index}"]`).click();
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
 
-                            const currentPlayer = document.getElementById(`name-${index}`);
+                            const currentPlayer = documentHelper.getInputById(`name-${index}`);
                             currentPlayer.value = elt.name;
 
                             if (elt.rank === 1) {
-                                currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0].click();
+                                (currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0] as HTMLElement).click();
                             }
 
-                            document.querySelector(`label[for="score-${index}"]`).click();
-                            document.getElementById(`score-${index}`).value = elt.score;
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
+                            documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
                         });
                     }
 
-                    document.getElementById(`date`).value = new Date(data.end).toISOString().split('T')[0];
+                    documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
 
-                    document.querySelector(`label[for="location"]`).click();
-                    document.getElementById(`location`).value = "Board Game Arena";
+                    documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
+                    documentHelper.getInputById(`location`).value = "Board Game Arena";
 
-                    document.querySelector(`label[for="message"]`).click();
-                    document.getElementById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId);
+                    documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
+                    documentHelper.getInputById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
 
                     const modalContent = document.querySelector("#form-play .modal-content");
                     modalContent.scrollTop = modalContent.scrollHeight;
@@ -89,13 +97,13 @@ function getDataFromBGA() {
 
     window.location.href = window.location.href.replace(/[?&][^=]+=[^&]+/g, "");
 
-    return JSON.parse(json);
+    return JSON.parse(json) as Table;
 }
 
 async function loadPlays(callback) {
     const plays = [];
 
-    const playsTab = document.querySelector('a[href="#plays"]');
+    const playsTab = document.querySelector<HTMLElement>('a[href="#plays"]');
 
     if (playsTab) {
         playsTab.click();

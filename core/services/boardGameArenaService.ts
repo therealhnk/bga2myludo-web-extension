@@ -54,6 +54,7 @@ export default class boardGameArenaService {
 
     static async getGamesFromTable(requestToken: string, connectedUser: User, tableId: number) {
         const url = `https://boardgamearena.com/table/table/tableinfos.html?id=${tableId}`;
+        const realTimeMode = ["0", "1", "2", "5", "9", 0, 1, 2, 5, 9];
 
         return boardGameArenaService
             .fetch<TableInfos>(url, requestToken)
@@ -65,7 +66,8 @@ export default class boardGameArenaService {
                     isCooperative: response.data.result.is_coop,
                     isSolo: response.data.result.is_solo,
                     isAbandoned: response.data.result.endgame_reason !== 'normal_end',
-                    gameId: response.data.game_name
+                    gameId: response.data.game_name,
+                    duration: realTimeMode.includes(response.data.options[200]?.value) ? Number(response.data.duration) : undefined
                 };
 
                 response.data.result.player.forEach((item) => {
