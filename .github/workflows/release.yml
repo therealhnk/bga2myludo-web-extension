@@ -1,0 +1,63 @@
+name: "release"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'package.json'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get version
+        id: get-version
+        shell: pwsh
+        run: |
+          $json = Get-Content package.json | ConvertFrom-Json
+          echo "::set-output name=version::$(echo $json.version)"
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: latest
+          run_install: true
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3.4.1
+        with:
+          node-version: 16.x
+          cache: "pnpm"
+      - name: Build the Chrome extension
+        run: pnpm build --zip --target=chrome-mv3
+      - name: Build the Firefox extension
+        run: pnpm build --zip --target=firefox-mv3
+      - name: Build the Edge extension
+        run: pnpm build --zip --target=edge-mv3
+      - name: Build the Brave extension
+        run: pnpm build --zip --target=brave-mv3
+      - name: Build the Opera extension
+        run: pnpm build --zip --target=opera-mv3
+      - name: Build the Safari extension
+        run: pnpm build --zip --target=safari-mv3
+      - name: Rename extension files
+        run: | 
+          mv build/chrome-mv3-prod.zip build/chrome-mv3-${{ steps.get-version.outputs.version }}.zip
+          mv build/firefox-mv3-prod.zip build/firefox-mv3-${{ steps.get-version.outputs.version }}.zip
+          mv build/edge-mv3-prod.zip build/edge-mv3${{ steps.get-version.outputs.version }}.zip
+          mv build/opera-mv3-prod.zip build/opera-mv3${{ steps.get-version.outputs.version }}.zip
+          mv build/safari-mv3-prod.zip build/safari-mv3${{ steps.get-version.outputs.version }}.zip
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get-version.outputs.version }}
+          files: build/*.zip
