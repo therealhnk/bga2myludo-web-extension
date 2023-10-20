@@ -45,15 +45,12 @@ jobs:
         run: pnpm build --zip --target=edge-mv3
       - name: Build the Opera extension
         run: pnpm build --zip --target=opera-mv3
-      - name: Build the Safari extension
-        run: pnpm build --zip --target=safari-mv3
       - name: Rename extension files
         run: | 
           mv build/chrome-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_chrome-mv3.zip
           mv build/firefox-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_firefox-mv3.zip
           mv build/edge-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_edge-mv3.zip
           mv build/opera-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_opera-mv3.zip
-          mv build/safari-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_safari-mv3.zip
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
