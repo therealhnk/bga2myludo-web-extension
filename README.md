@@ -15,7 +15,11 @@ Chrome : https://chrome.google.com/webstore/detail/bga2myludo/milabpkocghjifbnhf
 
 Firefox : https://addons.mozilla.org/af/firefox/addon/bga2myludo
 
-Edge : N/A
+Edge : https://microsoftedge.microsoft.com/addons/detail/bga2myludo/lkccpffjneolnhkhejllkfopoajjokgm
+
+Opera :
+https://addons.opera.com/fr/extensions/details/bga2myludo/
+
 
 ## Ca ne fonctionne pas sur Firefox :-(
 
