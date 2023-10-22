@@ -1,4 +1,4 @@
-# bga2myludo-chrome-extension
+# bga2myludo-web-extension
 
 Facilitez vous la saisie des parties de Board Game Arena sur Myludo !
 
