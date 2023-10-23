@@ -13,16 +13,29 @@ async function patch() {
     // si l'onglet n'est pas actif, on ne présaisie pas les données
     if (document.visibilityState === "hidden") return;
 
-    if (!window.location.href.startsWith("https://www.myludo.fr/#!/game/")) {
+    if (!window.location.href.startsWith("https://www.myludo.fr/#!/game/")
+        || !window.location.href.includes("bga2myludo")) {
         clearInterval(intervalID);
         return;
     }
 
     const addPlayButton = document.getElementsByClassName('btn-play-open') as HTMLCollectionOf<HTMLElement>;
 
-    if (window.location.href.includes("bga2myludo") && addPlayButton.length > 0) {
-        clearInterval(intervalID);
+    if (addPlayButton.length === 0) {
+        // si la personne n'est pas authentifié, on ouvre la modal d'authentification
+        const loginButton = documentHelper.getFirstHtmlElementByQuery('button[href="#loginaccount"]');
 
+        if (loginButton) {
+            const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
+
+            loginButton.click();
+
+            cancelLink.removeEventListener("click", cancelLogin, false);
+            cancelLink.addEventListener("click", cancelLogin, false);
+        }
+    }
+    else {
+        clearInterval(intervalID);
         const data = getDataFromBGA();
 
         await loadPlays((plays => {
@@ -89,6 +102,12 @@ async function patch() {
             }, 500);
         }));
     }
+}
+
+function cancelLogin() {
+    const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
+    cancelLink.removeEventListener("click", cancelLogin, false);
+    clearInterval(intervalID);
 }
 
 function getDataFromBGA() {
