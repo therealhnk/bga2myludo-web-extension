@@ -151,28 +151,30 @@ async function fetchAndFeedStatsPage(connectedUser: User, page: number) {
     await boardGameArenaService
         .getGameStats(requestToken, connectedUser, parameters)
         .then(tables => {
-            const timeout = setTimeout(() => {
-                // on vérifie si toutes les tables sont chargés et rendues
-                if (!document.querySelector(`#gamelist_inner a[href="/table?table=${tables[tables.length - 1].tableId}"]`)) return;
+            if (tables.length > 0) {
+                const timeout = setTimeout(() => {
+                    // on vérifie si toutes les tables sont chargés et rendues
+                    if (!document.querySelector(`#gamelist_inner a[href="/table?table=${tables[tables.length - 1].tableId}"]`)) return;
 
-                clearTimeout(timeout);
+                    clearTimeout(timeout);
 
-                tables.forEach(async (table) => {
-                    await boardGameArenaHelper
-                        .getMyLudoLink(games[table.gameId], table)
-                        .then(link => {
-                            if (link === null) {
-                                addMyLudoField();
-                            }
-                            else {
-                                const cell = document.createElement("td");
-                                cell.appendChild(link);
+                    tables.forEach(async (table) => {
+                        await boardGameArenaHelper
+                            .getMyLudoLink(games[table.gameId], table)
+                            .then(link => {
+                                if (link === null) {
+                                    addMyLudoField();
+                                }
+                                else {
+                                    const cell = document.createElement("td");
+                                    cell.appendChild(link);
 
-                                document.querySelector(`#gamelist_inner a[href="/table?table=${table.tableId}"]`).closest("tr").appendChild(cell);
-                            }
-                        });
-                });
-            }, 250);
+                                    document.querySelector(`#gamelist_inner a[href="/table?table=${table.tableId}"]`).closest("tr").appendChild(cell);
+                                }
+                            });
+                    });
+                }, 250);
+            }
         });
 }
 
