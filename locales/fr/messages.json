@@ -7,5 +7,17 @@
     },
     "tableLinkText": {
         "message": "Table : https://www.boardgamearena.com/table?table=#TABLE_ID#\r\n\r\nCréé à l'aide de BGA2Myludo"
+    },
+    "connected": {
+        "message": "Connecté"
+    },
+    "loading": {
+        "message": "Chargement"
+    },
+    "disconnected": {
+        "message": "Déconnecté"
+    },
+    "welcomeMessage": {
+        "message": "Welcome to BGA2Myludo Extension!"
     }
 }

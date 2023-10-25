@@ -82,15 +82,29 @@ export default class boardGameArenaService {
             });
     }
 
-    static async getUser(requestToken: string) {
-        return boardGameArenaService
-            .fetch<WhoResponse>(`https://boardgamearena.com/my?who`, requestToken)
+    static async getUser() {
+        return fetch(`https://boardgamearena.com/my?who`, {})
+            .then(response => { return response.json() })
+            .then(response => { return response as WhoResponse })
             .then(response => {
-                return {
-                    id: response.id,
-                    nickname: response.n
-                } as User
+                if (response.error) {
+                    return null;
+                }
+                else {
+                    return {
+                        id: response.id,
+                        nickname: response.n
+                    } as User
+                }
             });
+    }
+
+    static async isConnected() {
+        return fetch(`https://boardgamearena.com/my?who`, {})
+            .then(response => { return response.json() })
+            .then(response => { return response as WhoResponse })
+            .then(response => { return !response.error; })
+            .catch(() => { return false });
     }
 
     static async fetch<T>(url: string, requestToken: string) {
