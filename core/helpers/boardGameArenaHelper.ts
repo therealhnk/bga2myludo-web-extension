@@ -7,7 +7,7 @@ export default class boardGameArenaHelper {
         let href = '';
 
         if (!myludoGameId) {
-            href = `https://www.myludo.fr/#!/search/${table.tableId}`;
+            href = `https://www.myludo.fr/#!/search/${table.gameId}`;
         }
         else {
             const json = JSON.stringify(table);
