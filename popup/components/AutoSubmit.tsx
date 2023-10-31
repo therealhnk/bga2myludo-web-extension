@@ -21,7 +21,7 @@ export default function AutoSubmit() {
         <div>
             <div>
                 <div>Auto submit : </div>
-                <div><input type='checkbox' checked={value} onChange={onChange} /></div>
+                <div><input type='checkbox' defaultChecked={value} onChange={onChange} /></div>
             </div>
         </div>
     )

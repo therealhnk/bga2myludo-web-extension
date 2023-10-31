@@ -11,7 +11,7 @@ function PopupIndex() {
                 padding: 16,
                 width: '360px'
             }}>
-            <h2>{browser.i18n.getMessage("welcomeMessage")}</h2>
+            <h2>{chrome.i18n.getMessage("welcomeMessage")}</h2>
             <Status />
             <CustomPlace />
             <AutoSubmit />

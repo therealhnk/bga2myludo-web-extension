@@ -19,7 +19,7 @@ export default function CustomPlace() {
         <div>
             <div>
                 <div>Override default place : </div>
-                <div><input type='text' value={value} onChange={onChange} /></div>
+                <div><input type='text' defaultValue={value} onChange={onChange} /></div>
             </div>
         </div>
     )

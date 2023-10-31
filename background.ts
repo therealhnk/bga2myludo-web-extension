@@ -1,6 +1,6 @@
 export { }
 
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'getMyludoConnectedStatus') {
         //récupérer la home page pour récupérer le x-csrf-token dans les balises meta
         fetch("https://www.myludo.fr/", { method: "GET" })

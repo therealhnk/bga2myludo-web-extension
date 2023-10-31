@@ -108,14 +108,14 @@ export default class boardGameArenaService {
     }
 
     static async hasPermission(): Promise<boolean> {
-        return browser.permissions
+        return chrome.permissions
             .contains({ origins: ['https://boardgamearena.com/*'] })
             .then((result: boolean) => { return result; })
             .catch(() => { return false });
     }
 
     static async requestPermission() {
-        browser.permissions.request({ origins: ['https://boardgamearena.com/*'] });
+        chrome.permissions.request({ origins: ['https://boardgamearena.com/*'] });
 
     }
 

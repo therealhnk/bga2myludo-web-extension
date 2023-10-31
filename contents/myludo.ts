@@ -96,7 +96,7 @@ async function patch() {
                     documentHelper.getInputById(`location`).value = config.place;
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
-                    documentHelper.getInputById(`message`).value = browser.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
+                    documentHelper.getInputById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
 
                     if (config.autoSubmit && !hasBeenPlayed) {
                         documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
@@ -192,7 +192,7 @@ function addWarning() {
     warningIcon.textContent = "warning";
 
     warning.appendChild(warningIcon);
-    warning.append(browser.i18n.getMessage("warningAlreadyPlayed"));
+    warning.append(chrome.i18n.getMessage("warningAlreadyPlayed"));
 
     row.appendChild(label);
     row.appendChild(warning);
