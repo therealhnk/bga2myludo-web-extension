@@ -1,6 +1,6 @@
 export { }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'getMyludoConnectedStatus') {
         //récupérer la home page pour récupérer le x-csrf-token dans les balises meta
         fetch("https://www.myludo.fr/", { method: "GET" })
@@ -15,35 +15,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
                     const headers = new Headers([["X-Csrf-Token", csrfToken]]);
                     fetch("https://www.myludo.fr/views/login/datas.php?type=init", { method: "GET", headers })
-                        .then(response => { return response.json() })
-                        .then(response => { sendResponse(response.user); })
-                        .catch(error => sendResponse(error))
+                        .then(response => { return response.json(); })
+                        .then(response => sendResponse(response.user))
+                        .catch(() => sendResponse(false))
                 }
             })
-            .catch(() => sendResponse(false))
+            .catch(() => sendResponse(false));
     }
-    if (request.message === 'getMyludoPermission') {
-        chrome.permissions.contains({
-            origins: ['https://www.myludo.fr/*']
-        }, (result) => {
-            sendResponse(result);
-        });
-    }
-    if (request.message === 'getBoardGameArenaPermission') {
-        chrome.permissions.contains({
-            origins: ['https://boardgamearena.com/*']
-        }, (result) => { sendResponse(result); });
-    }
-    if (request.message === 'requestMyludoPermission') {
-        chrome.permissions.request({
-            origins: ['https://www.myludo.fr/*']
-        }, (result) => {
-            sendResponse(result);
-        });
-    }
-    if (request.message === 'requestBoardGameArenaPermission') {
-        chrome.permissions.request({
-            origins: ['https://boardgamearena.com/*']
-        }, (result) => { sendResponse(result); });
-    }
+    return true;
 })

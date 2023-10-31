@@ -1,17 +1,18 @@
 export default class myludoService {
     static async isConnected() {
-        return new Promise(resolve => { chrome.runtime.sendMessage({ message: "getMyludoConnectedStatus" }, resolve) })
+        return browser.runtime.sendMessage({ message: "getMyludoConnectedStatus" })
             .then(response => { return response as boolean; })
+            .catch(() => { return false; });
+    }
+
+    static async hasPermission(): Promise<boolean> {
+        return browser.permissions
+            .contains({ origins: ['https://www.myludo.fr/*'] })
+            .then((result: boolean) => { return result; })
             .catch(() => { return false });
     }
-    static async hasPermission() {
-        return new Promise(resolve => { chrome.runtime.sendMessage({ message: "getMyludoPermission" }, resolve) })
-            .then(response => { return response as boolean; })
-            .catch(() => { return false });
-    }
+
     static async requestPermission() {
-        return new Promise(resolve => { chrome.runtime.sendMessage({ message: "requestMyludoPermission" }, resolve) })
-            .then(response => { return response as boolean; })
-            .catch(() => { return false });
+        browser.permissions.request({ origins: ['https://www.myludo.fr/*'] });
     }
 }

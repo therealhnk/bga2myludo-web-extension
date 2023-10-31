@@ -26,6 +26,7 @@
     "typescript": "5.2.2"
   },
   "manifest": {
+    "default_locale": "fr",
     "browser_specific_settings": {
       "gecko": {
         "id": "bga2myludo@gmail.com"

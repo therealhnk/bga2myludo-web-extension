@@ -19,7 +19,7 @@ export default class boardGameArenaHelper {
         const link = document.createElement("a");
         link.href = href;
         link.target = "_blank"
-        link.textContent = chrome.i18n.getMessage("myLudoLinkText");
+        link.textContent = browser.i18n.getMessage("myLudoLinkText");
         link.classList.add("action-button");
         link.classList.add("bgabutton");
         link.classList.add("bgabutton_darkgray");

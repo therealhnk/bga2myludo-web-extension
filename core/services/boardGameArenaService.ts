@@ -107,16 +107,16 @@ export default class boardGameArenaService {
             .catch(() => { return false });
     }
 
-    static async hasPermission() {
-        return new Promise(resolve => { chrome.runtime.sendMessage({ message: "getBoardGameArenaPermission" }, resolve) })
-            .then(response => { return response as boolean; })
+    static async hasPermission(): Promise<boolean> {
+        return browser.permissions
+            .contains({ origins: ['https://boardgamearena.com/*'] })
+            .then((result: boolean) => { return result; })
             .catch(() => { return false });
     }
 
     static async requestPermission() {
-        return new Promise(resolve => { chrome.runtime.sendMessage({ message: "requestBoardGameArenaPermission" }, resolve) })
-            .then(response => { return response as boolean; })
-            .catch(() => { return false });
+        browser.permissions.request({ origins: ['https://boardgamearena.com/*'] });
+
     }
 
     static async fetch<T>(url: string, requestToken: string) {

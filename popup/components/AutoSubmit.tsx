@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useCallback, useEffect, useState, type ChangeEventHandler } from 'react';
 import configurationService from '~core/services/configurationService';
 
-function AutoSubmit() {
+export default function AutoSubmit() {
     const [value, setValue] = useState<boolean>();
 
     useEffect(() => {
@@ -26,5 +26,3 @@ function AutoSubmit() {
         </div>
     )
 }
-
-export default AutoSubmit

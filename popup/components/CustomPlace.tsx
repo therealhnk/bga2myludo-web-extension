@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useCallback, useEffect, useState, type ChangeEventHandler } from 'react';
 import configurationService from '~core/services/configurationService';
 
-function CustomPlace() {
+export default function CustomPlace() {
     const [value, setValue] = useState<string>();
 
     useEffect(() => {
@@ -24,5 +24,3 @@ function CustomPlace() {
         </div>
     )
 }
-
-export default CustomPlace

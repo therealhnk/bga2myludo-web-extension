@@ -7,11 +7,11 @@ import myludoService from '~core/services/myludoService';
 function getStatus(status: ConnectionStatus) {
     switch (status) {
         case ConnectionStatus.Connected:
-            return <span className="badge text-bg-success rounded-pill">{chrome.i18n.getMessage("connected")}</span>;
+            return <span className="badge text-bg-success rounded-pill">{browser.i18n.getMessage("connected")}</span>;
         case ConnectionStatus.Loading:
-            return <span className="badge text-bg-warning rounded-pill">{chrome.i18n.getMessage("loading")}</span>;
+            return <span className="badge text-bg-warning rounded-pill">{browser.i18n.getMessage("loading")}</span>;
         case ConnectionStatus.Disconnected:
-            return <span className="badge text-bg-danger rounded-pill">{chrome.i18n.getMessage("disconnected")}</span>;
+            return <span className="badge text-bg-danger rounded-pill">{browser.i18n.getMessage("disconnected")}</span>;
     }
 }
 
