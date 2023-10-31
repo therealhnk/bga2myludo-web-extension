@@ -22,5 +22,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             })
             .catch(() => sendResponse(false))
     }
-    return true
+    if (request.message === 'getMyludoPermission') {
+        chrome.permissions.contains({
+            origins: ['https://www.myludo.fr/*']
+        }, (result) => {
+            sendResponse(result);
+        });
+    }
+    if (request.message === 'getBoardGameArenaPermission') {
+        chrome.permissions.contains({
+            origins: ['https://boardgamearena.com/*']
+        }, (result) => { sendResponse(result); });
+    }
+    if (request.message === 'requestMyludoPermission') {
+        chrome.permissions.request({
+            origins: ['https://www.myludo.fr/*']
+        }, (result) => {
+            sendResponse(result);
+        });
+    }
+    if (request.message === 'requestBoardGameArenaPermission') {
+        chrome.permissions.request({
+            origins: ['https://boardgamearena.com/*']
+        }, (result) => { sendResponse(result); });
+    }
 })

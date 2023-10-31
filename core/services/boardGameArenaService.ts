@@ -107,6 +107,18 @@ export default class boardGameArenaService {
             .catch(() => { return false });
     }
 
+    static async hasPermission() {
+        return new Promise(resolve => { chrome.runtime.sendMessage({ message: "getBoardGameArenaPermission" }, resolve) })
+            .then(response => { return response as boolean; })
+            .catch(() => { return false });
+    }
+
+    static async requestPermission() {
+        return new Promise(resolve => { chrome.runtime.sendMessage({ message: "requestBoardGameArenaPermission" }, resolve) })
+            .then(response => { return response as boolean; })
+            .catch(() => { return false });
+    }
+
     static async fetch<T>(url: string, requestToken: string) {
         const headers = new Headers([["x-request-token", requestToken]]);
 
