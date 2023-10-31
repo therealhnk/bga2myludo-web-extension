@@ -1,3 +1,4 @@
+import CustomPlace from "./components/CustomPlace"
 import Status from "./components/Status"
 
 function PopupIndex() {
@@ -11,6 +12,7 @@ function PopupIndex() {
             }}>
             <h2>{chrome.i18n.getMessage("welcomeMessage")}</h2>
             <Status />
+            <CustomPlace />
         </div>
     )
 }

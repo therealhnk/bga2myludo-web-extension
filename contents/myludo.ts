@@ -2,6 +2,7 @@ import type { PlasmoCSConfig } from "plasmo";
 import documentHelper from "~core/helpers/documentHelper";
 import myludoHelper from "~core/helpers/myludoHelper";
 import type { Table } from "~core/models/table";
+import configurationService from "~core/services/configurationService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://www.myludo.fr/*"]
@@ -36,6 +37,7 @@ async function patch() {
     }
     else {
         clearInterval(intervalID);
+        const config = await configurationService.Get();
         const data = getDataFromBGA();
 
         await loadPlays((plays => {
@@ -91,7 +93,7 @@ async function patch() {
                     documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
-                    documentHelper.getInputById(`location`).value = "Board Game Arena";
+                    documentHelper.getInputById(`location`).value = config.place;
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
                     documentHelper.getInputById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
