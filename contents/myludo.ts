@@ -37,7 +37,7 @@ async function patch() {
     }
     else {
         clearInterval(intervalID);
-        const config = await configurationService.Get();
+        const config = await configurationService.get();
         const data = getDataFromBGA();
 
         await loadPlays((plays => {
@@ -98,8 +98,13 @@ async function patch() {
                     documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
                     documentHelper.getInputById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
 
-                    const modalContent = document.querySelector("#form-play .modal-content");
-                    modalContent.scrollTop = modalContent.scrollHeight;
+                    if (config.autoSubmit && !hasBeenPlayed) {
+                        documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
+                    }
+                    else {
+                        const modalContent = document.querySelector("#form-play .modal-content");
+                        modalContent.scrollTop = modalContent.scrollHeight;
+                    }
                 }
             }, 500);
         }));

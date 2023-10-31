@@ -1,3 +1,4 @@
+import AutoSubmit from "./components/AutoSubmit"
 import CustomPlace from "./components/CustomPlace"
 import Status from "./components/Status"
 
@@ -13,6 +14,7 @@ function PopupIndex() {
             <h2>{chrome.i18n.getMessage("welcomeMessage")}</h2>
             <Status />
             <CustomPlace />
+            <AutoSubmit />
         </div>
     )
 }
