@@ -79,7 +79,10 @@ async function patch() {
                             documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
 
                             const currentPlayer = documentHelper.getInputById(`name-${index}`);
-                            currentPlayer.value = elt.name;
+
+                            const overridenUser = config.users.find(o => o.bgaUser === elt.name);
+
+                            currentPlayer.value = overridenUser ? overridenUser.myludoUser : elt.name;
 
                             if (elt.rank === 1) {
                                 (currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0] as HTMLElement).click();

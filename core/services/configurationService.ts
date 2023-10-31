@@ -1,5 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import type { Configuration } from "~core/models/configuration";
+import type { MappedUser } from "~core/models/mappedUser";
 
 export default class configurationService {
     static async get(): Promise<Configuration> {
@@ -11,7 +12,10 @@ export default class configurationService {
         const autoSubmitValue = await storage.get('autoSubmit');
         const autoSubmit = autoSubmitValue && autoSubmitValue.length > 0 ? autoSubmitValue === 'true' : false;
 
-        return { place, autoSubmit };
+        const usersValue = await storage.get('users');
+        const users = JSON.parse(usersValue) as MappedUser[];
+
+        return { place, autoSubmit, users };
     }
 
     static async setAutoSubmit(value: boolean) {
@@ -22,5 +26,10 @@ export default class configurationService {
     static async setPlace(value: string) {
         const storage = new Storage();
         storage.set("place", value);
+    }
+
+    static async setUsers(value: MappedUser[]) {
+        const storage = new Storage();
+        storage.set("users", JSON.stringify(value));
     }
 }
