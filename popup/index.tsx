@@ -45,19 +45,18 @@ function PopupIndex() {
     return (
         <div className='popup'>
             <header>
-                <img src={icon} alt="bga2myludo_icon" />
-                <span className="extension-name">{chrome.i18n.getMessage("extensionName")}</span>
+                <div className="extension-name" onClick={() => setActiveSection('Home')}>
+                    <img src={icon} alt="bga2myludo_icon" />
+                    <span>{chrome.i18n.getMessage("extensionName")}</span>
+                </div>
 
-                <button title="CustomPlace" onClick={() => setActiveSection('CustomPlace')}>
-                    <FontAwesomeIcon icon={faGear} size="lg" />
-                </button>
-                <button title="AutoSubmit" onClick={() => setActiveSection('AutoSubmit')}>
+                <button title="CustomPlace" onClick={() => setActiveSection('Configuration')}>
                     <FontAwesomeIcon icon={faGear} size="lg" />
                 </button>
                 <button title="Users" onClick={() => setActiveSection('CustomUsers')}>
                     <FontAwesomeIcon icon={faUsers} size="lg" />
                 </button>
-                <button title={chrome.i18n.getMessage("importConfiguration")} onClick={() => setActiveSection('ImportExportConfiguration')}>
+                <button title={chrome.i18n.getMessage("importConfiguration")} onClick={() => setActiveSection('ImportConfiguration')}>
                     <FontAwesomeIcon icon={faFileImport} size="lg" />
                 </button>
                 <button title={chrome.i18n.getMessage("exportConfiguration")} onClick={exportConfiguration}>
@@ -70,10 +69,14 @@ function PopupIndex() {
                 :
                 <div className="popup-body">
                     {activeSection === 'Home' && <Home />}
-                    {activeSection === 'CustomPlace' && <CustomPlace configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
-                    {activeSection === 'AutoSubmit' && <AutoSubmit configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
+                    {activeSection === 'Configuration' &&
+                        <>
+                            <AutoSubmit configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
+                            <CustomPlace configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
+                        </>
+                    }
                     {activeSection === 'CustomUsers' && <CustomUsers configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
-                    {activeSection === 'ImportExportConfiguration' && <ImportExportConfiguration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
+                    {activeSection === 'ImportConfiguration' && <ImportExportConfiguration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                 </div>
             }
 
