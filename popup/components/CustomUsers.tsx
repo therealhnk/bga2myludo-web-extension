@@ -4,7 +4,7 @@ import type { Configuration } from '~core/models/configuration';
 import { CustomUsersModel } from '~popup/models/CustomUsersModel';
 
 type Props = {
-    configuration?: Configuration;
+    configuration: Configuration;
     onConfigurationUpdated: (configuration: Configuration) => void;
 }
 
@@ -84,8 +84,8 @@ export default function CustomUsers({ configuration, onConfigurationUpdated }: P
                         </tr>
                         {customUsersModel.users.map((o, index) =>
                             <tr key={`${o.bgaUser}_${o.myludoUser}`}>
-                                <td><input type='text' value={o.bgaUser} /></td>
-                                <td><input type='text' value={o.myludoUser} /></td>
+                                <td><input type='text' value={o.bgaUser} onChange={() => { }} /></td>
+                                <td><input type='text' value={o.myludoUser} onChange={() => { }} /></td>
                                 <td><button onClick={() => removeUser(index)}>delete</button></td>
                             </tr>
                         )}

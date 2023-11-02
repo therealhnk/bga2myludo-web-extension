@@ -19,5 +19,8 @@
     },
     "welcomeMessage": {
         "message": "Welcome to BGA2Myludo Extension!"
+    },
+    "extensionName": {
+        "message": "BGA2Myludo"
     }
 }

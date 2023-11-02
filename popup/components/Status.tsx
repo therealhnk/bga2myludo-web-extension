@@ -1,8 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import bgaIcon from "data-base64:~assets/bga_icon.png";
+import myludoIcon from "data-base64:~assets/myludo_icon.png";
 import { useCallback, useEffect, useState } from 'react';
-import { ConnectionStatus } from '~popup/models/StatusModel';
 import boardGameArenaService from '~core/services/boardGameArenaService';
 import myludoService from '~core/services/myludoService';
+import '~popup/index.scss';
+import { ConnectionStatus } from '~popup/models/StatusModel';
 
 function getStatus(status: ConnectionStatus) {
     switch (status) {
@@ -51,14 +54,22 @@ function Status() {
     }, []);
 
     return (
-        <div>
+        <div className='status'>
             <div>
-                <div>Board Game Arena : </div>
-                <div>{getStatus(bgaStatus)} (permission : {bgaPermission ? 'granted' : <span>refused <button onClick={() => requestPermission('bga')}>Authorize</button></span>})</div>
+                <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
+                <span>{getStatus(bgaStatus)}
+                    {!bgaPermission &&
+                        <span>refused <button onClick={() => requestPermission('bga')}>Authorize</button></span>
+                    }
+                </span>
             </div>
             <div>
-                <div>Myludo : </div>
-                <div>{getStatus(myludoStatus)} (permission : {myludoPermission ? 'granted' : <span>refused <button onClick={() => requestPermission('myludo')}>Authorize</button></span>})</div>
+                <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
+                <span>{getStatus(myludoStatus)}
+                    {!myludoPermission &&
+                        <span>refused <button onClick={() => requestPermission('myludo')}>Authorize</button></span>
+                    }
+                </span>
             </div>
         </div>
     )

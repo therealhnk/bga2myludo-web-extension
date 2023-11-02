@@ -4,7 +4,7 @@ import type { Configuration } from '~core/models/configuration';
 import configurationService from '~core/services/configurationService';
 
 type Props = {
-    configuration?: Configuration;
+    configuration: Configuration;
     onConfigurationUpdated: (configuration: Configuration) => void;
 }
 

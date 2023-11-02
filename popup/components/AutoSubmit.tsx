@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
 
 type Props = {
-    configuration?: Configuration;
+    configuration: Configuration;
     onConfigurationUpdated: (configuration: Configuration) => void;
 }
 
@@ -16,7 +16,7 @@ export default function AutoSubmit({ configuration, onConfigurationUpdated }: Pr
         <div>
             <div>
                 <div>Auto submit : </div>
-                <div><input type='checkbox' checked={configuration?.autoSubmit} onChange={onChange} /></div>
+                <div><input type='checkbox' checked={configuration.autoSubmit} onChange={onChange} /></div>
             </div>
         </div>
     )

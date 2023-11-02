@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
 
 type Props = {
-    configuration?: Configuration;
+    configuration: Configuration;
     onConfigurationUpdated: (configuration: Configuration) => void;
 }
 
@@ -16,7 +16,7 @@ export default function CustomPlace({ configuration, onConfigurationUpdated }: P
         <div>
             <div>
                 <div>Override default place : </div>
-                <div><input type='text' value={configuration?.place} onChange={onChange} /></div>
+                <div><input type='text' value={configuration.place} onChange={onChange} /></div>
             </div>
         </div>
     )
