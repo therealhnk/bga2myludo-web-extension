@@ -1,17 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import { useCallback, useEffect, useState, type ChangeEventHandler } from 'react';
-import configurationService from '~core/services/configurationService';
+import { useCallback, useEffect, useState } from 'react';
+import type { Configuration } from '~core/models/configuration';
 import { CustomUsersModel } from '~popup/models/CustomUsersModel';
 
-export default function CustomUsers() {
+type Props = {
+    configuration?: Configuration;
+    onConfigurationUpdated: (configuration: Configuration) => void;
+}
+
+export default function CustomUsers({ configuration, onConfigurationUpdated }: Props) {
     const [customUsersModel, setCustomUsersModel] = useState<CustomUsersModel>({ addedUser: { bgaUser: '', myludoUser: '' }, users: [] });
 
     useEffect(() => {
-        configurationService.get()
-            .then((result) => {
-                setCustomUsersModel(current => { return { ...current, users: result.users } })
-            });
-    }, []);
+        if (configuration) {
+            setCustomUsersModel(current => { return { ...current, users: configuration.users } })
+        }
+    }, [configuration]);
 
     const addUser = useCallback(() => {
         const userIdx = customUsersModel.users.findIndex(o => o.bgaUser === customUsersModel.addedUser.bgaUser);
@@ -30,15 +34,15 @@ export default function CustomUsers() {
 
         const usersUpdatedSorted = usersUpdated.sort((a, b) => (a.bgaUser < b.bgaUser ? -1 : 1));;
 
-        configurationService.setUsers(usersUpdated);
         setCustomUsersModel({ users: usersUpdatedSorted, addedUser: { bgaUser: '', myludoUser: '' } });
-    }, [customUsersModel]);
+        onConfigurationUpdated({ ...configuration, users: usersUpdatedSorted });
+    }, [configuration, onConfigurationUpdated, customUsersModel]);
 
     const removeUser = useCallback((index: number) => {
         const usersUpdated = customUsersModel.users.filter((o, i) => i !== index);
         setCustomUsersModel({ ...customUsersModel, users: usersUpdated });
-        configurationService.setUsers(usersUpdated);
-    }, [customUsersModel]);
+        onConfigurationUpdated({ ...configuration, users: usersUpdated });
+    }, [configuration, onConfigurationUpdated, customUsersModel]);
 
     return (
         <div>
@@ -80,8 +84,8 @@ export default function CustomUsers() {
                         </tr>
                         {customUsersModel.users.map((o, index) =>
                             <tr key={`${o.bgaUser}_${o.myludoUser}`}>
-                                <td><input type='text' defaultValue={o.bgaUser} /></td>
-                                <td><input type='text' defaultValue={o.myludoUser} /></td>
+                                <td><input type='text' value={o.bgaUser} /></td>
+                                <td><input type='text' value={o.myludoUser} /></td>
                                 <td><button onClick={() => removeUser(index)}>delete</button></td>
                             </tr>
                         )}

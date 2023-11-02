@@ -1,27 +1,22 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import { useCallback, useEffect, useState, type ChangeEventHandler } from 'react';
-import configurationService from '~core/services/configurationService';
+import { useCallback } from 'react';
+import type { Configuration } from '~core/models/configuration';
 
-export default function AutoSubmit() {
-    const [value, setValue] = useState<boolean>();
+type Props = {
+    configuration?: Configuration;
+    onConfigurationUpdated: (configuration: Configuration) => void;
+}
 
-    useEffect(() => {
-        configurationService.get()
-            .then((result) => {
-                setValue(result.autoSubmit);
-            });
-    }, []);
-
+export default function AutoSubmit({ configuration, onConfigurationUpdated }: Props) {
     const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
-        setValue(event.target.checked);
-        configurationService.setAutoSubmit(event.target.checked);
-    }, []);
+        onConfigurationUpdated({ ...configuration, autoSubmit: event.target.checked });
+    }, [configuration, onConfigurationUpdated]);
 
     return (
         <div>
             <div>
                 <div>Auto submit : </div>
-                <div><input type='checkbox' defaultChecked={value} onChange={onChange} /></div>
+                <div><input type='checkbox' checked={configuration?.autoSubmit} onChange={onChange} /></div>
             </div>
         </div>
     )

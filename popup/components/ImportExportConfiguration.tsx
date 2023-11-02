@@ -1,10 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import * as fs from 'fs';
 import { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import configurationService from '~core/services/configurationService';
 
-export default function ImportExportConfiguration() {
+type Props = {
+    configuration?: Configuration;
+    onConfigurationUpdated: (configuration: Configuration) => void;
+}
+
+export default function ImportExportConfiguration({ configuration, onConfigurationUpdated }: Props) {
     const exportConfiguration = useCallback(async () => {
         const configuration = JSON.stringify(await configurationService.get());
         const blob = new Blob([configuration], { type: 'application/json' });
@@ -25,13 +29,13 @@ export default function ImportExportConfiguration() {
                 if (event.target) {
                     const content = event.target.result as string;
                     const data = JSON.parse(content) as Configuration;
-                    console.log(data);
-                    configurationService.set(data);
+                    onConfigurationUpdated(data);
                 }
             };
             reader.readAsText(file);
         }
-    }, []);
+        e.target.value = '';
+    }, [onConfigurationUpdated]);
 
     return (
         <div>
