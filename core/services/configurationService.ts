@@ -13,7 +13,7 @@ export default class configurationService {
         const autoSubmit = autoSubmitValue && autoSubmitValue.length > 0 ? autoSubmitValue === 'true' : false;
 
         const usersValue = await storage.get('users');
-        const users = JSON.parse(usersValue) as MappedUser[];
+        const users = (JSON.parse(usersValue) as MappedUser[]).sort((a, b) => (a.bgaUser < b.bgaUser ? -1 : 1));
 
         return { place, autoSubmit, users };
     }

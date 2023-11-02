@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ConnectionStatus } from '~core/models/connectionStatus';
+import { ConnectionStatus } from '~popup/models/StatusModel';
 import boardGameArenaService from '~core/services/boardGameArenaService';
 import myludoService from '~core/services/myludoService';
 
