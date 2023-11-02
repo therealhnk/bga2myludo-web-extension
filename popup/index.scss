@@ -27,6 +27,15 @@ header {
         margin-right: auto;
         font-weight: 500;
     }
+
+    button {
+        margin-left: 2px;
+        border-radius: 2px;
+        background-color: #f9f9f9;
+        border: 1px solid #999;
+        padding: 3px 8px;
+        font-size: 1em;
+    }
 }
 
 footer {
@@ -46,8 +55,8 @@ footer {
             text-align: center;
 
             .icon {
-                width: 24px;
-                height: 24px;
+                width: 16px;
+                height: 16px;
                 margin-right: 4px;
             }
         }
