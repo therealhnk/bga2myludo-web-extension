@@ -18,6 +18,12 @@ export default class configurationService {
         return { place, autoSubmit, users };
     }
 
+    static async set(configuration: Configuration) {
+        configurationService.setAutoSubmit(configuration.autoSubmit);
+        configurationService.setPlace(configuration.place);
+        configurationService.setUsers(configuration.users);
+    }
+
     static async setAutoSubmit(value: boolean) {
         const storage = new Storage();
         storage.set("autoSubmit", String(value));

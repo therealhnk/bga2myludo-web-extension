@@ -1,6 +1,7 @@
 import AutoSubmit from "./components/AutoSubmit"
 import CustomPlace from "./components/CustomPlace"
 import CustomUsers from "./components/CustomUsers"
+import ImportExportConfiguration from "./components/ImportExportConfiguration"
 import Status from "./components/Status"
 
 function PopupIndex() {
@@ -17,6 +18,7 @@ function PopupIndex() {
             <CustomPlace />
             <AutoSubmit />
             <CustomUsers />
+            <ImportExportConfiguration />
         </div>
     )
 }
