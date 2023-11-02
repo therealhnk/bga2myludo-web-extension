@@ -38,6 +38,29 @@ header {
     }
 }
 
+.popup-body {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    min-height: 50px;
+}
+
+.home {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #444;
+    padding: 10px;
+
+    span {
+        font-weight: 500;
+        font-size: 14px;
+        text-align: center;
+    }
+}
+
 footer {
     display: flex;
     align-items: center;

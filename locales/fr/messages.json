@@ -18,9 +18,15 @@
         "message": "Déconnecté"
     },
     "welcomeMessage": {
-        "message": "Welcome to BGA2Myludo Extension!"
+        "message": "Bienvenue sur l'extension BGA2Myludo !"
     },
     "extensionName": {
         "message": "BGA2Myludo"
+    },
+    "exportConfiguration": {
+        "message": "Exporter la configuration"
+    },
+    "importConfiguration": {
+        "message": "Importer votre configuration"
     }
 }

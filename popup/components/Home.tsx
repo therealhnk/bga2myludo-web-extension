@@ -1,9 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.css';
+import '~popup/index.scss';
 
 export default function Home() {
     return (
-        <div>
-            {chrome.i18n.getMessage("welcomeMessage")}
+        <div className="home">
+            <span>{chrome.i18n.getMessage("welcomeMessage")}</span>
         </div>
     )
 }

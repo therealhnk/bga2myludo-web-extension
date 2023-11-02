@@ -8,7 +8,7 @@ import AutoSubmit from "./components/AutoSubmit";
 import CustomPlace from "./components/CustomPlace";
 import CustomUsers from "./components/CustomUsers";
 import Home from "./components/Home";
-import ImportExportConfiguration from "./components/ImportExportConfiguration";
+import ImportExportConfiguration from "./components/ImportConfiguration";
 import Loader from "./components/Loader";
 import Status from "./components/Status";
 import './index.scss';
@@ -30,6 +30,18 @@ function PopupIndex() {
         configurationService.set(configuration);
     }, []);
 
+    const exportConfiguration = useCallback(async () => {
+        const configuration = JSON.stringify(await configurationService.get());
+        const blob = new Blob([configuration], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "bga2myludo_configuration.json";
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }, []);
+
     return (
         <div className='popup'>
             <header>
@@ -45,24 +57,24 @@ function PopupIndex() {
                 <button title="Users" onClick={() => setActiveSection('CustomUsers')}>
                     <FontAwesomeIcon icon={faUsers} size="lg" />
                 </button>
-                <button title="Export" onClick={() => setActiveSection('ImportExportConfiguration')}>
-                    <FontAwesomeIcon icon={faDownload} size="lg" />
-                </button>
-                <button title="Import" onClick={() => setActiveSection('ImportExportConfiguration')}>
+                <button title={chrome.i18n.getMessage("importConfiguration")} onClick={() => setActiveSection('ImportExportConfiguration')}>
                     <FontAwesomeIcon icon={faFileImport} size="lg" />
+                </button>
+                <button title={chrome.i18n.getMessage("exportConfiguration")} onClick={exportConfiguration}>
+                    <FontAwesomeIcon icon={faDownload} size="lg" />
                 </button>
             </header >
 
             {(showLoader) ?
                 <Loader />
                 :
-                <>
+                <div className="popup-body">
                     {activeSection === 'Home' && <Home />}
                     {activeSection === 'CustomPlace' && <CustomPlace configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                     {activeSection === 'AutoSubmit' && <AutoSubmit configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                     {activeSection === 'CustomUsers' && <CustomUsers configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                     {activeSection === 'ImportExportConfiguration' && <ImportExportConfiguration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
-                </>
+                </div>
             }
 
             <footer>
