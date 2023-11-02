@@ -46,7 +46,8 @@ header {
     min-height: 50px;
 }
 
-.home {
+.home,
+.import {
     margin: 20px 0;
     display: flex;
     align-items: center;
@@ -55,12 +56,19 @@ header {
     color: #444;
     padding: 10px;
 
-    span {
+    .message {
         font-weight: 500;
         font-size: 14px;
         text-align: center;
     }
 }
+
+.import {
+    .file {
+        padding-top: 15px;
+    }
+}
+
 
 footer {
     display: flex;
