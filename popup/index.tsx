@@ -6,12 +6,12 @@ import type { Configuration } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
 import AutoSubmit from "./components/AutoSubmit";
 import CustomPlace from "./components/CustomPlace";
-import CustomUsers from "./components/CustomUsers";
 import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
 import ImportButton from "./components/ImportButton";
 import Loader from "./components/Loader";
 import Status from "./components/Status";
+import UserMatching from "./components/UserMatching";
 import './index.scss';
 
 function PopupIndex() {
@@ -35,14 +35,14 @@ function PopupIndex() {
         <div className='popup'>
             <header>
                 <div className="extension-name" onClick={() => setActiveSection('Home')}>
-                    <img src={icon} alt="bga2myludo_icon" />
+                    <img src={icon} alt="bga2myludo" />
                     <span>{chrome.i18n.getMessage("extensionName")}</span>
                 </div>
 
-                <button title="CustomPlace" onClick={() => setActiveSection('Configuration')}>
+                <button title={chrome.i18n.getMessage("configuration")} onClick={() => setActiveSection('Configuration')}>
                     <FontAwesomeIcon icon={faGear} size="lg" />
                 </button>
-                <button title="Users" onClick={() => setActiveSection('CustomUsers')}>
+                <button title={chrome.i18n.getMessage("userMatching")} onClick={() => setActiveSection('UserMatching')}>
                     <FontAwesomeIcon icon={faUsers} size="lg" />
                 </button>
                 <ImportButton configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
@@ -60,7 +60,7 @@ function PopupIndex() {
                             <CustomPlace configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
                         </>
                     }
-                    {activeSection === 'CustomUsers' && <CustomUsers configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
+                    {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                 </div>
             }
 

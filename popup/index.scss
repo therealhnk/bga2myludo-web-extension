@@ -47,7 +47,7 @@ header {
 }
 
 .home,
-.import {
+.user-matching {
     margin: 20px 0;
     display: flex;
     align-items: center;
@@ -62,13 +62,6 @@ header {
         text-align: center;
     }
 }
-
-.import {
-    .file {
-        padding-top: 15px;
-    }
-}
-
 
 footer {
     display: flex;

@@ -1,6 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
+import '~popup/index.scss';
 
 type Props = {
     configuration: Configuration;
@@ -13,11 +13,9 @@ export default function AutoSubmit({ configuration, onConfigurationUpdated }: Pr
     }, [configuration, onConfigurationUpdated]);
 
     return (
-        <div>
-            <div>
-                <div>Auto submit : </div>
-                <div><input type='checkbox' checked={configuration.autoSubmit} onChange={onChange} /></div>
-            </div>
+        <div className='user-matching'>
+            <div className="message">Auto submit</div>
+            <div><input type='checkbox' checked={configuration.autoSubmit} onChange={onChange} /></div>
         </div>
     )
 }

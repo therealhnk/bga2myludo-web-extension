@@ -1,6 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
+import '~popup/index.scss';
 
 type Props = {
     configuration: Configuration;
@@ -13,11 +13,9 @@ export default function CustomPlace({ configuration, onConfigurationUpdated }: P
     }, [configuration, onConfigurationUpdated]);
 
     return (
-        <div>
-            <div>
-                <div>Override default place : </div>
-                <div><input type='text' value={configuration.place} onChange={onChange} /></div>
-            </div>
+        <div className='user-matching'>
+            <div className="message">Override default place</div>
+            <div><input type='text' value={configuration.place} onChange={onChange} /></div>
         </div>
     )
 }

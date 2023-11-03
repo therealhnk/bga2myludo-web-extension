@@ -20,9 +20,6 @@
     "welcomeMessage": {
         "message": "Bienvenue sur l'extension BGA2Myludo !"
     },
-    "importMessage": {
-        "message": "Importer votre configuration"
-    },
     "extensionName": {
         "message": "BGA2Myludo"
     },
@@ -31,5 +28,11 @@
     },
     "importConfiguration": {
         "message": "Importer votre configuration"
+    },
+    "configuration": {
+        "message": "Configuration"
+    },
+    "userMatching": {
+        "message": "Correspondance utilisateurs"
     }
 }
