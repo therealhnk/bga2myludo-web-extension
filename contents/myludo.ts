@@ -37,8 +37,14 @@ async function patch() {
     }
     else {
         clearInterval(intervalID);
-        const config = await configurationService.get();
+        const configuration = await configurationService.get();
         const data = getDataFromBGA();
+
+        // override bga user with  configuration
+        data.players.forEach(current => {
+            const overridenUser = configuration.users.find(o => o.bgaUser === current.name);
+            current.name = overridenUser ? overridenUser.myludoUser : current.name;
+        });
 
         await loadPlays((plays => {
             const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(data, plays);
@@ -79,10 +85,7 @@ async function patch() {
                             documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
 
                             const currentPlayer = documentHelper.getInputById(`name-${index}`);
-
-                            const overridenUser = config.users.find(o => o.bgaUser === elt.name);
-
-                            currentPlayer.value = overridenUser ? overridenUser.myludoUser : elt.name;
+                            currentPlayer.value = elt.name;
 
                             if (elt.rank === 1) {
                                 (currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0] as HTMLElement).click();
@@ -96,12 +99,12 @@ async function patch() {
                     documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
-                    documentHelper.getInputById(`location`).value = config.place;
+                    documentHelper.getInputById(`location`).value = configuration.place;
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
                     documentHelper.getInputById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
 
-                    if (config.autoSubmit && !hasBeenPlayed) {
+                    if (configuration.autoSubmit && !hasBeenPlayed) {
                         documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
                     }
                     else {
