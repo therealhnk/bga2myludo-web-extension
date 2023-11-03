@@ -34,5 +34,11 @@
     },
     "userMatching": {
         "message": "Correspondance utilisateurs"
+    },
+    "delete": {
+        "message": "Supprimer l'utilisateur"
+    },
+    "addOrUpdateUser": {
+        "message": "Ajouter/Modifier l'utilisateur"
     }
 }

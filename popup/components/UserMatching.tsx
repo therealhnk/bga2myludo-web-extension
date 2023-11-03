@@ -1,3 +1,5 @@
+import { faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCallback, useEffect, useState } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/index.scss';
@@ -79,17 +81,25 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
                                     })
                                 }} />
                         </td>
-                        <td><button onClick={addUser}>add</button></td>
+                        <td>
+                            <button title={chrome.i18n.getMessage("addOrUpdateUser")} onClick={addUser}>
+                                <FontAwesomeIcon icon={faUserPlus} size="lg" />
+                            </button>
+                        </td>
                     </tr>
                     {customUsersModel.users.map((o, index) =>
                         <tr key={`${o.bgaUser}_${o.myludoUser}`}>
-                            <td><input type='text' value={o.bgaUser} onChange={() => { }} /></td>
-                            <td><input type='text' value={o.myludoUser} onChange={() => { }} /></td>
-                            <td><button onClick={() => removeUser(index)}>delete</button></td>
+                            <td>{o.bgaUser} </td>
+                            <td>{o.myludoUser} </td>
+                            <td>
+                                <button title={chrome.i18n.getMessage("delete")} onClick={() => removeUser(index)}>
+                                    <FontAwesomeIcon icon={faTrash} size="lg" />
+                                </button>
+                            </td>
                         </tr>
                     )}
                 </tbody>
             </table>
-        </div>
+        </div >
     )
 }
