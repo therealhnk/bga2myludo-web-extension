@@ -1,5 +1,5 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/index.scss';
@@ -21,8 +21,8 @@ export default function ExportButton({ configuration }: Props) {
     }, [configuration]);
 
     return (
-        <Button variant="outlined" size="small" title={chrome.i18n.getMessage("exportConfiguration")} onClick={handleClick}>
+        <IconButton size="small" title={chrome.i18n.getMessage("exportConfiguration")} onClick={handleClick}>
             <FileDownloadIcon />
-        </Button >
+        </IconButton>
     )
 }

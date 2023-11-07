@@ -1,5 +1,5 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useCallback, useRef } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/index.scss';
@@ -34,9 +34,9 @@ export default function ImportButton({ configuration, onConfigurationUpdated }: 
 
     return (
         <>
-            <Button variant="outlined" size="small" title={chrome.i18n.getMessage("importConfiguration")} onClick={handleClick}>
+            <IconButton size="small" title={chrome.i18n.getMessage("importConfiguration")} onClick={handleClick}>
                 <FileUploadIcon />
-            </Button >
+            </IconButton>
             <input
                 type="file"
                 onChange={importConfiguration}

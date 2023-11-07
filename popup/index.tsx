@@ -1,6 +1,6 @@
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
@@ -39,12 +39,12 @@ function PopupIndex() {
                     <span>{chrome.i18n.getMessage("extensionName")}</span>
                 </div>
 
-                <Button variant="outlined" size="small" title={chrome.i18n.getMessage("configuration")} onClick={() => setActiveSection('Configuration')}>
+                <IconButton size="small" title={chrome.i18n.getMessage("configuration")} onClick={() => setActiveSection('Configuration')}>
                     <SettingsIcon />
-                </Button >
-                <Button variant="outlined" size="small" title={chrome.i18n.getMessage("userMatching")} onClick={() => setActiveSection('UserMatching')}>
+                </IconButton>
+                <IconButton size="small" title={chrome.i18n.getMessage("userMatching")} onClick={() => setActiveSection('UserMatching')}>
                     <PeopleIcon />
-                </Button >
+                </IconButton>
                 <ImportButton configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
                 <ExportButton configuration={configuration} />
             </header >
