@@ -32,7 +32,6 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                                 checked={configuration.autoSubmit}
                                 onChange={onChangeAutoSubmit}
                                 size="small"
-                                color="default"
                             />
                         }
                         label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationAutoSubmitLabel")}</span>}
@@ -44,7 +43,6 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                                 checked={configuration.addTableLink}
                                 onChange={onChangeAddTableLink}
                                 size="small"
-                                color="default"
                             />
                         }
                         label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationAddTableLinkLabel")}</span>}
@@ -59,7 +57,6 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                         title={chrome.i18n.getMessage("configurationPlaceTitle")}
                         variant="standard"
                         inputProps={{ style: { fontSize: 14 } }}
-                        color="info"
                     />
                 </FormGroup>
             </div>

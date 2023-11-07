@@ -79,5 +79,11 @@
     },
     "configurationPlaceTitle": {
         "message": "Ce paramètre vous permet de personnaliser le lieu lors de la saisie de la partie sur Myludo"
+    },
+    "dayMode": {
+        "message": "Basculer en mode jour"
+    },
+    "nightMode": {
+        "message": "Basculer en mode nuit"
     }
 }

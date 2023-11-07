@@ -20,12 +20,12 @@ header {
     .extension-name {
         margin-right: auto;
         font-weight: 500;
-        font-size: 1.5em;
+        font-size: 16px;
         cursor: pointer;
 
         span {
             position: fixed;
-            top: 24px;
+            top: 16px;
         }
 
         img {
@@ -51,12 +51,12 @@ header {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    color: #444;
+    // color: #444;
     padding: 8px;
 
     a,
     a:visited {
-        color: #444;
+        // color: #444;
     }
 
     .title {
