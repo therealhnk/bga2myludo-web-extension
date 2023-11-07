@@ -17,8 +17,14 @@
     "disconnected": {
         "message": "Déconnecté"
     },
-    "welcomeMessage": {
+    "welcomeTitle": {
         "message": "Bienvenue sur l'extension BGA2Myludo !"
+    },
+    "welcomeMessageLine1": {
+        "message": "Cette extension n'est ni maintenue par Board Game Arena, ni par Myludo."
+    },
+    "welcomeMessageLine2": {
+        "message": "Vous pouvez soumettre vos remarques et questions : "
     },
     "extensionName": {
         "message": "BGA2Myludo"

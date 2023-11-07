@@ -53,9 +53,16 @@ header {
     color: #444;
     padding: 10px;
 
-    .message {
+    .title {
         font-weight: 500;
-        font-size: 14px;
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    .message {
+        padding-top: 8px;
+        font-weight: 400;
+        font-size: 1.4em;
         text-align: center;
     }
 }
