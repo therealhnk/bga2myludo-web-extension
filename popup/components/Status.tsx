@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import bgaIcon from "data-base64:~assets/bga_icon.png";
 import myludoIcon from "data-base64:~assets/myludo_icon.png";
 import { useCallback, useEffect, useState } from 'react';

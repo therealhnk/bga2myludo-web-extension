@@ -10,6 +10,7 @@ export default class configurationService {
 
         configuration.place = configuration.place && configuration.place.length > 0 ? configuration.place : 'Board Game Arena';
         configuration.users = configuration.users ? configuration.users.sort((a, b) => (a.bgaUser < b.bgaUser ? -1 : 1)) : [];
+        configuration.users.forEach((element, index) => { element.id = index });
 
         return configuration;
     }
