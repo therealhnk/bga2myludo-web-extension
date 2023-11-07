@@ -1,5 +1,5 @@
-import { faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { Button } from '@mui/material';
 import { useCallback, useRef } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/index.scss';
@@ -34,9 +34,9 @@ export default function ImportButton({ configuration, onConfigurationUpdated }: 
 
     return (
         <>
-            <button title={chrome.i18n.getMessage("importConfiguration")} onClick={handleClick}>
-                <FontAwesomeIcon icon={faFileImport} size="lg" />
-            </button>
+            <Button variant="outlined" size="small" title={chrome.i18n.getMessage("importConfiguration")} onClick={handleClick}>
+                <FileUploadIcon />
+            </Button >
             <input
                 type="file"
                 onChange={importConfiguration}
