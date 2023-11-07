@@ -53,8 +53,6 @@ async function patch() {
 
                     document.getElementById('online').click();
 
-                    if (data.isCooperative) document.getElementById('coop').click();
-                    if (data.isSolo) document.getElementById('solo').click();
                     if (data.isAbandoned) document.getElementById('incomplete').click();
 
                     if (data.duration) {
@@ -64,13 +62,38 @@ async function patch() {
                     }
 
                     if (data.isSolo) {
+                        document.getElementById('solo').click();
+
                         documentHelper.getFirstHtmlElementByQuery(`label[for="name-0"]`).click();
                         documentHelper.getInputById(`name-0`).value = data.players[0].name;
 
                         documentHelper.getFirstHtmlElementByQuery(`label[for="score-0"]`).click();
                         documentHelper.getInputById(`score-0`).value = data.players[0].score.toString();
-                    }
-                    else {
+                    } else if (data.isCooperative) {
+                        document.getElementById('coop').click();
+
+                        const scoreCoop = data.players[0].score;
+
+                        documentHelper.getFirstHtmlElementByQuery(`label[for="coopscore"]`).click();
+                        documentHelper.getInputById(`coopscore`).value = scoreCoop.toString();
+
+                        if (scoreCoop !== 0) {
+                            documentHelper.getFirstHtmlElementByQuery('.btn-icon-switch').click();
+                        }
+
+                        data.players.forEach((elt, index) => {
+                            addPlayerButton.item(0).click();
+
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
+
+                            const currentPlayer = documentHelper.getInputById(`name-${index}`);
+                            currentPlayer.value = elt.name;
+
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
+                            documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
+                        });
+
+                    } else {
                         data.players.forEach((elt, index) => {
                             addPlayerButton.item(0).click();
 
