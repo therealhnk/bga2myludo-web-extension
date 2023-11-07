@@ -149,35 +149,38 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         data: configuration.users,
         createDisplayMode: 'modal', //default ('row', and 'custom' are also available)
         editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
-        enableBottomToolbar: false,
-        enableClickToCopy: false,
+
+        enableBottomToolbar: true,
         enableColumnActions: true,
-        enableColumnDragging: false,
         enableColumnFilterModes: true,
         enableColumnOrdering: true,
         enableColumnVirtualization: true,
         enableDensityToggle: true,
         enableEditing: true,
+        enableFilterMatchHighlighting: true,
+        enablePagination: true,
+        enableRowActions: true,
+        enableRowOrdering: true,
+        enableTableHead: true,
+        enableTopToolbar: true,
+
+        enableClickToCopy: false,
+        enableColumnDragging: false,
         enableExpandAll: false,
         enableFacetedValues: false,
-        enableFilterMatchHighlighting: true,
         enableFullScreenToggle: false,
         enableGlobalFilterModes: false,
         enableGlobalFilterRankedResults: false,
-        enablePagination: true,
-        enableRowActions: true,
         enableRowDragging: false,
         enableRowNumbers: false,
-        enableRowOrdering: true,
         enableRowSelection: false,
         enableRowVirtualization: false,
         enableSelectAll: false,
         enableStickyFooter: false,
         enableStickyHeader: false,
         enableTableFooter: false,
-        enableTableHead: true,
         enableToolbarInternalActions: false,
-        enableTopToolbar: true,
+
 
         getRowId: (row) => row.id.toString(),
         muiTableContainerProps: {
@@ -218,14 +221,14 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             </>
         ),
         renderRowActions: ({ row, table }) => (
-            <Box sx={{ display: 'flex', gap: '1rem' }}>
+            <Box sx={{ display: 'flex' }}>
                 <Tooltip title="Edit">
                     <IconButton onClick={() => table.setEditingRow(row)}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                    <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+                    <IconButton onClick={() => openDeleteConfirmModal(row)}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -247,12 +250,13 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
                 Create New User
             </Button>
         ),
+        initialState: { pagination: { pageSize: 10, pageIndex: 0 } },
         state: {},
     });
 
     return (
         <div className='user-matching'>
-            <div className="message">{chrome.i18n.getMessage("userMatching")}</div>
+            <div className="title">{chrome.i18n.getMessage("userMatching")}</div>
             <MaterialReactTable table={table} />
         </div >
     )
