@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material';
 import { useCallback } from 'react';
 import type { Configuration as ConfigurationModel } from '~core/models/configuration';
 import '~popup/index.scss';
@@ -22,12 +23,46 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
 
     return (
         <div className='configuration'>
-            <div className="message">Auto submit</div>
-            <div><input type='checkbox' checked={configuration.autoSubmit} onChange={onChangeAutoSubmit} /></div>
-            <div className="message">Override default place</div>
-            <div><input type='text' value={configuration.place} onChange={onChangeCustomPlace} /></div>
-            <div className="message">Add table link in comments</div>
-            <div><input type='checkbox' checked={configuration.addTableLink} onChange={onChangeAddTableLink} /></div>
+            <div className="title">{chrome.i18n.getMessage("configurationTitle")}</div>
+            <div className="content">
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={configuration.autoSubmit}
+                                onChange={onChangeAutoSubmit}
+                                size="small"
+                                color="default"
+                            />
+                        }
+                        label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationAutoSubmitLabel")}</span>}
+                        title={chrome.i18n.getMessage("configurationAutoSubmitTitle")}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={configuration.addTableLink}
+                                onChange={onChangeAddTableLink}
+                                size="small"
+                                color="default"
+                            />
+                        }
+                        label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationAddTableLinkLabel")}</span>}
+                        title={chrome.i18n.getMessage("configurationAddTableLinkTitle")}
+                    />
+                    <TextField
+                        className='place'
+                        value={configuration.place}
+                        onChange={onChangeCustomPlace}
+                        size="small"
+                        label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationPlaceLabel")}</span>}
+                        title={chrome.i18n.getMessage("configurationPlaceTitle")}
+                        variant="standard"
+                        inputProps={{ style: { fontSize: 14 } }}
+                        color="info"
+                    />
+                </FormGroup>
+            </div>
         </div>
     )
 }

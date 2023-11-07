@@ -54,9 +54,30 @@
         "message": "Sur le channel bga2myludo du discord de Myludo"
     },
     "contactByMail": {
-        "message": "Par Email à bga2myludo@gmail.com<"
+        "message": "Par Email à bga2myludo@gmail.com"
     },
     "contactByGithub": {
         "message": "Via la section Issues de Github"
+    },
+    "configurationTitle": {
+        "message": "Configuration"
+    },
+    "configurationAutoSubmitLabel": {
+        "message": "Validation automatique"
+    },
+    "configurationAutoSubmitTitle": {
+        "message": "Ce paramètre vous permet de soumettre automatiquement la saisie de la partie sur Myludo"
+    },
+    "configurationAddTableLinkLabel": {
+        "message": "Ajout du lien vers la table"
+    },
+    "configurationAddTableLinkTitle": {
+        "message": "Ce paramètre vous permet d'ajouter le lien vers la table BGA dans la section commentaire de la saisie de la partie sur Myludo"
+    },
+    "configurationPlaceLabel": {
+        "message": "Lieu par défaut"
+    },
+    "configurationPlaceTitle": {
+        "message": "Ce paramètre vous permet de personnaliser le lieu lors de la saisie de la partie sur Myludo"
     }
 }

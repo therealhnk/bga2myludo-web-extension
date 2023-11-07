@@ -61,21 +61,36 @@ header {
 
     .title {
         font-weight: 500;
-        font-size: 1.5em;
+        font-size: 14px;
         text-align: center;
     }
 
     .message {
         padding: 8px;
         font-weight: 400;
-        font-size: 1.4em;
+        font-size: 14px;
         text-align: center;
     }
 
     .message-list {
         font-weight: 400;
-        font-size: 1.4em;
+        font-size: 14px;
         text-align: justify;
+    }
+
+    .content {
+        width: 100%;
+    }
+}
+
+.configuration {
+
+    .checkboxLabel {
+        font-size: 14px;
+    }
+
+    .place {
+        width: 180px;
     }
 }
 

@@ -11,7 +11,6 @@ export default function Home() {
             <div className="message">
                 {chrome.i18n.getMessage("welcomeMessageLine1")}
                 <br />
-                <br />
                 {chrome.i18n.getMessage("welcomeMessageLine2")}
             </div>
             <List dense>
