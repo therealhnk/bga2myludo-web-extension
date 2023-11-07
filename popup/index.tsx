@@ -3,10 +3,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { Button } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
-import type { Configuration } from "~core/models/configuration";
+import type { Configuration as ConfigurationModel } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
-import AutoSubmit from "./components/AutoSubmit";
-import CustomPlace from "./components/CustomPlace";
+import Configuration from './components/Configuration';
 import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
 import ImportButton from "./components/ImportButton";
@@ -16,7 +15,7 @@ import UserMatching from "./components/UserMatching";
 import './index.scss';
 
 function PopupIndex() {
-    const [configuration, setConfiguration] = useState<Configuration>();
+    const [configuration, setConfiguration] = useState<ConfigurationModel>();
     const [showLoader, setShowLoader] = useState(true);
     const [activeSection, setActiveSection] = useState('Home');
 
@@ -27,7 +26,7 @@ function PopupIndex() {
         });
     }, []);
 
-    const refreshConfiguration = useCallback((configuration: Configuration) => {
+    const refreshConfiguration = useCallback((configuration: ConfigurationModel) => {
         setConfiguration(configuration);
         configurationService.set(configuration);
     }, []);
@@ -55,12 +54,7 @@ function PopupIndex() {
                 :
                 <div className="popup-body">
                     {activeSection === 'Home' && <Home />}
-                    {activeSection === 'Configuration' &&
-                        <>
-                            <AutoSubmit configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
-                            <CustomPlace configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
-                        </>
-                    }
+                    {activeSection === 'Configuration' && <Configuration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                     {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                 </div>
             }

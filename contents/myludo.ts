@@ -102,7 +102,15 @@ async function patch() {
                     documentHelper.getInputById(`location`).value = configuration.place;
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
-                    documentHelper.getInputById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
+                    let message = "";
+
+                    if (configuration.addTableLink) {
+                        message += chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
+                    }
+
+                    message += chrome.i18n.getMessage("createdWithText");
+
+                    documentHelper.getInputById(`message`).value = message;
 
                     if (configuration.autoSubmit && !hasBeenPlayed) {
                         documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();

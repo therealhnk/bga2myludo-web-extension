@@ -5,8 +5,11 @@
     "warningAlreadyPlayed": {
         "message": "Une partie similaire a déjà été saisie (date/joueurs/scores identiques)"
     },
+    "createdWithText": {
+        "message": "Créé à l'aide de BGA2Myludo"
+    },
     "tableLinkText": {
-        "message": "Table : https://www.boardgamearena.com/table?table=#TABLE_ID#\r\n\r\nCréé à l'aide de BGA2Myludo"
+        "message": "Table : https://www.boardgamearena.com/table?table=#TABLE_ID#\r\n\r\n"
     },
     "connected": {
         "message": "Connecté"
