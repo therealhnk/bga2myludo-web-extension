@@ -135,6 +135,10 @@ async function patch() {
 
                     documentHelper.getInputById(`message`).value = message;
 
+                    if (configuration.excludeFromStatistics) {
+                        documentHelper.getInputById(`exclude`).click();
+                    }
+
                     if (configuration.autoSubmit && !hasBeenPlayed) {
                         documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
                     }

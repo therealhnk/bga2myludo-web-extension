@@ -9,16 +9,18 @@ type Props = {
 }
 
 export default function Configuration({ configuration, onConfigurationUpdated }: Props) {
-    const onChangeAutoSubmit = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
-        onConfigurationUpdated({ ...configuration, autoSubmit: event.target.checked });
-    }, [configuration, onConfigurationUpdated]);
+    const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+        let value: any;
+        switch (event.currentTarget.type) {
+            case 'text':
+                value = event.target.value;
+                break;
+            case 'checkbox':
+                value = event.target.checked
+                break;
+        }
 
-    const onChangeCustomPlace = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
-        onConfigurationUpdated({ ...configuration, place: event.target.value });
-    }, [configuration, onConfigurationUpdated]);
-
-    const onChangeAddTableLink = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
-        onConfigurationUpdated({ ...configuration, addTableLink: event.target.checked });
+        onConfigurationUpdated({ ...configuration, [event.currentTarget.name]: value });
     }, [configuration, onConfigurationUpdated]);
 
     return (
@@ -30,7 +32,8 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                         control={
                             <Checkbox
                                 checked={configuration.autoSubmit}
-                                onChange={onChangeAutoSubmit}
+                                onChange={onChange}
+                                name='autoSubmit'
                                 size="small"
                             />
                         }
@@ -41,17 +44,31 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                         control={
                             <Checkbox
                                 checked={configuration.addTableLink}
-                                onChange={onChangeAddTableLink}
+                                onChange={onChange}
+                                name='addTableLink'
                                 size="small"
                             />
                         }
                         label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationAddTableLinkLabel")}</span>}
                         title={chrome.i18n.getMessage("configurationAddTableLinkTitle")}
                     />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={configuration.excludeFromStatistics}
+                                onChange={onChange}
+                                name='excludeFromStatistics'
+                                size="small"
+                            />
+                        }
+                        label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationExcludeFromStatisticsLabel")}</span>}
+                        title={chrome.i18n.getMessage("configurationExcludeFromStatisticsTitle")}
+                    />
                     <TextField
                         className='place'
                         value={configuration.place}
-                        onChange={onChangeCustomPlace}
+                        name='place'
+                        onChange={onChange}
                         size="small"
                         label={<span className='checkboxLabel'>{chrome.i18n.getMessage("configurationPlaceLabel")}</span>}
                         title={chrome.i18n.getMessage("configurationPlaceTitle")}

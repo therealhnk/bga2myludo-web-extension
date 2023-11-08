@@ -80,6 +80,12 @@
     "configurationPlaceTitle": {
         "message": "Ce paramètre vous permet de personnaliser le lieu lors de la saisie de la partie sur Myludo"
     },
+    "configurationExcludeFromStatisticsLabel": {
+        "message": "Exclure des statistiques"
+    },
+    "configurationExcludeFromStatisticsTitle": {
+        "message": "Ce paramètre vous permet de pré-cocher la case 'Exclure des statistiques' lors de la saisie de la partie sur Myludo"
+    },
     "dayMode": {
         "message": "Basculer en mode jour"
     },
