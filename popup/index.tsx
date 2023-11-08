@@ -3,7 +3,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { CssBaseline, Divider, IconButton, ThemeProvider, createTheme } from '@mui/material';
-import { grey } from '@mui/material/colors';
+import { indigo } from '@mui/material/colors';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
@@ -26,7 +26,7 @@ export default function PopupIndex() {
     const theme = createTheme({
         palette: {
             mode: configuration && configuration.darkMode ? 'dark' : 'light',
-            primary: grey
+            primary: indigo
         },
     });
 
