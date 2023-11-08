@@ -72,18 +72,19 @@ header {
     }
 
     .content {
-        width: 100%;
+        padding: 8px;
     }
 }
 
 .configuration {
-
     .checkboxLabel {
         font-size: 14px;
+        width: 180px;
+        display: block;
     }
 
     .place {
-        width: 180px;
+        margin-left: 16px;
     }
 }
 

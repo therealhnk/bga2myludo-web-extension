@@ -121,8 +121,10 @@ async function patch() {
 
                     documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
 
-                    documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
-                    documentHelper.getInputById(`location`).value = configuration.place;
+                    if (configuration.fillPlace) {
+                        documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
+                        documentHelper.getInputById(`location`).value = configuration.place;
+                    }
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
                     let message = "";
