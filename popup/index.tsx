@@ -2,7 +2,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { CssBaseline, IconButton, ThemeProvider, createTheme } from '@mui/material';
+import { CssBaseline, Divider, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
@@ -77,6 +77,8 @@ export default function PopupIndex() {
                     </IconButton>
                 </header >
 
+                <Divider />
+
                 {(showLoader) ?
                     <Loader />
                     :
@@ -86,6 +88,8 @@ export default function PopupIndex() {
                         {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                     </div>
                 }
+
+                <Divider />
 
                 <footer>
                     <Status />
