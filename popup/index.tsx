@@ -27,8 +27,12 @@ export default function PopupIndex() {
             primary: {
                 main: configuration && configuration.darkMode ? '#4472c4' : '#404a86'
             },
+            secondary: {
+                main: configuration && configuration.darkMode ? '#ffffffb3' : '#00000099',
+            },
             text: {
-                primary: configuration && configuration.darkMode ? '#4472c4' : '#404a86'
+                primary: configuration && configuration.darkMode ? '#4472c4' : '#404a86',
+                secondary: configuration && configuration.darkMode ? '#ffffffb3' : '#00000099',
             }
         }
     });
