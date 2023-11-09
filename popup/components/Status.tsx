@@ -1,3 +1,8 @@
+import CheckIcon from "@mui/icons-material/Check";
+import ErrorIcon from "@mui/icons-material/Error";
+import WarningIcon from "@mui/icons-material/Warning";
+import { Button, CircularProgress, Grid } from "@mui/material";
+import { green, orange, red } from "@mui/material/colors";
 import bgaIcon from "data-base64:~assets/bga_icon.png";
 import myludoIcon from "data-base64:~assets/myludo_icon.png";
 import { useCallback, useEffect, useState } from 'react';
@@ -6,42 +11,64 @@ import myludoService from '~core/services/myludoService';
 import '~popup/index.scss';
 import { ConnectionStatus } from '~popup/models/StatusModel';
 
-function getStatus(status: ConnectionStatus) {
+function getHostUrl(host: string) {
+    switch (host) {
+        case 'bga':
+            return 'https://fr.boardgamearena.com/account';
+        case 'myludo':
+            return 'https://www.myludo.fr/#!/presentation?bga2myludo=login';
+    }
+
+    return null;
+}
+
+function getMessage(status: ConnectionStatus) {
     switch (status) {
         case ConnectionStatus.Connected:
-            return <span className="badge text-bg-success rounded-pill">{chrome.i18n.getMessage("connected")}</span>;
+            return chrome.i18n.getMessage("connected");
         case ConnectionStatus.Loading:
-            return <span className="badge text-bg-warning rounded-pill">{chrome.i18n.getMessage("loading")}</span>;
+            return chrome.i18n.getMessage("loading");
         case ConnectionStatus.Disconnected:
-            return <span className="badge text-bg-danger rounded-pill">{chrome.i18n.getMessage("disconnected")}</span>;
+            return chrome.i18n.getMessage("disconnected");
+        case ConnectionStatus.Unauthorized:
+            return chrome.i18n.getMessage("unauthorized");
+        case ConnectionStatus.Unknown:
+            return chrome.i18n.getMessage("unknown");
     }
+}
+
+function getStatus(promisePermission: Promise<boolean>, promiseConnectionState: Promise<boolean>) {
+    return Promise
+        .all([promisePermission, promiseConnectionState])
+        .then((values) => {
+            if (values[0]) {// si on est autorisé 
+                if (values[1]) {// si on est connecté
+                    return ConnectionStatus.Connected;
+                } else {
+                    return ConnectionStatus.Disconnected;
+                }
+            } else {
+                return ConnectionStatus.Unauthorized
+            }
+        })
+        .catch(() => {
+            return ConnectionStatus.Unknown;
+        });
 }
 
 function Status() {
     const [bgaStatus, setBGAStatus] = useState(ConnectionStatus.Loading);
     const [myludoStatus, setMyludoStatus] = useState(ConnectionStatus.Loading);
-    const [bgaPermission, setBGAPermission] = useState<boolean>();
-    const [myludoPermission, setMyludoPermission] = useState<boolean>();
 
     useEffect(() => {
-        boardGameArenaService
-            .isConnected()
-            .then((response) => { setBGAStatus(response ? ConnectionStatus.Connected : ConnectionStatus.Disconnected) });
+        getStatus(boardGameArenaService.hasPermission(), boardGameArenaService.isConnected())
+            .then((result) => setBGAStatus(result));
 
-        myludoService
-            .isConnected()
-            .then((response) => { setMyludoStatus(response ? ConnectionStatus.Connected : ConnectionStatus.Disconnected) });
-
-        boardGameArenaService
-            .hasPermission()
-            .then((response) => { setBGAPermission(response) });
-
-        myludoService
-            .hasPermission()
-            .then((response) => { setMyludoPermission(response) });
+        getStatus(myludoService.hasPermission(), myludoService.isConnected())
+            .then((result) => setMyludoStatus(result));
     }, []);
 
-    const requestPermission = useCallback((host) => {
+    const requestPermission = useCallback((host: string) => {
         switch (host) {
             case 'bga':
                 boardGameArenaService.requestPermission();
@@ -52,25 +79,44 @@ function Status() {
         }
     }, []);
 
+    function getStatusIcon(host: string, status: ConnectionStatus) {
+        switch (status) {
+            case ConnectionStatus.Connected:
+                return <CheckIcon fontSize='small' sx={{ color: green[500] }} />
+            case ConnectionStatus.Loading:
+                return <CircularProgress size="1.25rem" />
+            case ConnectionStatus.Disconnected:
+                // return <IconButton href={getHostUrl(host)} target="_blank">
+                return <WarningIcon fontSize='small' sx={{ color: orange[500] }} />
+            // </IconButton>
+            case ConnectionStatus.Unauthorized:
+                // return <IconButton onClick={() => requestPermission(host)}>
+                return <ErrorIcon fontSize='small' sx={{ color: red[500] }} />
+            // </IconButton>
+            case ConnectionStatus.Unknown:
+                return <ErrorIcon fontSize='small' sx={{ color: red[500] }} />
+        }
+    }
+
     return (
-        <div className='status'>
-            <div>
-                <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
-                <span>{getStatus(bgaStatus)}
-                    {!bgaPermission &&
-                        <span>refused <button onClick={() => requestPermission('bga')}>Authorize</button></span>
-                    }
-                </span>
-            </div>
-            <div>
-                <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
-                <span>{getStatus(myludoStatus)}
-                    {!myludoPermission &&
-                        <span>refused <button onClick={() => requestPermission('myludo')}>Authorize</button></span>
-                    }
-                </span>
-            </div>
-        </div>
+        <Grid container>
+            <Grid item xs={6} textAlign='center'>
+                <Button title={getMessage(bgaStatus)} fullWidth>
+                    <div className="status">
+                        <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
+                        <span>{getStatusIcon('bga', bgaStatus)}</span>
+                    </div>
+                </Button>
+            </Grid>
+            <Grid item xs={6} textAlign='center'>
+                <Button title={getMessage(myludoStatus)} fullWidth>
+                    <div className="status">
+                        <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
+                        <span>{getStatusIcon('myludo', myludoStatus)}</span>
+                    </div>
+                </Button>
+            </Grid>
+        </Grid>
     )
 }
 

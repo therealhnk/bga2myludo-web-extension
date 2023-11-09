@@ -89,25 +89,13 @@ header {
 }
 
 footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-
     .status {
-        display: table;
-        width: 100%;
+        margin-bottom: -6px;
+    }
 
-        >div {
-            display: table-cell;
-            vertical-align: middle;
-            text-align: center;
-
-            .icon {
-                width: 16px;
-                height: 16px;
-                margin-right: 4px;
-            }
-        }
+    .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 4px;
     }
 }

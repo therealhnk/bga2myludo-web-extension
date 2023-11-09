@@ -1,12 +1,15 @@
 import { Storage } from "@plasmohq/storage";
-import type { Configuration } from "~core/models/configuration";
+import { Configuration } from "~core/models/configuration";
 
 export default class configurationService {
     static async get(): Promise<Configuration> {
         const storage = new Storage();
+        let configuration = new Configuration();
 
         const configurationSerialized = await storage.get('configuration')
-        const configuration = JSON.parse(configurationSerialized) as Configuration;
+        if (configurationSerialized) {
+            configuration = JSON.parse(configurationSerialized) as Configuration;
+        }
 
         configuration.fillPlace = configuration.fillPlace !== undefined ? configuration.fillPlace : true;
         configuration.addTableLink = configuration.addTableLink !== undefined ? configuration.addTableLink : true;

@@ -1,5 +1,7 @@
 export enum ConnectionStatus {
     Connected,
     Loading,
-    Disconnected
+    Disconnected,
+    Unauthorized,
+    Unknown,
 }
