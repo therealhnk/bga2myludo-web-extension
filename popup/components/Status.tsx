@@ -5,21 +5,46 @@ import { Button, CircularProgress, Grid } from "@mui/material";
 import { green, orange, red } from "@mui/material/colors";
 import bgaIcon from "data-base64:~assets/bga_icon.png";
 import myludoIcon from "data-base64:~assets/myludo_icon.png";
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import boardGameArenaService from '~core/services/boardGameArenaService';
 import myludoService from '~core/services/myludoService';
 import '~popup/index.scss';
 import { ConnectionStatus } from '~popup/models/StatusModel';
 
-function getHostUrl(host: string) {
+function getStatusIcon(host: string, status: ConnectionStatus) {
+    switch (status) {
+        case ConnectionStatus.Connected:
+            return <CheckIcon fontSize='small' sx={{ color: green[500] }} />
+        case ConnectionStatus.Loading:
+            return <CircularProgress size="1.25rem" />
+        case ConnectionStatus.Disconnected:
+            return <WarningIcon fontSize='small' sx={{ color: orange[500] }} />
+        case ConnectionStatus.Unauthorized:
+            return <ErrorIcon fontSize='small' sx={{ color: red[500] }} />
+        case ConnectionStatus.Unknown:
+            return <ErrorIcon fontSize='small' sx={{ color: red[500] }} />
+    }
+}
+
+function getLoginPageUrl(host: string) {
     switch (host) {
         case 'bga':
             return 'https://fr.boardgamearena.com/account';
         case 'myludo':
             return 'https://www.myludo.fr/#!/presentation?bga2myludo=login';
     }
-
     return null;
+}
+
+function requestPermission(host: string) {
+    switch (host) {
+        case 'bga':
+            boardGameArenaService.requestPermission();
+            break;
+        case 'myludo':
+            myludoService.requestPermission();
+            break;
+    }
 }
 
 function getMessage(status: ConnectionStatus) {
@@ -56,6 +81,19 @@ function getStatus(promisePermission: Promise<boolean>, promiseConnectionState: 
         });
 }
 
+function handleClick(host: string, status: ConnectionStatus) {
+    switch (status) {
+        case ConnectionStatus.Disconnected:
+            window.open(getLoginPageUrl(host));
+            window.close();
+            break;
+        case ConnectionStatus.Unauthorized:
+            requestPermission(host);
+            window.close();
+            break
+    }
+}
+
 function Status() {
     const [bgaStatus, setBGAStatus] = useState(ConnectionStatus.Loading);
     const [myludoStatus, setMyludoStatus] = useState(ConnectionStatus.Loading);
@@ -68,40 +106,10 @@ function Status() {
             .then((result) => setMyludoStatus(result));
     }, []);
 
-    const requestPermission = useCallback((host: string) => {
-        switch (host) {
-            case 'bga':
-                boardGameArenaService.requestPermission();
-                break;
-            case 'myludo':
-                myludoService.requestPermission();
-                break;
-        }
-    }, []);
-
-    function getStatusIcon(host: string, status: ConnectionStatus) {
-        switch (status) {
-            case ConnectionStatus.Connected:
-                return <CheckIcon fontSize='small' sx={{ color: green[500] }} />
-            case ConnectionStatus.Loading:
-                return <CircularProgress size="1.25rem" />
-            case ConnectionStatus.Disconnected:
-                // return <IconButton href={getHostUrl(host)} target="_blank">
-                return <WarningIcon fontSize='small' sx={{ color: orange[500] }} />
-            // </IconButton>
-            case ConnectionStatus.Unauthorized:
-                // return <IconButton onClick={() => requestPermission(host)}>
-                return <ErrorIcon fontSize='small' sx={{ color: red[500] }} />
-            // </IconButton>
-            case ConnectionStatus.Unknown:
-                return <ErrorIcon fontSize='small' sx={{ color: red[500] }} />
-        }
-    }
-
     return (
         <Grid container>
             <Grid item xs={6} textAlign='center'>
-                <Button title={getMessage(bgaStatus)} fullWidth>
+                <Button title={getMessage(bgaStatus)} fullWidth onClick={() => handleClick('bga', bgaStatus)}>
                     <div className="status">
                         <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
                         <span>{getStatusIcon('bga', bgaStatus)}</span>
@@ -109,7 +117,7 @@ function Status() {
                 </Button>
             </Grid>
             <Grid item xs={6} textAlign='center'>
-                <Button title={getMessage(myludoStatus)} fullWidth>
+                <Button title={getMessage(myludoStatus)} fullWidth onClick={() => handleClick('myludo', myludoStatus)}>
                     <div className="status">
                         <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
                         <span>{getStatusIcon('myludo', myludoStatus)}</span>
