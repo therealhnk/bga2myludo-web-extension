@@ -22,7 +22,7 @@ export default function ExportButton({ configuration }: Props) {
 
     return (
         <IconButton size="small" title={chrome.i18n.getMessage("exportConfiguration")} onClick={handleClick}>
-            <FileDownloadIcon />
+            <FileDownloadIcon color="primary" />
         </IconButton>
     )
 }

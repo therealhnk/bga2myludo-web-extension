@@ -1,8 +1,20 @@
 import { SvgIcon } from "@mui/material";
 
-export default function DiscordIcon() {
+type Props = {
+    color?: 'inherit'
+    | 'action'
+    | 'disabled'
+    | 'primary'
+    | 'secondary'
+    | 'error'
+    | 'info'
+    | 'success'
+    | 'warning';
+}
+
+export default function DiscordIcon(props: Props) {
     return (
-        <SvgIcon>
+        <SvgIcon color={props.color}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"

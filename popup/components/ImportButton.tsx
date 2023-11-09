@@ -35,7 +35,7 @@ export default function ImportButton({ configuration, onConfigurationUpdated }: 
     return (
         <>
             <IconButton size="small" title={chrome.i18n.getMessage("importConfiguration")} onClick={handleClick}>
-                <FileUploadIcon />
+                <FileUploadIcon color="primary" />
             </IconButton>
             <input
                 type="file"

@@ -16,21 +16,21 @@ export default function Home() {
             <List dense>
                 <ListItemButton href="https://discord.gg/Xwp8VFVP37" target='_blank'>
                     <ListItemIcon>
-                        <DiscordIcon />
+                        <DiscordIcon color="primary" />
                     </ListItemIcon>
                     <ListItemText primary={<Typography className="message-list">{chrome.i18n.getMessage("contactByDiscord")}</Typography>} />
                 </ListItemButton>
 
                 <ListItemButton href="mailto:bga2myludo@gmail.com">
                     <ListItemIcon>
-                        <EmailIcon />
+                        <EmailIcon color="primary" />
                     </ListItemIcon>
                     <ListItemText primary={<Typography className="message-list">{chrome.i18n.getMessage("contactByMail")}</Typography>} />
                 </ListItemButton>
 
                 <ListItemButton href="https://github.com/therealhnk/bga2myludo-web-extension/issues" target='_blank'>
                     <ListItemIcon>
-                        <GithubIcon />
+                        <GithubIcon color="primary" />
                     </ListItemIcon>
                     <ListItemText primary={<Typography className="message-list">{chrome.i18n.getMessage("contactByGithub")}</Typography>} />
                 </ListItemButton>

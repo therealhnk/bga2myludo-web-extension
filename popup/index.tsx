@@ -3,7 +3,6 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { CssBaseline, Divider, IconButton, ThemeProvider, createTheme } from '@mui/material';
-import { indigo } from '@mui/material/colors';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
@@ -17,7 +16,6 @@ import Status from "./components/Status";
 import UserMatching from "./components/UserMatching";
 import './index.scss';
 
-
 export default function PopupIndex() {
     const [configuration, setConfiguration] = useState<ConfigurationModel>();
     const [showLoader, setShowLoader] = useState(true);
@@ -26,8 +24,13 @@ export default function PopupIndex() {
     const theme = createTheme({
         palette: {
             mode: configuration && configuration.darkMode ? 'dark' : 'light',
-            primary: indigo
-        },
+            primary: {
+                main: configuration && configuration.darkMode ? '#4472c4' : '#404a86'
+            },
+            text: {
+                primary: configuration && configuration.darkMode ? '#4472c4' : '#404a86'
+            }
+        }
     });
 
     useEffect(() => {
@@ -62,10 +65,10 @@ export default function PopupIndex() {
                     </div>
 
                     <IconButton size="small" title={chrome.i18n.getMessage("configuration")} onClick={() => setActiveSection('Configuration')}>
-                        <SettingsIcon />
+                        <SettingsIcon color="primary" />
                     </IconButton>
                     <IconButton size="small" title={chrome.i18n.getMessage("userMatching")} onClick={() => setActiveSection('UserMatching')}>
-                        <PeopleIcon />
+                        <PeopleIcon color="primary" />
                     </IconButton>
                     <ImportButton configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
                     <ExportButton configuration={configuration} />
@@ -73,7 +76,7 @@ export default function PopupIndex() {
                         onClick={toggleTheme}
                         title={theme.palette.mode === 'dark' ? chrome.i18n.getMessage("dayMode") : chrome.i18n.getMessage("nightMode")}
                     >
-                        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                        {theme.palette.mode === 'dark' ? <Brightness7Icon color="primary" /> : <Brightness4Icon color="primary" />}
                     </IconButton>
                 </header >
 
