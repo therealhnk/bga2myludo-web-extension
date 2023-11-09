@@ -5,8 +5,8 @@
   "description": "Facilitez vous la saisie des parties de Board Game Arena sur Myludo !",
   "author": "Benjamin Bigot",
   "scripts": {
-    "dev": "plasmo dev --target=firefox-mv3",
-    "build": "plasmo build --target=firefox-mv3",
+    "dev": "plasmo dev",
+    "build": "plasmo build",
     "test": "plasmo test"
   },
   "dependencies": {
