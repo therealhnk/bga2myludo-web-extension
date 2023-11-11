@@ -143,9 +143,6 @@
     "userMatchingNoResultsFound": {
         "message": "Aucun résultat trouvé"
     },
-    "userMatchingOf": {
-        "message": "sur"
-    },
     "userMatchingSave": {
         "message": "Enregistrer"
     },

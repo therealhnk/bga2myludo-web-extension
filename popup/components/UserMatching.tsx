@@ -53,6 +53,10 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
     const columns = useMemo<MRT_ColumnDef<MappedUser>[]>(
         () => [
             {
+                accessorKey: 'id',
+                header: 'id'
+            },
+            {
                 accessorKey: 'bgaUser',
                 header: chrome.i18n.getMessage("userMatchingBGAUserHeader"),
                 muiEditTextFieldProps: {
@@ -91,14 +95,17 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
     };
 
     // //UPDATE action
-    const handleSaveUser: MRT_TableOptions<MappedUser>['onEditingRowSave'] = ({ values, table }) => {
+    const handleSaveUser: MRT_TableOptions<MappedUser>['onEditingRowSave'] = ({ row, values, table }) => {
         const newValidationErrors = validateUser(values);
         if (Object.values(newValidationErrors).some((error) => error)) {
             setValidationErrors(newValidationErrors);
             return;
         }
         setValidationErrors({});
-        updateUser(values);
+        updateUser({
+            ...values,
+            id: row.original.id
+        });
         table.setEditingRow(null); //exit editing mode
     };
 
@@ -132,31 +139,30 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         getRowId: (row) => row.id.toString(),
         muiTableContainerProps: {
             sx: {
-                minHeight: '220px'
+                minHeight: '260px'
             }
         },
         muiTablePaperProps: {
             sx: { borderRadius: 0, boxShadow: 'none' }
         },
-        muiFilterTextFieldProps: {
-            size: 'small',
-            variant: 'standard',
-            sx: (theme) => ({
-                color: theme.palette.text.secondary
-            })
-        },
         muiSearchTextFieldProps: {
             size: 'small',
             variant: 'standard',
             sx: (theme) => ({
-                color: theme.palette.text.secondary
+                '.MuiInput-input': {
+                    color: theme.palette.text.secondary,
+                    fontSize: '14px'
+                }
             })
         },
         muiEditTextFieldProps: {
             size: 'small',
             variant: 'standard',
             sx: (theme) => ({
-                color: theme.palette.text.secondary
+                '.MuiInput-input': {
+                    color: theme.palette.text.secondary,
+                    fontSize: '14px'
+                }
             })
         },
         muiTableBodyCellProps: {
@@ -166,12 +172,17 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
                 fontSize: '14px'
             }),
         },
+        muiTableBodyRowProps: {
+            style: {
+                height: '45px'
+            }
+        },
         onCreatingRowCancel: () => setValidationErrors({}),
         onCreatingRowSave: handleCreateUser,
         onEditingRowCancel: () => setValidationErrors({}),
         onEditingRowSave: handleSaveUser,
         renderRowActions: ({ row, table }) => (
-            <Box>
+            <Box sx={{ display: 'flex', gap: '0.75rem' }}>
                 <IconButton title={chrome.i18n.getMessage("userMatchingEditUser")} onClick={() => table.setEditingRow(row)}>
                     <EditIcon fontSize='small' color="primary" />
                 </IconButton>
@@ -198,18 +209,14 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             </Grid>
         ),
         muiPaginationProps: {
-            showRowsPerPage: false,
-            // sx: {
-            //     boxShadow: 0,
-            //     '&.MuiTablePagination-root': {
-            //         backgroundColor: 'red'
-            //     }
-            // }
+            showRowsPerPage: false
         },
         initialState: {
             pagination: { pageSize: 5, pageIndex: 0 },
             showGlobalFilter: true,
-            density: 'compact'
+            density: 'compact',
+            sorting: [{ id: 'bgaUser', desc: false }],
+            columnVisibility: { id: false }
         },
         positionActionsColumn: 'last',
         paginationDisplayMode: 'pages',
@@ -219,7 +226,6 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             cancel: chrome.i18n.getMessage("userMatchingCancel"),
             clearSearch: chrome.i18n.getMessage("userMatchingClearSearch"),
             noResultsFound: chrome.i18n.getMessage("userMatchingNoResultsFound"),
-            of: chrome.i18n.getMessage("userMatchingOf"),
             save: chrome.i18n.getMessage("userMatchingSave"),
             search: chrome.i18n.getMessage("userMatchingSearching"),
             sortByColumnAsc: chrome.i18n.getMessage("userMatchingSortByColumnAsc"),
