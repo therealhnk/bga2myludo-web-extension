@@ -1,7 +1,7 @@
 .popup {
     display: flex;
     flex-direction: column;
-    width: 425px;
+    width: 450px;
     font-family: "Segoe UI", Tahoma, sans-serif;
     font-size: 75%;
 }
@@ -38,7 +38,6 @@ header {
     flex: 1;
     overflow-y: auto;
     position: relative;
-    min-height: 50px;
 }
 
 .home,
@@ -49,7 +48,6 @@ header {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 8px;
 
     .title {
         font-weight: 700;
@@ -68,6 +66,29 @@ header {
         font-weight: 400;
         font-size: 14px;
         text-align: justify;
+    }
+}
+
+.user-matching,
+.configuration {
+    height: 425px;
+}
+
+
+.user-matching {
+    .user-matching-top-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+        height: 55px;
+    }
+
+    .user-matching-bottom-toolbar {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        height: 55px;
     }
 }
 

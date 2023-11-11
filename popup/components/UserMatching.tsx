@@ -1,7 +1,10 @@
+import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from '@mui/material';
-import { MRT_EditActionButtons, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef, type MRT_Row, type MRT_TableOptions } from 'material-react-table';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SaveIcon from '@mui/icons-material/Save';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { MRT_GlobalFilterTextField, MRT_TablePagination, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef, type MRT_TableOptions } from 'material-react-table';
 import { useCallback, useMemo, useState } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import type { MappedUser } from '~core/models/mappedUser';
@@ -45,49 +48,30 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
 
     /* ---------------------------------------------------------------- */
 
-    const [validationErrors, setValidationErrors] = useState<
-        Record<string, string | undefined>
-    >({});
+    const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
     const columns = useMemo<MRT_ColumnDef<MappedUser>[]>(
         () => [
-            // {
-            //     accessorKey: 'id',
-            //     header: 'Id',
-            //     enableEditing: false,
-            //     size: 80,
-            // },
             {
                 accessorKey: 'bgaUser',
-                header: 'First Name',
+                header: chrome.i18n.getMessage("userMatchingBGAUserHeader"),
                 muiEditTextFieldProps: {
                     type: 'text',
                     required: true,
                     error: !!validationErrors?.bgaUser,
                     helperText: validationErrors?.bgaUser,
-                    //remove any previous validation errors when user focuses on the input
-                    onFocus: () =>
-                        setValidationErrors({
-                            ...validationErrors,
-                            bgaUser: undefined,
-                        }),
-                    //optionally add validation checking for onBlur or onChange
+                    onFocus: () => setValidationErrors({ ...validationErrors, bgaUser: undefined, })
                 },
             },
             {
                 accessorKey: 'myludoUser',
-                header: 'Last Name',
+                header: chrome.i18n.getMessage("userMatchingMyludoUserHeader"),
                 muiEditTextFieldProps: {
                     type: 'text',
                     required: true,
                     error: !!validationErrors?.myludoUser,
                     helperText: validationErrors?.myludoUser,
-                    //remove any previous validation errors when user focuses on the input
-                    onFocus: () =>
-                        setValidationErrors({
-                            ...validationErrors,
-                            myludoUser: undefined,
-                        }),
+                    onFocus: () => setValidationErrors({ ...validationErrors, myludoUser: undefined, })
                 },
             }
         ],
@@ -95,169 +79,167 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
     );
 
     // //CREATE action
-    const handleCreateUser: MRT_TableOptions<MappedUser>['onCreatingRowSave'] = async ({
-        values,
-        table,
-    }) => {
+    const handleCreateUser: MRT_TableOptions<MappedUser>['onCreatingRowSave'] = ({ values, table }) => {
         const newValidationErrors = validateUser(values);
         if (Object.values(newValidationErrors).some((error) => error)) {
             setValidationErrors(newValidationErrors);
             return;
         }
         setValidationErrors({});
-        await createUser(values);
+        createUser(values);
         table.setCreatingRow(null); //exit creating mode
     };
 
     // //UPDATE action
-    const handleSaveUser: MRT_TableOptions<MappedUser>['onEditingRowSave'] = async ({
-        values,
-        table,
-    }) => {
+    const handleSaveUser: MRT_TableOptions<MappedUser>['onEditingRowSave'] = ({ values, table }) => {
         const newValidationErrors = validateUser(values);
         if (Object.values(newValidationErrors).some((error) => error)) {
             setValidationErrors(newValidationErrors);
             return;
         }
         setValidationErrors({});
-        await updateUser(values);
+        updateUser(values);
         table.setEditingRow(null); //exit editing mode
-    };
-
-    // //DELETE action
-    const openDeleteConfirmModal = (row: MRT_Row<MappedUser>) => {
-        if (window.confirm('Are you sure you want to delete this user?')) {
-            deleteUser(row.original.id);
-        }
     };
 
     const validateRequired = (value: string) => !!value.length;
 
     function validateUser(user: MappedUser) {
         return {
-            bgaUser: !validateRequired(user.bgaUser)
-                ? 'First Name is Required'
-                : '',
-            myludoUser: !validateRequired(user.myludoUser) ? 'Last Name is Required' : '',
+            bgaUser: !validateRequired(user.bgaUser) ? chrome.i18n.getMessage("userMatchingBGAUserRequired") : '',
+            myludoUser: !validateRequired(user.myludoUser) ? chrome.i18n.getMessage("userMatchingMyludoUserRequired") : ''
         };
     }
-
-
 
     const table = useMaterialReactTable({
         columns,
         data: configuration.users,
-        createDisplayMode: 'modal', //default ('row', and 'custom' are also available)
-        editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
+        createDisplayMode: 'row',
+        editDisplayMode: 'row',
 
         enableBottomToolbar: true,
-        enableColumnActions: true,
-        enableColumnFilterModes: true,
-        enableColumnOrdering: true,
-        enableColumnVirtualization: true,
-        enableDensityToggle: true,
+        enableColumnActions: false,
+        enableDensityToggle: false,
         enableEditing: true,
         enableFilterMatchHighlighting: true,
         enablePagination: true,
         enableRowActions: true,
-        enableRowOrdering: true,
         enableTableHead: true,
         enableTopToolbar: true,
-
-        enableClickToCopy: false,
-        enableColumnDragging: false,
-        enableExpandAll: false,
-        enableFacetedValues: false,
         enableFullScreenToggle: false,
-        enableGlobalFilterModes: false,
-        enableGlobalFilterRankedResults: false,
-        enableRowDragging: false,
-        enableRowNumbers: false,
-        enableRowSelection: false,
-        enableRowVirtualization: false,
-        enableSelectAll: false,
-        enableStickyFooter: false,
-        enableStickyHeader: false,
-        enableTableFooter: false,
-        enableToolbarInternalActions: false,
-
+        enableGlobalFilterModes: true,
 
         getRowId: (row) => row.id.toString(),
         muiTableContainerProps: {
             sx: {
-                minHeight: '500px',
-            },
+                minHeight: '220px'
+            }
+        },
+        muiTablePaperProps: {
+            sx: { borderRadius: 0, boxShadow: 'none' }
+        },
+        muiFilterTextFieldProps: {
+            size: 'small',
+            variant: 'standard',
+            sx: (theme) => ({
+                color: theme.palette.text.secondary
+            })
+        },
+        muiSearchTextFieldProps: {
+            size: 'small',
+            variant: 'standard',
+            sx: (theme) => ({
+                color: theme.palette.text.secondary
+            })
+        },
+        muiEditTextFieldProps: {
+            size: 'small',
+            variant: 'standard',
+            sx: (theme) => ({
+                color: theme.palette.text.secondary
+            })
+        },
+        muiTableBodyCellProps: {
+            sx: (theme) => ({
+                color: theme.palette.text.secondary,
+                fontWeight: 'normal',
+                fontSize: '14px'
+            }),
         },
         onCreatingRowCancel: () => setValidationErrors({}),
         onCreatingRowSave: handleCreateUser,
         onEditingRowCancel: () => setValidationErrors({}),
         onEditingRowSave: handleSaveUser,
-        //optionally customize modal content
-        renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
-            <>
-                <DialogTitle variant="h3">Create New User</DialogTitle>
-                <DialogContent
-                    sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
-                >
-                    {internalEditComponents} {/* or render custom edit components here */}
-                </DialogContent>
-                <DialogActions>
-                    <MRT_EditActionButtons variant="text" table={table} row={row} />
-                </DialogActions>
-            </>
-        ),
-        //optionally customize modal content
-        renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
-            <>
-                <DialogTitle variant="h3">Edit User</DialogTitle>
-                <DialogContent
-                    sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
-                >
-                    {internalEditComponents} {/* or render custom edit components here */}
-                </DialogContent>
-                <DialogActions>
-                    <MRT_EditActionButtons variant="text" table={table} row={row} />
-                </DialogActions>
-            </>
-        ),
         renderRowActions: ({ row, table }) => (
-            <Box sx={{ display: 'flex' }}>
-                <Tooltip title="Edit">
-                    <IconButton onClick={() => table.setEditingRow(row)}>
-                        <EditIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                    <IconButton onClick={() => openDeleteConfirmModal(row)}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
+            <Box>
+                <IconButton title={chrome.i18n.getMessage("userMatchingEditUser")} onClick={() => table.setEditingRow(row)}>
+                    <EditIcon fontSize='small' color="primary" />
+                </IconButton>
+                <IconButton title={chrome.i18n.getMessage("userMatchingDeleteUser")} onClick={() => deleteUser(row.original.id)}>
+                    <DeleteIcon fontSize='small' color="primary" />
+                </IconButton>
             </Box>
         ),
-        renderTopToolbarCustomActions: ({ table }) => (
-            <Button
-                variant="contained"
-                onClick={() => {
-                    table.setCreatingRow(true); //simplest way to open the create row modal with no default values
-                    //or you can pass in a row object to set default values with the `createRow` helper function
-                    // table.setCreatingRow(
-                    //   createRow(table, {
-                    //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
-                    //   }),
-                    // );
-                }}
-            >
-                Create New User
-            </Button>
+        renderTopToolbar: ({ table }) => (
+            <Grid container className='user-matching-top-toolbar'>
+                <Grid item xs={6}>
+                    <IconButton size="small" title={chrome.i18n.getMessage("userMatchingAddUser")} onClick={() => table.setCreatingRow(true)}>
+                        <PersonAddIcon color="primary" />
+                    </IconButton>
+                </Grid>
+                <Grid item xs={6}>
+                    <MRT_GlobalFilterTextField table={table} />
+                </Grid>
+            </Grid>
         ),
-        initialState: { pagination: { pageSize: 10, pageIndex: 0 } },
-        state: {},
+        renderBottomToolbar: ({ table }) => (
+            <Grid container className='user-matching-bottom-toolbar'>
+                <MRT_TablePagination className='user-matching-pagination' table={table} />
+            </Grid>
+        ),
+        muiPaginationProps: {
+            showRowsPerPage: false,
+            // sx: {
+            //     boxShadow: 0,
+            //     '&.MuiTablePagination-root': {
+            //         backgroundColor: 'red'
+            //     }
+            // }
+        },
+        initialState: {
+            pagination: { pageSize: 5, pageIndex: 0 },
+            showGlobalFilter: true,
+            density: 'compact'
+        },
+        positionActionsColumn: 'last',
+        paginationDisplayMode: 'pages',
+        positionPagination: 'top',
+        localization: {
+            actions: chrome.i18n.getMessage("userMatchingActions"),
+            cancel: chrome.i18n.getMessage("userMatchingCancel"),
+            clearSearch: chrome.i18n.getMessage("userMatchingClearSearch"),
+            noResultsFound: chrome.i18n.getMessage("userMatchingNoResultsFound"),
+            of: chrome.i18n.getMessage("userMatchingOf"),
+            save: chrome.i18n.getMessage("userMatchingSave"),
+            search: chrome.i18n.getMessage("userMatchingSearching"),
+            sortByColumnAsc: chrome.i18n.getMessage("userMatchingSortByColumnAsc"),
+            sortByColumnDesc: chrome.i18n.getMessage("userMatchingSortByColumnDesc"),
+            sortedByColumnAsc: chrome.i18n.getMessage("userMatchingSortedByColumnAsc"),
+            sortedByColumnDesc: chrome.i18n.getMessage("userMatchingSortedByColumnDesc")
+        },
+        icons: {
+            SaveIcon: (props) => <SaveIcon fontSize='small' color="primary" {...props} />,
+            CancelIcon: (props) => <CancelIcon fontSize='small' color="primary"{...props} />
+        }
     });
 
     return (
         <div className='user-matching'>
             <div className="title">{chrome.i18n.getMessage("userMatching")}</div>
+            <Typography color='secondary' className="message">
+                {chrome.i18n.getMessage("userMatchingMessage")}
+            </Typography>
             <MaterialReactTable table={table} />
-        </div >
+        </div>
     )
 }

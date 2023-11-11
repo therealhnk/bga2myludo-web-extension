@@ -30,10 +30,10 @@
         "message": "Bienvenue sur l'extension BGA2Myludo !"
     },
     "welcomeMessageLine1": {
-        "message": "Cette extension n'est ni maintenue par BGA, ni par Myludo."
+        "message": "Cette extension n'est maintenue ni par BGA ni par Myludo"
     },
     "welcomeMessageLine2": {
-        "message": "Vous pouvez soumettre vos remarques et questions : "
+        "message": "N'hésitez pas à soumettre vos remarques et questions : "
     },
     "extensionName": {
         "message": "BGA2Myludo"
@@ -48,7 +48,7 @@
         "message": "Configuration"
     },
     "userMatching": {
-        "message": "Correspondance utilisateurs"
+        "message": "Correspondance joueurs"
     },
     "delete": {
         "message": "Supprimer l'utilisateur"
@@ -78,7 +78,7 @@
         "message": "Ajout du lien vers la table"
     },
     "configurationAddTableLinkTitle": {
-        "message": "Ce paramètre vous permet d'ajouter le lien vers la table BGA dans la section commentaire de la saisie de la partie sur Myludo"
+        "message": "Ce paramètre vous permet d'ajouter le lien vers la table BGA dans la section commentaire lors de la saisie de la partie sur Myludo"
     },
     "configurationPlaceLabel": {
         "message": "Lieu par défaut"
@@ -96,12 +96,72 @@
         "message": "Renseigner le lieu"
     },
     "configurationfillPlaceTitle": {
-        "message": "Ce paramètre vous permet de renseigner le lieu lors de la saisie de la partie sur Myludo"
+        "message": "Ce paramètre vous permet d'indiquer le lieu lors de la saisie de la partie sur Myludo"
     },
     "dayMode": {
         "message": "Basculer en mode jour"
     },
     "nightMode": {
         "message": "Basculer en mode nuit"
+    },
+    "userMatchingAddUser": {
+        "message": "Ajouter un utilisateur"
+    },
+    "userMatchingEditUser": {
+        "message": "Modifier"
+    },
+    "userMatchingDeleteUser": {
+        "message": "Supprimer"
+    },
+    "userMatchingBGAUserRequired": {
+        "message": "champ obligatoire"
+    },
+    "userMatchingMyludoUserRequired": {
+        "message": "champ obligatoire"
+    },
+    "userMatchingBGAUserHeader": {
+        "message": "Identifiant BGA"
+    },
+    "userMatchingMyludoUserHeader": {
+        "message": "Joueur Myludo"
+    },
+    "userMatchingCancelEditUser": {
+        "message": "Annuler"
+    },
+    "userMatchingMessage": {
+        "message": "Saisissez ici les identifiants de Board Game Arena afin de permettre au plugin de les associer aux noms des joueurs sur Myludo"
+    },
+    "userMatchingActions": {
+        "message": ""
+    },
+    "userMatchingCancel": {
+        "message": "Annuler"
+    },
+    "userMatchingClearSearch": {
+        "message": "Effacer la recherche"
+    },
+    "userMatchingNoResultsFound": {
+        "message": "Aucun résultat trouvé"
+    },
+    "userMatchingOf": {
+        "message": "sur"
+    },
+    "userMatchingSave": {
+        "message": "Enregistrer"
+    },
+    "userMatchingSearching": {
+        "message": "Rechercher"
+    },
+    "userMatchingSortByColumnAsc": {
+        "message": "Trier par {column} ascendant"
+    },
+    "userMatchingSortByColumnDesc": {
+        "message": "Trier par {column} descendant"
+    },
+    "userMatchingSortedByColumnAsc": {
+        "message": "Trié par {column} ascendant"
+    },
+    "userMatchingSortedByColumnDesc": {
+        "message": "Trié par {column} descendant"
     }
 }
