@@ -225,6 +225,7 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             actions: chrome.i18n.getMessage("userMatchingActions"),
             cancel: chrome.i18n.getMessage("userMatchingCancel"),
             clearSearch: chrome.i18n.getMessage("userMatchingClearSearch"),
+            noRecordsToDisplay: chrome.i18n.getMessage("userMatchingNoRecordsToDisplay"),
             noResultsFound: chrome.i18n.getMessage("userMatchingNoResultsFound"),
             save: chrome.i18n.getMessage("userMatchingSave"),
             search: chrome.i18n.getMessage("userMatchingSearching"),

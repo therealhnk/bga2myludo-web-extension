@@ -140,6 +140,9 @@
     "userMatchingClearSearch": {
         "message": "Effacer la recherche"
     },
+    "userMatchingNoRecordsToDisplay": {
+        "message": "Aucun enregistrement"
+    },
     "userMatchingNoResultsFound": {
         "message": "Aucun résultat trouvé"
     },
