@@ -1,4 +1,4 @@
-export { }
+export { };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'getMyludoConnectedStatus') {
@@ -23,4 +23,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .catch(() => sendResponse(false));
     }
     return true;
-})
+});
+
+chrome.runtime.onInstalled.addListener(function (object) {
+    chrome.tabs.create({ url: `chrome-extension://${chrome.runtime.id}/options.html` });
+});

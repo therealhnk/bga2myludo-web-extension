@@ -8,8 +8,8 @@ import myludoIcon from "data-base64:~assets/myludo_icon.png";
 import { useEffect, useState } from 'react';
 import boardGameArenaService from '~core/services/boardGameArenaService';
 import myludoService from '~core/services/myludoService';
-import '~popup/index.scss';
 import { ConnectionStatus } from '~popup/models/StatusModel';
+import '~styles/common.scss';
 
 function getStatusIcon(host: string, status: ConnectionStatus) {
     switch (status) {

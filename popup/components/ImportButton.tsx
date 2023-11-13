@@ -2,7 +2,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { IconButton } from '@mui/material';
 import { useCallback, useRef } from 'react';
 import type { Configuration } from '~core/models/configuration';
-import '~popup/index.scss';
+import '~styles/common.scss';
 
 type Props = {
     configuration: Configuration;

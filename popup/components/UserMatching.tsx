@@ -8,7 +8,7 @@ import { MRT_GlobalFilterTextField, MRT_TablePagination, MaterialReactTable, use
 import { useCallback, useMemo, useState } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import type { MappedUser } from '~core/models/mappedUser';
-import '~popup/index.scss';
+import '~styles/common.scss';
 
 type Props = {
     configuration: Configuration;

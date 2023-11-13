@@ -2,7 +2,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { IconButton } from '@mui/material';
 import { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
-import '~popup/index.scss';
+import '~styles/common.scss';
 
 type Props = {
     configuration: Configuration;

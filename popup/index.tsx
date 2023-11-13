@@ -5,16 +5,16 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { CssBaseline, Divider, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
+import Configuration from '~/components/Configuration';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
-import Configuration from './components/Configuration';
+import '~styles/common.scss';
+import Loader from "../components/Loader";
 import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
 import ImportButton from "./components/ImportButton";
-import Loader from "./components/Loader";
 import Status from "./components/Status";
 import UserMatching from "./components/UserMatching";
-import './index.scss';
 
 export default function PopupIndex() {
     const [configuration, setConfiguration] = useState<ConfigurationModel>();

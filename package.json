@@ -40,6 +40,9 @@
         "strict_min_version": "113.0"
       }
     },
-    "host_permissions": []
+    "host_permissions": [],
+    "options_ui": {
+      "open_in_tab": false
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Divider, List, ListItemButton, ListItemIcon, ListItemText, Switch, TextField } from '@mui/material';
 import { useCallback } from 'react';
 import type { Configuration as ConfigurationModel } from '~core/models/configuration';
-import '~popup/index.scss';
+import '~styles/common.scss';
 
 type Props = {
     configuration: ConfigurationModel;

@@ -1,6 +1,6 @@
 import EmailIcon from '@mui/icons-material/Email';
 import { List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import '~popup/index.scss';
+import '~styles/common.scss';
 import DiscordIcon from './DiscordIcon';
 import GithubIcon from './GithubIcon';
 
