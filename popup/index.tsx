@@ -2,13 +2,14 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { CssBaseline, Divider, IconButton, ThemeProvider, createTheme } from '@mui/material';
+import { CssBaseline, Divider, IconButton, ThemeProvider } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
 import Configuration from '~/components/Configuration';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
 import '~styles/common.scss';
+import getTheme from '~theme/customTheme';
 import Loader from "../components/Loader";
 import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
@@ -21,21 +22,7 @@ export default function PopupIndex() {
     const [showLoader, setShowLoader] = useState(true);
     const [activeSection, setActiveSection] = useState('Home');
 
-    const theme = createTheme({
-        palette: {
-            mode: configuration && configuration.darkMode ? 'dark' : 'light',
-            primary: {
-                main: configuration && configuration.darkMode ? '#4472c4' : '#404a86'
-            },
-            secondary: {
-                main: configuration && configuration.darkMode ? '#ffffffb3' : '#00000099',
-            },
-            text: {
-                primary: configuration && configuration.darkMode ? '#4472c4' : '#404a86',
-                secondary: configuration && configuration.darkMode ? '#ffffffb3' : '#00000099',
-            }
-        }
-    });
+    const theme = getTheme(configuration && configuration.darkMode);
 
     useEffect(() => {
         configurationService.get().then((result) => {
