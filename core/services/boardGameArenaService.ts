@@ -67,7 +67,7 @@ export default class boardGameArenaService {
                     isSolo: response.data.result.is_solo,
                     isAbandoned: response.data.result.endgame_reason !== 'normal_end',
                     gameId: response.data.game_name,
-                    duration: realTimeMode.includes(response.data.options[200]?.value) ? Number(response.data.duration) : undefined
+                    duration: realTimeMode.includes(response.data.options[200]?.value) ? Number(response.data.result.time_duration) : undefined
                 };
 
                 response.data.result.player.forEach((item) => {
