@@ -65,8 +65,8 @@ async function patch() {
 
                     if (data.duration) {
                         documentHelper.getFirstInputByName(`time`).value = data.duration.toString();
-                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = (Math.floor(data.duration / 60)).toString().padStart(2, "0");
-                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = (data.duration % 60).toString().padStart(2, "0");
+                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = (Math.floor(data.duration / 3600)).toString().padStart(2, "0");
+                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = (Math.floor((data.duration % 3600) / 60)).toString().padStart(2, "0");
                     }
 
                     if (data.isSolo) {
