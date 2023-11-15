@@ -5,6 +5,7 @@ import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse"
 import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
 import type { Table } from "~core/models/table";
 import type { User } from "~core/models/user";
+import configurationService from "./configurationService";
 
 export default class boardGameArenaService {
     static async getGameStats(requestToken: string, connectedUser: User, parameters: GameStatsParameters) {
@@ -20,36 +21,48 @@ export default class boardGameArenaService {
         url += parameters.startDate ? `&start_date=${parameters.startDate}` : '';
         url += parameters.endDate ? `&end_date=${parameters.endDate}` : '';
 
-        return boardGameArenaService
-            .fetch<GetGamesResponse>(url, requestToken)
-            .then(response => {
-                response.data.tables.forEach(current => {
-                    const player_names = current.player_names.split(',');
-                    const ranks = current.ranks ? current.ranks.split(',') : null;
-                    const scores = current.scores ? current.scores.split(',') : null;
+        return configurationService
+            .get()
+            .then((configuration) => {
+                return boardGameArenaService
+                    .fetch<GetGamesResponse>(url, requestToken)
+                    .then(response => {
+                        response.data.tables.forEach(current => {
+                            const player_names = current.player_names.split(',');
+                            const ranks = current.ranks ? current.ranks.split(',') : null;
+                            const scores = current.scores ? current.scores.split(',') : null;
 
-                    const table: Table = {
-                        tableId: current.table_id,
-                        players: [],
-                        end: new Date(Number(current.end) * 1000),
-                        isCooperative: false,
-                        isSolo: false,
-                        isAbandoned: current.normalend === "0",
-                        gameId: current.game_name
-                    };
+                            const table: Table = {
+                                tableId: current.table_id,
+                                players: [],
+                                end: new Date(Number(current.end) * 1000),
+                                isCooperative: false,
+                                isSolo: false,
+                                isAbandoned: current.normalend === "0",
+                                gameId: current.game_name
+                            };
 
-                    player_names.forEach((value, index) => {
-                        table.players.push({
-                            name: value === connectedUser.nickname ? "Moi" : value,
-                            score: scores ? Number(scores[index]) : null,
-                            rank: ranks ? Number(ranks[index]) : null
+                            player_names.forEach((value, index) => {
+                                let playerName = value;
+
+                                if (playerName === connectedUser.nickname &&
+                                    configuration.customizeCurrentPlayer &&
+                                    configuration.customCurrentPlayerName) {
+                                    playerName = configuration.customCurrentPlayerName;
+                                }
+
+                                table.players.push({
+                                    name: playerName,
+                                    score: scores ? Number(scores[index]) : null,
+                                    rank: ranks ? Number(ranks[index]) : null
+                                });
+                            });
+
+                            tables.push(table);
                         });
+
+                        return tables;
                     });
-
-                    tables.push(table);
-                });
-
-                return tables;
             });
     }
 
@@ -57,29 +70,41 @@ export default class boardGameArenaService {
         const url = `https://boardgamearena.com/table/table/tableinfos.html?id=${tableId}`;
         const realTimeMode = ["0", "1", "2", "5", "9", 0, 1, 2, 5, 9];
 
-        return boardGameArenaService
-            .fetch<TableInfos>(url, requestToken)
-            .then(response => {
-                const table: Table = {
-                    tableId: tableId,
-                    players: [],
-                    end: response.data.result.time_end,
-                    isCooperative: response.data.result.is_coop,
-                    isSolo: response.data.result.is_solo,
-                    isAbandoned: response.data.result.endgame_reason !== 'normal_end',
-                    gameId: response.data.game_name,
-                    duration: realTimeMode.includes(response.data.options[200]?.value) ? Number(response.data.result.time_duration) : undefined
-                };
+        return configurationService
+            .get()
+            .then((configuration) => {
+                return boardGameArenaService
+                    .fetch<TableInfos>(url, requestToken)
+                    .then(response => {
+                        const table: Table = {
+                            tableId: tableId,
+                            players: [],
+                            end: response.data.result.time_end,
+                            isCooperative: response.data.result.is_coop,
+                            isSolo: response.data.result.is_solo,
+                            isAbandoned: response.data.result.endgame_reason !== 'normal_end',
+                            gameId: response.data.game_name,
+                            duration: realTimeMode.includes(response.data.options[200]?.value) ? Number(response.data.result.time_duration) : undefined
+                        };
 
-                response.data.result.player.forEach((item) => {
-                    table.players.push({
-                        name: item.name === connectedUser.nickname ? "Moi" : item.name,
-                        score: item.score ? Number(item.score) : null,
-                        rank: item.gamerank ? Number(item.gamerank) : null
+                        response.data.result.player.forEach((item) => {
+                            let playerName = item.name;
+
+                            if (playerName === connectedUser.nickname &&
+                                configuration.customizeCurrentPlayer &&
+                                configuration.customCurrentPlayerName) {
+                                playerName = configuration.customCurrentPlayerName;
+                            }
+
+                            table.players.push({
+                                name: playerName,
+                                score: item.score ? Number(item.score) : null,
+                                rank: item.gamerank ? Number(item.gamerank) : null
+                            });
+                        });
+
+                        return table;
                     });
-                });
-
-                return table;
             });
     }
 

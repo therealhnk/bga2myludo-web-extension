@@ -68,13 +68,12 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                 {configuration.fillPlace &&
                     <div>
                         <TextField
-                            className='place'
+                            className='configuration-textfield'
                             value={configuration.place}
                             name='place'
                             onChange={onChange}
                             size="small"
                             label={chrome.i18n.getMessage("configurationPlaceLabel")}
-                            title={chrome.i18n.getMessage("configurationPlaceTitle")}
                             variant='standard'
                             inputProps={{ style: { fontSize: 14 } }}
                         />
@@ -102,6 +101,32 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                         secondary={<span className='configuration-item-secondary'>{chrome.i18n.getMessage("configurationAutoUpdateUsersTitle")}</span>}
                     />
                 </ListItemButton>
+
+                <ListItemButton onClick={() => onClick("customizeCurrentPlayer")}>
+                    <ListItemIcon>
+                        <Switch checked={configuration.customizeCurrentPlayer} size='small' />
+                    </ListItemIcon>
+                    <ListItemText
+                        className='configuration-item'
+                        primary={<span className='configuration-item-primary'>{chrome.i18n.getMessage("configurationCustomizeCurrentPlayerLabel")}</span>}
+                        secondary={<span className='configuration-item-secondary'>{chrome.i18n.getMessage("configurationCustomizeCurrentPlayerTitle")}</span>}
+                    />
+                </ListItemButton>
+                {configuration.customizeCurrentPlayer &&
+                    <div>
+                        <TextField
+                            className='configuration-textfield'
+                            value={configuration.customCurrentPlayerName}
+                            name='customCurrentPlayerName'
+                            onChange={onChange}
+                            size="small"
+                            label={chrome.i18n.getMessage("configurationCustomCurrentNamePlayerLabel")}
+                            variant='standard'
+                            inputProps={{ style: { fontSize: 14 } }}
+                        />
+                    </div>
+                }
+
             </List>
         </div>
     )

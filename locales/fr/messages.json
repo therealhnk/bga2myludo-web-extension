@@ -104,6 +104,15 @@
     "configurationAutoUpdateUsersTitle": {
         "message": "Ce paramètre vous permet de maintenir automatiquement à jour la liste des amis que vous avez sur Board Game Arena"
     },
+    "configurationCustomizeCurrentPlayerLabel": {
+        "message": "Personnalisation de votre nom"
+    },
+    "configurationCustomizeCurrentPlayerTitle": {
+        "message": "Ce paramètre vous permet de personnaliser votre nom lors de la saisie de la partie sur Myludo"
+    },
+    "configurationCustomCurrentNamePlayerLabel": {
+        "message": "Nom"
+    },
     "dayMode": {
         "message": "Basculer en mode jour"
     },
