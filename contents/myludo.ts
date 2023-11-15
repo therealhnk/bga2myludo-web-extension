@@ -43,7 +43,7 @@ async function patch() {
         // override bga user with  configuration
         data.players.forEach(current => {
             const overridenUser = configuration.users.find(o => o.bgaUser === current.name);
-            current.name = overridenUser ? overridenUser.myludoUser : current.name;
+            current.name = overridenUser && overridenUser.myludoUser && overridenUser.myludoUser.length > 0 ? overridenUser.myludoUser : current.name;
         });
 
         await loadPlays((plays => {

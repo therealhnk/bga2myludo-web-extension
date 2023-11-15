@@ -1,5 +1,5 @@
 export class MappedUser {
-    id: number;
+    id: string;
     bgaUser: string;
     myludoUser: string;
 }

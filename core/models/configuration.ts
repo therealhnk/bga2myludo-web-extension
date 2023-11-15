@@ -8,4 +8,5 @@ export class Configuration {
     excludeFromStatistics: boolean;
     addTableLink?: boolean;
     users: MappedUser[];
+    autoUpdateUsers: boolean;
 }

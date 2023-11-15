@@ -5,9 +5,11 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SaveIcon from '@mui/icons-material/Save';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { MRT_GlobalFilterTextField, MRT_TablePagination, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef, type MRT_TableOptions } from 'material-react-table';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import type { Configuration } from '~core/models/configuration';
-import type { MappedUser } from '~core/models/mappedUser';
+import { MappedUser } from '~core/models/mappedUser';
+import boardGameArenaService from '~core/services/boardGameArenaService';
 import '~styles/common.scss';
 
 type Props = {
@@ -16,11 +18,41 @@ type Props = {
 }
 
 export default function UserMatching({ configuration, onConfigurationUpdated }: Props) {
+    const [users, setUsers] = useState(configuration.users);
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    useEffect(() => {
+        if (!configuration.autoUpdateUsers) return;
+
+        setIsLoading(true);
+
+        boardGameArenaService
+            .getFriends()
+            .then((data) => {
+                const newUsers = data
+                    .filter(o => !configuration.users.some(p => p.bgaUser === o.name))
+                    .map(o => { return { id: uuidv4(), bgaUser: o.name, myludoUser: undefined } as MappedUser; })
+                const updatedUsers = [...configuration.users, ...newUsers];
+
+                if (updatedUsers.length > 0) {
+                    onConfigurationUpdated({ ...configuration, users: updatedUsers });
+                }
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, [])
+
+    useEffect(() => {
+        setUsers(configuration.users);
+    }, [configuration])
+
     const createUser = useCallback((user: MappedUser) => {
         let usersUpdated = [...configuration.users];
 
         usersUpdated.push({
-            id: usersUpdated.length,
+            id: uuidv4(),
             bgaUser: user.bgaUser.trim(),
             myludoUser: user.myludoUser.trim()
         });
@@ -41,7 +73,7 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         }
     }, [configuration, onConfigurationUpdated]);
 
-    const deleteUser = useCallback((id: number) => {
+    const deleteUser = useCallback((id: string) => {
         const usersUpdated = configuration.users.filter((o) => o.id !== id);
         onConfigurationUpdated({ ...configuration, users: usersUpdated });
     }, [configuration, onConfigurationUpdated]);
@@ -120,7 +152,7 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
 
     const table = useMaterialReactTable({
         columns,
-        data: configuration.users,
+        data: users,
         createDisplayMode: 'row',
         editDisplayMode: 'row',
 
@@ -136,7 +168,7 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         enableFullScreenToggle: false,
         enableGlobalFilterModes: true,
 
-        getRowId: (row) => row.id.toString(),
+        getRowId: (row) => row.id,
         muiTableContainerProps: {
             sx: {
                 minHeight: '260px'
@@ -217,6 +249,9 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             density: 'compact',
             sorting: [{ id: 'bgaUser', desc: false }],
             columnVisibility: { id: false }
+        },
+        state: {
+            showSkeletons: isLoading
         },
         positionActionsColumn: 'last',
         paginationDisplayMode: 'pages',

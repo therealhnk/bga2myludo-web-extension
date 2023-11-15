@@ -22,9 +22,41 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             })
             .catch(() => sendResponse(false));
     }
+
+    if (request.message === 'getBGAToken') {
+        //récupérer la home page pour récupérer le x-csrf-token dans les balises meta
+        fetch("https://boardgamearena.com/", { method: "GET" })
+            .then(response => { return response.text() })
+            .then(response => {
+                const regex = /requestToken:\s+'([^']+)'/;
+
+                const requestToken = response.match(regex);
+                sendResponse(requestToken[1])
+            })
+            .catch(() => sendResponse(null));
+    }
+
     return true;
 });
 
 chrome.runtime.onInstalled.addListener(function (object) {
-    chrome.tabs.create({ url: `chrome-extension://${chrome.runtime.id}/options.html` });
+    let showBoarding = false;
+    if (object.reason === "install") {
+        showBoarding = true;
+    }
+
+    if (object.reason === "update") {
+        const manifestData = chrome.runtime.getManifest();
+
+        const currentMajorVersion = manifestData.version.charAt(0);
+        const previousMajorVersion = object.previousVersion.charAt(0);
+
+        if (currentMajorVersion !== previousMajorVersion) {
+            showBoarding = true;
+        }
+    }
+
+    if (showBoarding) {
+        chrome.tabs.create({ url: `chrome-extension://${chrome.runtime.id}/tabs/onboarding.html` });
+    }
 });

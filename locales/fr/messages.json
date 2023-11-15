@@ -92,11 +92,17 @@
     "configurationExcludeFromStatisticsTitle": {
         "message": "Ce paramètre vous permet de pré-cocher la case 'Exclure des statistiques' lors de la saisie de la partie sur Myludo"
     },
-    "configurationfillPlaceLabel": {
+    "configurationFillPlaceLabel": {
         "message": "Renseigner le lieu"
     },
-    "configurationfillPlaceTitle": {
+    "configurationFillPlaceTitle": {
         "message": "Ce paramètre vous permet d'indiquer le lieu lors de la saisie de la partie sur Myludo"
+    },
+    "configurationAutoUpdateUsersLabel": {
+        "message": "Mise à jour automatique des joueurs"
+    },
+    "configurationAutoUpdateUsersTitle": {
+        "message": "Ce paramètre vous permet de maintenir automatiquement à jour la liste des amis que vous avez sur Board Game Arena"
     },
     "dayMode": {
         "message": "Basculer en mode jour"

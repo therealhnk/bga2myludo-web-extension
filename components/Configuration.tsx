@@ -92,6 +92,16 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                         secondary={<span className='configuration-item-secondary'>{chrome.i18n.getMessage("configurationAutoSubmitTitle")}</span>}
                     />
                 </ListItemButton>
+
+                <ListItemButton onClick={() => onClick("autoUpdateUsers")}>
+                    <ListItemIcon>
+                        <Switch checked={configuration.autoUpdateUsers} size='small' />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary={<span className='configuration-item-primary'>{chrome.i18n.getMessage("configurationAutoUpdateUsersLabel")}</span>}
+                        secondary={<span className='configuration-item-secondary'>{chrome.i18n.getMessage("configurationAutoUpdateUsersTitle")}</span>}
+                    />
+                </ListItemButton>
             </List>
         </div>
     )

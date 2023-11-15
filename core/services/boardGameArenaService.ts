@@ -1,3 +1,4 @@
+import type { Friend, FriendsResponse } from "~core/models/boardGameArena/friendsResponse";
 import type { GameStatsParameters } from "~core/models/boardGameArena/gameStatsParameters";
 import type { GetGamesResponse } from "~core/models/boardGameArena/getGamesResponse";
 import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse";
@@ -97,6 +98,23 @@ export default class boardGameArenaService {
                     } as User
                 }
             });
+    }
+
+    static async getFriends(): Promise<Friend[]> {
+        return chrome.runtime.sendMessage({ message: "getBGAToken" })
+            .then((token: string) => {
+                return boardGameArenaService
+                    .fetch<FriendsResponse>(`https://boardgamearena.com/community/community/friends.html`, token)
+                    .then(response => {
+                        if (!response.data && !response.data.friends) {
+                            return [];
+                        }
+                        else {
+                            return response.data.friends;
+                        }
+                    });
+            })
+            .catch(() => { return []; });
     }
 
     static async isConnected() {

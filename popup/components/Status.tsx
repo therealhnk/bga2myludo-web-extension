@@ -1,7 +1,7 @@
 import CheckIcon from "@mui/icons-material/Check";
 import ErrorIcon from "@mui/icons-material/Error";
 import WarningIcon from "@mui/icons-material/Warning";
-import { Button, CircularProgress, Grid } from "@mui/material";
+import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { green, orange, red } from "@mui/material/colors";
 import bgaIcon from "data-base64:~assets/bga_icon.png";
 import myludoIcon from "data-base64:~assets/myludo_icon.png";
@@ -98,6 +98,9 @@ function Status() {
     const [bgaStatus, setBGAStatus] = useState(ConnectionStatus.Loading);
     const [myludoStatus, setMyludoStatus] = useState(ConnectionStatus.Loading);
 
+    const manifestData = chrome.runtime.getManifest();
+    const currentVersion = manifestData.version;
+
     useEffect(() => {
         getStatus(boardGameArenaService.hasPermission(), boardGameArenaService.isConnected())
             .then((result) => setBGAStatus(result));
@@ -108,7 +111,7 @@ function Status() {
 
     return (
         <Grid container>
-            <Grid item xs={6} textAlign='center'>
+            <Grid item xs={4} textAlign='center'>
                 <Button title={getMessage(bgaStatus)} fullWidth onClick={() => handleClick('bga', bgaStatus)}>
                     <div className="status">
                         <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
@@ -116,13 +119,16 @@ function Status() {
                     </div>
                 </Button>
             </Grid>
-            <Grid item xs={6} textAlign='center'>
+            <Grid item xs={4} textAlign='center'>
                 <Button title={getMessage(myludoStatus)} fullWidth onClick={() => handleClick('myludo', myludoStatus)}>
                     <div className="status">
                         <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
                         <span>{getStatusIcon('myludo', myludoStatus)}</span>
                     </div>
                 </Button>
+            </Grid>
+            <Grid item xs={4} textAlign='center'>
+                <Typography color='primary' className="version">version {currentVersion}</Typography>
             </Grid>
         </Grid>
     )

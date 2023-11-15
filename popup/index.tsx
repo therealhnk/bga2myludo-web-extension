@@ -32,8 +32,8 @@ export default function PopupIndex() {
     }, []);
 
     const refreshConfiguration = useCallback((configuration: ConfigurationModel) => {
-        setConfiguration(configuration);
         configurationService.set(configuration);
+        setConfiguration(configuration);
     }, []);
 
     const toggleTheme = useCallback(() => {
