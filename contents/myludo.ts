@@ -65,8 +65,8 @@ async function patch() {
 
                     if (data.duration) {
                         documentHelper.getFirstInputByName(`time`).value = data.duration.toString();
-                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = (Math.floor(data.duration / 3600)).toString().padStart(2, "0");
-                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = (Math.floor((data.duration % 3600) / 60)).toString().padStart(2, "0");
+                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = Math.floor(data.duration / 60).toString().padStart(2, "0");
+                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = Math.floor(data.duration % 60).toString().padStart(2, "0");
                     }
 
                     if (data.isSolo) {
@@ -170,7 +170,7 @@ function getDataFromBGA() {
 }
 
 async function loadPlays(callback) {
-    const plays = [];
+    const tables: Table[] = [];
 
     const playsTab = document.querySelector<HTMLElement>('a[href="#plays"]');
 
@@ -186,28 +186,29 @@ async function loadPlays(callback) {
                 const playsContent = document.querySelectorAll('#plays .game-play');
 
                 playsContent.forEach((currentPlay) => {
-                    const play = {
+                    const table = {
                         end: myludoHelper.convertToDate(currentPlay.querySelector('h4').textContent),
+                        duration: Number(currentPlay.querySelector('h5 strong').textContent),
                         players: []
-                    }
+                    } as Table;
 
                     currentPlay.querySelectorAll('.play-player').forEach((elt) => {
                         const counter = elt.querySelector('.counter');
-                        play.players.push({
+                        table.players.push({
                             name: elt.getAttribute('title'),
                             score: counter ? Number(counter.textContent) : null
                         })
                     });
 
-                    plays.push(play);
+                    tables.push(table);
                 });
 
-                callback(plays);
+                callback(tables);
             }
         }, 250);
     }
     else {
-        callback(plays);
+        callback(tables);
     }
 }
 

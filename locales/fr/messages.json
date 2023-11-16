@@ -3,7 +3,7 @@
         "message": "Enregistrer sur Myludo"
     },
     "warningAlreadyPlayed": {
-        "message": "Une partie similaire a déjà été saisie (date/joueurs/scores identiques)"
+        "message": "Une partie similaire a déjà été saisie (date/durée/joueurs/scores identiques)"
     },
     "createdWithText": {
         "message": "Créé à l'aide de BGA2Myludo"
