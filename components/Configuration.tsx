@@ -30,7 +30,7 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
     return (
         <div className='configuration'>
             <div className="title">{chrome.i18n.getMessage("configurationTitle")}</div>
-            <List dense>
+            <List dense disablePadding>
                 <ListItemButton onClick={() => onClick("addTableLink")}>
                     <ListItemIcon>
                         <Switch checked={configuration.addTableLink} size='small' />
