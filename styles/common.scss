@@ -106,6 +106,16 @@ header {
     }
 }
 
+.releases {
+    ul li {
+        text-align: center;
+
+        >div>span {
+            font-weight: 600;
+        }
+    }
+}
+
 footer {
     .status {
         margin-bottom: -6px;

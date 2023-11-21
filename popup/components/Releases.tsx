@@ -21,8 +21,8 @@ export default function Releases() {
                             primary='version 1.1.0.2 (25/09/2023)'
                             secondary={
                                 <div>
-                                    <div>- Update game list</div>
-                                    <div>- Fix duplicate table comparison</div>
+                                    <div>Update game list</div>
+                                    <div>Fix duplicate table comparison</div>
                                 </div>
                             }
                         />
@@ -37,9 +37,9 @@ export default function Releases() {
                             primary='version 1.1.0.0 (20/09/2023)'
                             secondary={
                                 <div>
-                                    <div>- Add table link on Myludo</div>
-                                    <div>- Add warning on duplicate table</div>
-                                    <div>- Encode BGA information</div>
+                                    <div>Add table link on Myludo</div>
+                                    <div>Add warning on duplicate table</div>
+                                    <div>Encode BGA information</div>
                                 </div>
                             }
                         />
