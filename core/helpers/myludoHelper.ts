@@ -43,9 +43,18 @@ export default class myludoHelper {
                 })
         ).toLowerCase();
 
+        console.log("currentPlayersFootPrint:" + currentPlayersFootPrint);
+        console.log("last players footprint :" + JSON.stringify(plays[0].players));
+
+        console.log("current end:" + myludoHelper.trunkDateToDay(currentPlay.end).getTime());
+        console.log("last end :" + myludoHelper.trunkDateToDay(plays[0].end).getTime());
+
+        console.log("current duration:" + currentPlay.duration);
+        console.log("last duration :" + plays[0].duration);
+
         return plays.some(o =>
             myludoHelper.trunkDateToDay(o.end).getTime() === myludoHelper.trunkDateToDay(currentPlay.end).getTime() &&
-            o.duration === currentPlay.duration &&
+            (!currentPlay.duration || o.duration === currentPlay.duration) &&
             JSON.stringify(o.players).toLowerCase() === currentPlayersFootPrint
         );
     }
