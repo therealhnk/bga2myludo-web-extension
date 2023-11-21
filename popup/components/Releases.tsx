@@ -19,7 +19,13 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 1.1.0.2 (25/09/2023)'
-                            secondary='- Update game list/r/n- Fix duplicate table comparison' />
+                            secondary={
+                                <div>
+                                    <div>- Update game list</div>
+                                    <div>- Fix duplicate table comparison</div>
+                                </div>
+                            }
+                        />
                     </ListItem>
                     <ListItem>
                         <ListItemText
@@ -29,7 +35,14 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 1.1.0.0 (20/09/2023)'
-                            secondary='- Add table link on Myludo/r/n- Add warning on duplicate table/r/n- Encode BGA information' />
+                            secondary={
+                                <div>
+                                    <div>- Add table link on Myludo</div>
+                                    <div>- Add warning on duplicate table</div>
+                                    <div>- Encode BGA information</div>
+                                </div>
+                            }
+                        />
                     </ListItem>
                     <ListItem>
                         <ListItemText
