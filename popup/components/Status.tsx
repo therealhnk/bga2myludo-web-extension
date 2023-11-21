@@ -94,7 +94,11 @@ function handleClick(host: string, status: ConnectionStatus) {
     }
 }
 
-function Status() {
+type Props = {
+    onReleasesClick: () => void;
+}
+
+function Status({ onReleasesClick }: Props) {
     const [bgaStatus, setBGAStatus] = useState(ConnectionStatus.Loading);
     const [myludoStatus, setMyludoStatus] = useState(ConnectionStatus.Loading);
 
@@ -128,7 +132,9 @@ function Status() {
                 </Button>
             </Grid>
             <Grid item xs={4} textAlign='center'>
-                <Typography color='primary' className="version">version {currentVersion}</Typography>
+                <Button title={chrome.i18n.getMessage("seeReleases")} fullWidth onClick={onReleasesClick}>
+                    <Typography color='primary' className="version">version {currentVersion}</Typography>
+                </Button>
             </Grid>
         </Grid>
     )

@@ -5,15 +5,16 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { CssBaseline, Divider, IconButton, ThemeProvider } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
-import Configuration from '~/components/Configuration';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
+import Configuration from '~popup/components/Configuration';
 import '~styles/common.scss';
 import getTheme from '~theme/customTheme';
-import Loader from "../components/Loader";
 import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
 import ImportButton from "./components/ImportButton";
+import Loader from "./components/Loader";
+import Releases from './components/Releases';
 import Status from "./components/Status";
 import UserMatching from "./components/UserMatching";
 
@@ -80,13 +81,14 @@ export default function PopupIndex() {
                         {activeSection === 'Home' && <Home />}
                         {activeSection === 'Configuration' && <Configuration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
+                        {activeSection === 'Releases' && <Releases />}
                     </div>
                 }
 
                 <Divider />
 
                 <footer>
-                    <Status />
+                    <Status onReleasesClick={() => setActiveSection('Releases')} />
                 </footer>
             </div >
         </ThemeProvider>

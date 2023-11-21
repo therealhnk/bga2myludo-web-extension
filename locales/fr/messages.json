@@ -178,5 +178,11 @@
     },
     "userMatchingSortedByColumnDesc": {
         "message": "Trié par {column} descendant"
+    },
+    "releasesTitle": {
+        "message": "Releases"
+    },
+    "seeReleases": {
+        "message": "Voir les releases"
     }
 }
