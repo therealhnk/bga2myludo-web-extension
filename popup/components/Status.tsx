@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import boardGameArenaService from '~core/services/boardGameArenaService';
 import myludoService from '~core/services/myludoService';
 import { ConnectionStatus } from '~popup/models/StatusModel';
-import '~styles/common.scss';
+import '~popup/popup.scss';
 
 function getStatusIcon(host: string, status: ConnectionStatus) {
     switch (status) {

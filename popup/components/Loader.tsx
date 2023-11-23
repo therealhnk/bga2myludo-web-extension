@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import '~styles/common.scss';
+import '~popup/popup.scss';
 
 export default function Loader() {
     return (

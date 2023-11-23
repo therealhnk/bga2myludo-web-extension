@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
 import Configuration from '~popup/components/Configuration';
-import '~styles/common.scss';
+import '~popup/popup.scss';
 import getTheme from '~theme/customTheme';
 import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";

@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Configuration } from '~core/models/configuration';
 import { MappedUser } from '~core/models/mappedUser';
 import boardGameArenaService from '~core/services/boardGameArenaService';
-import '~styles/common.scss';
+import '~popup/popup.scss';
 
 type Props = {
     configuration: Configuration;
