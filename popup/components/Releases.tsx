@@ -8,7 +8,150 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
-                            primary='version 2.0.0.0 (05/10/2023)'
+                            primary='version 3.0.0 (27/11/2023)'
+                            secondary={
+                                <div>
+                                    <div>Big improvements in customization of the behavior of the plugin</div>
+                                    <div>Popup for extension</div>
+                                    <div>Options screen</div>
+                                    <div>BGA/Myludo Status</div>
+                                    <div>Players customization</div>
+                                    <div>Behavior configurations</div>
+                                    <div>Night mode</div>
+                                    <div>Import/export current configuration</div>
+                                    <div>Releases screen</div>
+                                </div>
+                            }
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.7 (07/11/2023)'
+                            secondary='Fix score for coop game'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.6 (06/11/2023)'
+                            secondary='Update game list'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.5 (06/11/2023)'
+                            secondary='Update game list'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.4 (06/11/2023)'
+                            secondary='Update game list'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.3 (30/10/2023)'
+                            secondary='Fix when game not found, search on myludo based on game name'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.2 (26/10/2023)'
+                            secondary='Update game list'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.1 (24/10/2023)'
+                            secondary='Fix patching game stats failed when no table found'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.2.0 (23/10/2023)'
+                            secondary='Open login popup on Myludo if not connected'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.1.1 (20/10/2023)'
+                            secondary='Update game list'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.1.0 (20/10/2023)'
+                            secondary={
+                                <div>
+                                    <div>Add duration on realtime mode</div>
+                                    <div>Security update</div>
+                                    <div>Technical updates</div>
+                                </div>
+                            }
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.9 (13/10/2023)'
+                            secondary={
+                                <div>
+                                    <div>Update game list</div>
+                                    <div>Fix scroll on myludo popup</div>
+                                </div>
+                            }
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.8 (13/10/2023)'
+                            secondary='Fix duplicate myludo button on slow connection on history page'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.7 (13/10/2023)'
+                            secondary='Technical version'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.6 (12/10/2023)'
+                            secondary='Technical version'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.5 (12/10/2023)'
+                            secondary='Technical version'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.4 (12/10/2023)'
+                            secondary='Technical version'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.3 (12/10/2023)'
+                            secondary='Technical version'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.2 (12/10/2023)'
+                            secondary='Technical version'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.1 (11/10/2023)'
+                            secondary='Fix abandonned game property from bga history page'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 2.0.0 (05/10/2023)'
                             secondary='Migrate extension on Plasmo framework' />
                     </ListItem>
                     <ListItem>
@@ -156,6 +299,6 @@ export default function Releases() {
                     </ListItem>
                 </List>
             </div>
-        </div>
+        </div >
     )
 }
