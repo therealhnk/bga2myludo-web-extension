@@ -188,7 +188,7 @@ async function loadPlays(callback) {
                 playsContent.forEach((currentPlay) => {
                     const table = {
                         end: myludoHelper.convertToDate(currentPlay.querySelector('h4').textContent),
-                        duration: Number(currentPlay.querySelector('h5 strong').textContent),
+                        duration: Number(currentPlay.querySelector('h5 strong')?.textContent),
                         players: []
                     } as Table;
 
