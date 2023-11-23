@@ -41,10 +41,6 @@
         "strict_min_version": "113.0"
       }
     },
-    "host_permissions": [],
-    "options_ui": {
-      "page": "popup.html",
-      "open_in_tab": false
-    }
+    "host_permissions": []
   }
 }
