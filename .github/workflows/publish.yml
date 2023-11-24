@@ -34,13 +34,26 @@ jobs:
         with:
           node-version: 16.x
           cache: "pnpm"
-      - name: Build the extension
+      - name: Build the Chrome extension
+        run: pnpm build --zip --target=chrome-mv3
+      - name: Build the Firefox extension
         run: pnpm build --zip --target=firefox-mv3
-      - name: Rename extension file 
-        run: mv build/firefox-mv3-prod.zip build/${{ steps.get-version.outputs.version }}.zip
+      - name: Build the Edge extension
+        run: pnpm build --zip --target=edge-mv3
+      - name: Build the Opera extension
+        run: pnpm build --zip --target=opera-mv3
+      - name: Rename extension files
+        run: | 
+          mv build/chrome-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_chrome-mv3.zip
+          mv build/firefox-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_firefox-mv3.zip
+          mv build/edge-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_edge-mv3.zip
+          mv build/opera-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_opera-mv3.zip
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
-          artifact: build/${{ steps.get-version.outputs.version }}.zip
+          chrome-file: build/${{ steps.get-version.outputs.version }}_chrome-mv3.zip
+          firefox-file: build/${{ steps.get-version.outputs.version }}_firefox-mv3.zip
+          edge-file: build/${{ steps.get-version.outputs.version }}_edge-mv3.zip
+          opera-file: build/${{ steps.get-version.outputs.version }}_opera-mv3.zip
           verbose: true
