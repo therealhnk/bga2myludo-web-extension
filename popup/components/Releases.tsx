@@ -8,7 +8,7 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
-                            primary='version 3.0.0 (27/11/2023)'
+                            primary='version 3.0.0 (24/11/2023)'
                             secondary={
                                 <div>
                                     <div>Big improvements in customization of the behavior of the plugin</div>
