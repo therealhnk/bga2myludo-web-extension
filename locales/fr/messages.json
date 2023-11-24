@@ -3,9 +3,186 @@
         "message": "Enregistrer sur Myludo"
     },
     "warningAlreadyPlayed": {
-        "message": "Une partie similaire a déjà été saisie (date/joueurs/scores identiques)"
+        "message": "Une partie similaire a déjà été saisie (date/durée/joueurs/scores identiques)"
+    },
+    "createdWithText": {
+        "message": "Créé à l'aide de BGA2Myludo"
     },
     "tableLinkText": {
-        "message": "Table : https://www.boardgamearena.com/table?table=#TABLE_ID#\r\n\r\nCréé à l'aide de BGA2Myludo"
+        "message": "Table : https://www.boardgamearena.com/table?table=#TABLE_ID#\r\n\r\n"
+    },
+    "connected": {
+        "message": "Connecté"
+    },
+    "loading": {
+        "message": "Chargement en cours"
+    },
+    "disconnected": {
+        "message": "Vous n'êtes pas connecté, cliquez pour vous authentifier"
+    },
+    "unauthorized": {
+        "message": "Le plugin n'est pas authorisé à accéder au site, cliquez pour lui donner les droits"
+    },
+    "unknown": {
+        "message": "Bravo, vous avez découvert une erreur que nous n'avons pas gérée :-("
+    },
+    "welcomeTitle": {
+        "message": "Bienvenue sur l'extension BGA2Myludo !"
+    },
+    "welcomeMessageLine1": {
+        "message": "Cette extension n'est maintenue ni par BGA ni par Myludo"
+    },
+    "welcomeMessageLine2": {
+        "message": "N'hésitez pas à soumettre vos remarques et questions : "
+    },
+    "extensionName": {
+        "message": "BGA2Myludo"
+    },
+    "exportConfiguration": {
+        "message": "Exporter votre configuration"
+    },
+    "importConfiguration": {
+        "message": "Importer votre configuration"
+    },
+    "configuration": {
+        "message": "Configuration"
+    },
+    "userMatching": {
+        "message": "Correspondance joueurs"
+    },
+    "delete": {
+        "message": "Supprimer l'utilisateur"
+    },
+    "addOrUpdateUser": {
+        "message": "Ajouter/Modifier l'utilisateur"
+    },
+    "contactByDiscord": {
+        "message": "Sur le channel bga2myludo du discord de Myludo"
+    },
+    "contactByMail": {
+        "message": "Par email à bga2myludo@gmail.com"
+    },
+    "contactByGithub": {
+        "message": "Via la section Issues de Github"
+    },
+    "configurationTitle": {
+        "message": "Configuration"
+    },
+    "configurationAutoSubmitLabel": {
+        "message": "Validation automatique"
+    },
+    "configurationAutoSubmitTitle": {
+        "message": "Ce paramètre vous permet de soumettre automatiquement la saisie de la partie sur Myludo"
+    },
+    "configurationAddTableLinkLabel": {
+        "message": "Ajout du lien vers la table"
+    },
+    "configurationAddTableLinkTitle": {
+        "message": "Ce paramètre vous permet d'ajouter le lien vers la table BGA dans la section commentaire lors de la saisie de la partie sur Myludo"
+    },
+    "configurationPlaceLabel": {
+        "message": "Lieu par défaut"
+    },
+    "configurationPlaceTitle": {
+        "message": "Ce paramètre vous permet de personnaliser le lieu lors de la saisie de la partie sur Myludo"
+    },
+    "configurationExcludeFromStatisticsLabel": {
+        "message": "Exclure des statistiques"
+    },
+    "configurationExcludeFromStatisticsTitle": {
+        "message": "Ce paramètre vous permet de pré-cocher la case 'Exclure des statistiques' lors de la saisie de la partie sur Myludo"
+    },
+    "configurationFillPlaceLabel": {
+        "message": "Renseigner le lieu"
+    },
+    "configurationFillPlaceTitle": {
+        "message": "Ce paramètre vous permet d'indiquer le lieu lors de la saisie de la partie sur Myludo"
+    },
+    "configurationAutoUpdateUsersLabel": {
+        "message": "Mise à jour automatique des joueurs"
+    },
+    "configurationAutoUpdateUsersTitle": {
+        "message": "Ce paramètre vous permet de maintenir automatiquement à jour la liste des amis que vous avez sur Board Game Arena"
+    },
+    "configurationCustomizeCurrentPlayerLabel": {
+        "message": "Personnalisation de votre nom"
+    },
+    "configurationCustomizeCurrentPlayerTitle": {
+        "message": "Ce paramètre vous permet de personnaliser votre nom lors de la saisie de la partie sur Myludo"
+    },
+    "configurationCustomCurrentNamePlayerLabel": {
+        "message": "Nom"
+    },
+    "dayMode": {
+        "message": "Basculer en mode jour"
+    },
+    "nightMode": {
+        "message": "Basculer en mode nuit"
+    },
+    "userMatchingAddUser": {
+        "message": "Ajouter un utilisateur"
+    },
+    "userMatchingEditUser": {
+        "message": "Modifier"
+    },
+    "userMatchingDeleteUser": {
+        "message": "Supprimer"
+    },
+    "userMatchingBGAUserRequired": {
+        "message": "champ obligatoire"
+    },
+    "userMatchingMyludoUserRequired": {
+        "message": "champ obligatoire"
+    },
+    "userMatchingBGAUserHeader": {
+        "message": "Identifiant BGA"
+    },
+    "userMatchingMyludoUserHeader": {
+        "message": "Joueur Myludo"
+    },
+    "userMatchingCancelEditUser": {
+        "message": "Annuler"
+    },
+    "userMatchingMessage": {
+        "message": "Saisissez ici les identifiants de Board Game Arena afin de permettre au plugin de les associer aux noms des joueurs sur Myludo"
+    },
+    "userMatchingActions": {
+        "message": ""
+    },
+    "userMatchingCancel": {
+        "message": "Annuler"
+    },
+    "userMatchingClearSearch": {
+        "message": "Effacer la recherche"
+    },
+    "userMatchingNoRecordsToDisplay": {
+        "message": "Aucun enregistrement"
+    },
+    "userMatchingNoResultsFound": {
+        "message": "Aucun résultat trouvé"
+    },
+    "userMatchingSave": {
+        "message": "Enregistrer"
+    },
+    "userMatchingSearching": {
+        "message": "Rechercher"
+    },
+    "userMatchingSortByColumnAsc": {
+        "message": "Trier par {column} ascendant"
+    },
+    "userMatchingSortByColumnDesc": {
+        "message": "Trier par {column} descendant"
+    },
+    "userMatchingSortedByColumnAsc": {
+        "message": "Trié par {column} ascendant"
+    },
+    "userMatchingSortedByColumnDesc": {
+        "message": "Trié par {column} descendant"
+    },
+    "releasesTitle": {
+        "message": "Releases"
+    },
+    "seeReleases": {
+        "message": "Voir les releases"
     }
 }

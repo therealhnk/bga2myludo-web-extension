@@ -47,7 +47,7 @@ async function patchTablePage() {
                 const tableId = Number(urlParams.get("table"));
 
                 await boardGameArenaService
-                    .getUser(requestToken)
+                    .getUser()
                     .then(async user => {
                         await boardGameArenaService
                             .getGamesFromTable(requestToken, user, tableId)
@@ -88,7 +88,7 @@ async function patchEndGamePage() {
                 const tableId = Number(urlParams.get("table"));
 
                 await boardGameArenaService
-                    .getUser(requestToken)
+                    .getUser()
                     .then(async user => {
                         await boardGameArenaService
                             .getGamesFromTable(requestToken, user, tableId)
@@ -122,7 +122,7 @@ async function patchGameStatsPage() {
     if (displayStyle !== 'none' && displayStyle !== 'hide') return;
 
     await boardGameArenaService
-        .getUser(requestToken)
+        .getUser()
         .then(async user => {
             let page = 1;
 

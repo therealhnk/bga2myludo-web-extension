@@ -1,0 +1,146 @@
+.popup {
+    display: flex;
+    flex-direction: column;
+    width: 460px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: 75%;
+    max-height: 650px;
+}
+
+header {
+    flex-shrink: 0;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: box-shadow .1s;
+    box-shadow: 0 1px 2px 2px transparent;
+
+    .extension-name {
+        margin-right: auto;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+
+        span {
+            position: fixed;
+            top: 16px;
+        }
+
+        img {
+            width: 32px;
+            height: 32px;
+            margin-right: 4px;
+        }
+    }
+}
+
+.popup-body {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    max-height: 486px;
+}
+
+.home,
+.user-matching,
+.configuration,
+.releases {
+    margin: 12px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .title {
+        font-weight: 700;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .message {
+        padding: 8px;
+        font-weight: 400;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .message-list {
+        font-weight: 400;
+        font-size: 14px;
+        text-align: justify;
+    }
+}
+
+.user-matching {
+    .user-matching-top-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+        height: 55px;
+    }
+
+    .user-matching-bottom-toolbar {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        height: 55px;
+    }
+}
+
+.configuration {
+    .configuration-item-primary {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .configuration-item-secondary {
+        font-size: 12px;
+        font-weight: 300;
+    }
+
+    .configuration-textfield {
+        margin-left: 71px;
+        padding-bottom: 8px;
+    }
+}
+
+.releases {
+    ul li {
+        text-align: center;
+
+        >div>span {
+            font-weight: 600;
+        }
+    }
+}
+
+footer {
+    .status {
+        margin-bottom: -6px;
+    }
+
+    .version {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+        padding-top: 3px;
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 4px;
+    }
+}
+
+.loader {
+    left: 50%;
+    position: relative;
+}
+
+.options {
+    display: flex;
+    width: 460px;
+}

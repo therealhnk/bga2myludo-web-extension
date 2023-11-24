@@ -2,6 +2,7 @@ import type { PlasmoCSConfig } from "plasmo";
 import documentHelper from "~core/helpers/documentHelper";
 import myludoHelper from "~core/helpers/myludoHelper";
 import type { Table } from "~core/models/table";
+import configurationService from "~core/services/configurationService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://www.myludo.fr/*"]
@@ -36,7 +37,14 @@ async function patch() {
     }
     else {
         clearInterval(intervalID);
+        const configuration = await configurationService.get();
         const data = getDataFromBGA();
+
+        // override bga user with  configuration
+        data.players.forEach(current => {
+            const overridenUser = configuration.users.find(o => o.bgaUser === current.name);
+            current.name = overridenUser && overridenUser.myludoUser && overridenUser.myludoUser.length > 0 ? overridenUser.myludoUser : current.name;
+        });
 
         await loadPlays((plays => {
             const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(data, plays);
@@ -57,8 +65,8 @@ async function patch() {
 
                     if (data.duration) {
                         documentHelper.getFirstInputByName(`time`).value = data.duration.toString();
-                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = (Math.floor(data.duration / 60)).toString().padStart(2, "0");
-                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = (data.duration % 60).toString().padStart(2, "0");
+                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = Math.floor(data.duration / 60).toString().padStart(2, "0");
+                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = Math.floor(data.duration % 60).toString().padStart(2, "0");
                     }
 
                     if (data.isSolo) {
@@ -113,14 +121,33 @@ async function patch() {
 
                     documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
 
-                    documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
-                    documentHelper.getInputById(`location`).value = "Board Game Arena";
+                    if (configuration.fillPlace) {
+                        documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
+                        documentHelper.getInputById(`location`).value = configuration.place;
+                    }
 
                     documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
-                    documentHelper.getInputById(`message`).value = chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
+                    let message = "";
 
-                    const modalContent = document.querySelector("#form-play .modal-content");
-                    modalContent.scrollTop = modalContent.scrollHeight;
+                    if (configuration.addTableLink) {
+                        message += chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
+                    }
+
+                    message += chrome.i18n.getMessage("createdWithText");
+
+                    documentHelper.getInputById(`message`).value = message;
+
+                    if (configuration.excludeFromStatistics) {
+                        documentHelper.getInputById(`exclude`).click();
+                    }
+
+                    if (configuration.autoSubmit && !hasBeenPlayed) {
+                        documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
+                    }
+                    else {
+                        const modalContent = document.querySelector("#form-play .modal-content");
+                        modalContent.scrollTop = modalContent.scrollHeight;
+                    }
                 }
             }, 500);
         }));
@@ -143,7 +170,7 @@ function getDataFromBGA() {
 }
 
 async function loadPlays(callback) {
-    const plays = [];
+    const tables: Table[] = [];
 
     const playsTab = document.querySelector<HTMLElement>('a[href="#plays"]');
 
@@ -159,28 +186,29 @@ async function loadPlays(callback) {
                 const playsContent = document.querySelectorAll('#plays .game-play');
 
                 playsContent.forEach((currentPlay) => {
-                    const play = {
+                    const table = {
                         end: myludoHelper.convertToDate(currentPlay.querySelector('h4').textContent),
+                        duration: Number(currentPlay.querySelector('h5 strong')?.textContent),
                         players: []
-                    }
+                    } as Table;
 
                     currentPlay.querySelectorAll('.play-player').forEach((elt) => {
                         const counter = elt.querySelector('.counter');
-                        play.players.push({
+                        table.players.push({
                             name: elt.getAttribute('title'),
                             score: counter ? Number(counter.textContent) : null
                         })
                     });
 
-                    plays.push(play);
+                    tables.push(table);
                 });
 
-                callback(plays);
+                callback(tables);
             }
         }, 250);
     }
     else {
-        callback(plays);
+        callback(tables);
     }
 }
 
