@@ -57,3 +57,9 @@ jobs:
           edge-file: build/${{ steps.get-version.outputs.version }}_edge-mv3.zip
           opera-file: build/${{ steps.get-version.outputs.version }}_opera-mv3.zip
           verbose: true
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get-version.outputs.version }}
+          files: build/*.zip
+
