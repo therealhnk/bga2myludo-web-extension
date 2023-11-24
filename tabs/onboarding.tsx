@@ -31,21 +31,21 @@ function BoardingPage() {
                                 L'extension qui vous permet d'exporter vos parties BGA sur Myludo !
                             </Typography>
                             <Typography variant="body1">
-                                Cette nouvelle version permet de faire encore plus de choses :
+                                Découvrez les fonctionnalités enrichies de cette nouvelle version :
                             </Typography>
                             <Typography variant="body2">
                                 <ul>
-                                    <li>Configurer le comportement de l'extension</li>
-                                    <li>Faire la correspondances entre vos amis BGA et vos amis Myludo</li>
-                                    <li>Importer/Exporter la configuration de l'extension</li>
-                                    <li>Vérifier les statuts des sites BGA/Myludo</li>
+                                    <li>Configurez l'extension selon vos préférences</li>
+                                    <li>Associez vos amis sur BGA avec ceux sur Myludo en toute simplicité</li>
+                                    <li>Sauvegardez et transférez votre configuration rapidement</li>
+                                    <li>Gardez un oeil sur l'état de la connection avec les plateformes Board Game Arena et Myludo</li>
                                 </ul>
                             </Typography>
                             <Typography variant="h6" component="div" align="center">
-                                Pour configurer le comportement
+                                Pour configurer le comportement selon votre goût
                             </Typography>
                             <Typography variant="h6" component="div" align="center">
-                                Cliquez sur l'icone de l'extension !
+                                Il vous suffit de cliquer sur l'icône de l'extension !
                             </Typography>
                         </CardContent>
                     </Card>
