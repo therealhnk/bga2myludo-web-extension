@@ -57,6 +57,6 @@ chrome.runtime.onInstalled.addListener(function (object) {
     }
 
     if (showBoarding) {
-        chrome.tabs.create({ url: `chrome-extension://${chrome.runtime.id}/tabs/onboarding.html` });
+        chrome.tabs.create({ url: chrome.runtime.getURL('tabs/onboarding.html') });
     }
 });
