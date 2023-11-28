@@ -192,7 +192,7 @@
         "message": "Annuler"
     },
     "overridenGamesMessage": {
-        "message": "Surcharger la correspondance des jeux. Attention : ne modifiez que si vous savez vraiment ce que vous faites ;)"
+        "message": "Choisissez la correspondance entre les jeux BGA et ceux de Myludo. Attention, ne modifiez que si vous savez vraiment ce que vous faites ;)"
     },
     "overridenGamesActions": {
         "message": ""
