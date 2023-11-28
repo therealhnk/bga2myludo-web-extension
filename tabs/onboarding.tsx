@@ -37,6 +37,7 @@ function BoardingPage() {
                                 <ul>
                                     <li>Configurez l'extension selon vos préférences</li>
                                     <li>Associez vos amis sur BGA avec ceux sur Myludo en toute simplicité</li>
+                                    <li>Choisissez la correspondance entre les jeux BGA et ceux de votre ludothèque</li>
                                     <li>Sauvegardez et transférez votre configuration rapidement</li>
                                     <li>Gardez un oeil sur l'état de la connection avec les plateformes Board Game Arena et Myludo</li>
                                 </ul>
