@@ -1,8 +1,8 @@
 import EmailIcon from '@mui/icons-material/Email';
+import GithubIcon from '@mui/icons-material/Github';
 import { List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import '~popup/popup.scss';
 import DiscordIcon from './DiscordIcon';
-import GithubIcon from './GithubIcon';
 
 export default function Home() {
     return (
