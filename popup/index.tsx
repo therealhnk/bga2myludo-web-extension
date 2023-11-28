@@ -1,7 +1,8 @@
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
+import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
+import TuneIcon from '@mui/icons-material/Tune';
 import { CssBaseline, Divider, IconButton, ThemeProvider } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import { useCallback, useEffect, useState } from "react";
@@ -14,6 +15,7 @@ import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
 import ImportButton from "./components/ImportButton";
 import Loader from "./components/Loader";
+import OverridenGames from './components/OverriddenGames';
 import Releases from './components/Releases';
 import Status from "./components/Status";
 import UserMatching from "./components/UserMatching";
@@ -60,7 +62,10 @@ export default function PopupIndex() {
                         <SettingsIcon color="primary" />
                     </IconButton>
                     <IconButton size="small" title={chrome.i18n.getMessage("userMatching")} onClick={() => setActiveSection('UserMatching')}>
-                        <PeopleIcon color="primary" />
+                        <SocialDistanceIcon color="primary" />
+                    </IconButton>
+                    <IconButton size="small" title={chrome.i18n.getMessage("overridenGames")} onClick={() => setActiveSection('OverridenGames')}>
+                        <TuneIcon color="primary" />
                     </IconButton>
                     <ImportButton configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
                     <ExportButton configuration={configuration} />
@@ -81,6 +86,7 @@ export default function PopupIndex() {
                         {activeSection === 'Home' && <Home />}
                         {activeSection === 'Configuration' && <Configuration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
+                        {activeSection === 'OverridenGames' && <OverridenGames configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'Releases' && <Releases />}
                     </div>
                 }

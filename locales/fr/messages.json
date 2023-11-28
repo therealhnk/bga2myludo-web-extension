@@ -50,6 +50,9 @@
     "userMatching": {
         "message": "Correspondance joueurs"
     },
+    "OverridenGames": {
+        "message": "Correspondance jeux"
+    },
     "delete": {
         "message": "Supprimer l'utilisateur"
     },
@@ -167,22 +170,61 @@
     "userMatchingSearching": {
         "message": "Rechercher"
     },
-    "userMatchingSortByColumnAsc": {
-        "message": "Trier par {column} ascendant"
-    },
-    "userMatchingSortByColumnDesc": {
-        "message": "Trier par {column} descendant"
-    },
-    "userMatchingSortedByColumnAsc": {
-        "message": "Trié par {column} ascendant"
-    },
-    "userMatchingSortedByColumnDesc": {
-        "message": "Trié par {column} descendant"
-    },
     "releasesTitle": {
         "message": "Releases"
     },
     "seeReleases": {
         "message": "Voir les releases"
+    },
+    "overridenGamesEditGame": {
+        "message": "Modifier"
+    },
+    "overridenGamesResetGame": {
+        "message": "Rétablir la valeur par défaut"
+    },
+    "overridenGamesBGAIdHeader": {
+        "message": "Identifiant BGA"
+    },
+    "overridenGamesMyludoIdHeader": {
+        "message": "Identifiant Myludo"
+    },
+    "overridenGamesCancelEditUser": {
+        "message": "Annuler"
+    },
+    "overridenGamesMessage": {
+        "message": "Surcharger la correspondance des jeux. Attention : ne modifiez que si vous savez vraiment ce que vous faites ;)"
+    },
+    "overridenGamesActions": {
+        "message": ""
+    },
+    "overridenGamesCancel": {
+        "message": "Annuler"
+    },
+    "overridenGamesClearSearch": {
+        "message": "Effacer la recherche"
+    },
+    "overridenGamesNoRecordsToDisplay": {
+        "message": "Aucun enregistrement"
+    },
+    "overridenGamesNoResultsFound": {
+        "message": "Aucun résultat trouvé"
+    },
+    "overridenGamesSave": {
+        "message": "Enregistrer"
+    },
+    "overridenGamesSearching": {
+        "message": "Rechercher"
+    },
+    "reactTableSortByColumnAsc": {
+        "message": "Trier par {column} ascendant"
+    },
+    "reactTableSortByColumnDesc": {
+        "message": "Trier par {column} descendant"
+    },
+    "reactTableSortedByColumnAsc": {
+        "message": "Trié par {column} ascendant"
+    },
+    "reactTableSortedByColumnDesc": {
+        "message": "Trié par {column} descendant"
     }
 }

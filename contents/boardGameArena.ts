@@ -1,9 +1,9 @@
 import type { PlasmoCSConfig } from "plasmo";
-import games from "data-env:assets/games.json";
 import boardGameArenaHelper from "~core/helpers/boardGameArenaHelper";
-import boardGameArenaService from "~core/services/boardGameArenaService";
 import type { GameStatsParameters } from "~core/models/boardGameArena/gameStatsParameters";
 import type { User } from "~core/models/user";
+import boardGameArenaService from "~core/services/boardGameArenaService";
+import configurationService from "~core/services/configurationService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://boardgamearena.com/*"]
@@ -52,10 +52,10 @@ async function patchTablePage() {
                         await boardGameArenaService
                             .getGamesFromTable(requestToken, user, tableId)
                             .then(async table => {
-                                const myludoId = games[table.gameId];
+                                const myludoId = await configurationService.getGame(table.gameId);
 
                                 await boardGameArenaHelper
-                                    .getMyLudoLink(myludoId, table)
+                                    .getMyLudoLink(myludoId.currentMyludoId, table)
                                     .then(link => {
                                         if (link === null) {
                                             addMyLudoField();
@@ -93,10 +93,10 @@ async function patchEndGamePage() {
                         await boardGameArenaService
                             .getGamesFromTable(requestToken, user, tableId)
                             .then(async table => {
-                                const myludoId = games[table.gameId];
+                                const myludoId = await configurationService.getGame(table.gameId);
 
                                 await boardGameArenaHelper
-                                    .getMyLudoLink(myludoId, table)
+                                    .getMyLudoLink(myludoId.currentMyludoId, table)
                                     .then(link => {
                                         if (link === null) {
                                             addMyLudoField();
@@ -137,6 +137,7 @@ async function patchGameStatsPage() {
 async function fetchAndFeedStatsPage(connectedUser: User, page: number) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
+    const games = await configurationService.getGames();
 
     const parameters: GameStatsParameters = {
         player: urlParams.get("player"),
@@ -160,7 +161,7 @@ async function fetchAndFeedStatsPage(connectedUser: User, page: number) {
 
                     tables.forEach(async (table) => {
                         await boardGameArenaHelper
-                            .getMyLudoLink(games[table.gameId], table)
+                            .getMyLudoLink(games.find(o => o.bgaId === table.gameId)?.currentMyludoId, table)
                             .then(link => {
                                 if (link === null) {
                                     addMyLudoField();

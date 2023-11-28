@@ -224,7 +224,7 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             </Box>
         ),
         renderTopToolbar: ({ table }) => (
-            <Grid container className='user-matching-top-toolbar'>
+            <Grid container className='top-toolbar'>
                 <Grid item xs={6}>
                     <IconButton size="small" title={chrome.i18n.getMessage("userMatchingAddUser")} onClick={() => table.setCreatingRow(true)}>
                         <PersonAddIcon color="primary" />
@@ -236,8 +236,8 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             </Grid>
         ),
         renderBottomToolbar: ({ table }) => (
-            <Grid container className='user-matching-bottom-toolbar'>
-                <MRT_TablePagination className='user-matching-pagination' table={table} />
+            <Grid container className='bottom-toolbar'>
+                <MRT_TablePagination table={table} />
             </Grid>
         ),
         muiPaginationProps: {
@@ -264,10 +264,10 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             noResultsFound: chrome.i18n.getMessage("userMatchingNoResultsFound"),
             save: chrome.i18n.getMessage("userMatchingSave"),
             search: chrome.i18n.getMessage("userMatchingSearching"),
-            sortByColumnAsc: chrome.i18n.getMessage("userMatchingSortByColumnAsc"),
-            sortByColumnDesc: chrome.i18n.getMessage("userMatchingSortByColumnDesc"),
-            sortedByColumnAsc: chrome.i18n.getMessage("userMatchingSortedByColumnAsc"),
-            sortedByColumnDesc: chrome.i18n.getMessage("userMatchingSortedByColumnDesc")
+            sortByColumnAsc: chrome.i18n.getMessage("reactTableSortByColumnAsc"),
+            sortByColumnDesc: chrome.i18n.getMessage("reactTableSortByColumnDesc"),
+            sortedByColumnAsc: chrome.i18n.getMessage("reactTableSortedByColumnAsc"),
+            sortedByColumnDesc: chrome.i18n.getMessage("reactTableSortedByColumnDesc")
         },
         icons: {
             SaveIcon: (props) => <SaveIcon fontSize='small' color="primary" {...props} />,

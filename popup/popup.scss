@@ -44,6 +44,7 @@ header {
 
 .home,
 .user-matching,
+.overriden-games,
 .configuration,
 .releases {
     margin: 12px 0 0 0;
@@ -72,8 +73,9 @@ header {
     }
 }
 
-.user-matching {
-    .user-matching-top-toolbar {
+.user-matching,
+.overriden-games {
+    .top-toolbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -81,7 +83,7 @@ header {
         height: 55px;
     }
 
-    .user-matching-bottom-toolbar {
+    .bottom-toolbar {
         display: flex;
         flex-flow: column;
         align-items: center;

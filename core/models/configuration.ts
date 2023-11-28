@@ -1,3 +1,4 @@
+import type { MappedGame } from "./mappedGame";
 import type { MappedUser } from "./mappedUser";
 
 export class Configuration {
@@ -10,5 +11,6 @@ export class Configuration {
     excludeFromStatistics: boolean;
     addTableLink?: boolean;
     users: MappedUser[];
+    overridenGames: MappedGame[];
     autoUpdateUsers: boolean;
 }
