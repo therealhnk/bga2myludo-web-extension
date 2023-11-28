@@ -1,6 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email';
 import GithubIcon from '@mui/icons-material/Github';
 import { List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import React from 'react';
 import '~popup/popup.scss';
 import DiscordIcon from './DiscordIcon';
 
@@ -35,6 +36,6 @@ export default function Home() {
                     <ListItemText primary={<Typography color='secondary' className="message-list">{chrome.i18n.getMessage("contactByGithub")}</Typography>} />
                 </ListItemButton>
             </List>
-        </div >
+        </div>
     )
 }

@@ -4,7 +4,7 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import SaveIcon from '@mui/icons-material/Save';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { MRT_GlobalFilterTextField, MRT_TablePagination, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef, type MRT_TableOptions } from 'material-react-table';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import type { MappedGame } from '~core/models/mappedGame';
 import configurationService from '~core/services/configurationService';

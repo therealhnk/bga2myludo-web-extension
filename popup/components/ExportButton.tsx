@@ -1,6 +1,6 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { IconButton } from '@mui/material';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/popup.scss';
 

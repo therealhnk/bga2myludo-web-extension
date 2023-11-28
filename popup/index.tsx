@@ -5,7 +5,7 @@ import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import TuneIcon from '@mui/icons-material/Tune';
 import { CssBaseline, Divider, IconButton, ThemeProvider } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
 import Configuration from '~popup/components/Configuration';

@@ -1,4 +1,5 @@
 import { List, ListItem, ListItemText } from "@mui/material";
+import React from "react";
 
 export default function Releases() {
     return (

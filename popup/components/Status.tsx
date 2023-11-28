@@ -5,7 +5,7 @@ import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { green, orange, red } from "@mui/material/colors";
 import bgaIcon from "data-base64:~assets/bga_icon.png";
 import myludoIcon from "data-base64:~assets/myludo_icon.png";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import boardGameArenaService from '~core/services/boardGameArenaService';
 import myludoService from '~core/services/myludoService';
 import { ConnectionStatus } from '~popup/models/StatusModel';

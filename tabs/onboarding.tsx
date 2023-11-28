@@ -1,5 +1,6 @@
 import { Card, CardContent, Container, CssBaseline, ThemeProvider, Typography } from "@mui/material";
 import icon from "data-base64:~assets/bga2myludo_icon.png";
+import React from "react";
 import '~tabs/onboarding.scss';
 import getTheme from "~theme/customTheme";
 
