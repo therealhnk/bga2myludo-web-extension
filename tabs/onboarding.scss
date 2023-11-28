@@ -1,11 +1,4 @@
 #onboarding {
-    position: static;
-    display: flex;
-    flex-flow: column;
-    min-height: 100%;
-    box-sizing: border-box;
-    min-width: 359px;
-    overflow: hidden;
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
@@ -54,4 +47,12 @@ header {
     font-size: 16px;
     font-weight: 700;
     color: #404a86;
+}
+
+.onboarding-paragraph {
+    padding: 24px;
+}
+
+.highlight {
+    background-color: orange;
 }

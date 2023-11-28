@@ -1,4 +1,4 @@
-import { Card, CardContent, Container, CssBaseline, ThemeProvider, Typography } from "@mui/material";
+import { Card, CardContent, Container, CssBaseline, Grid, ThemeProvider, Typography } from "@mui/material";
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import React from "react";
 import '~tabs/onboarding.scss';
@@ -22,38 +22,65 @@ function BoardingPage() {
                     <span>{chrome.i18n.getMessage("extensionName")}</span>
                     <span>version {currentVersion}</span>
                 </header>
-                <Container maxWidth="sm">
-                    <Card sx={{ maxWidth: 550 }}>
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                Bienvenue sur BGA2Myludo
-                            </Typography>
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                L'extension qui vous permet d'exporter vos parties BGA sur Myludo !
-                            </Typography>
-                            <Typography variant="body1">
-                                Découvrez les fonctionnalités enrichies de cette nouvelle version :
-                            </Typography>
-                            <Typography variant="body2">
-                                <ul>
-                                    <li>Configurez l'extension selon vos préférences</li>
-                                    <li>Associez vos amis sur BGA avec ceux sur Myludo en toute simplicité</li>
-                                    <li>Choisissez la correspondance entre les jeux BGA et ceux de Myludo</li>
-                                    <li>Sauvegardez et transférez votre configuration rapidement</li>
-                                    <li>Gardez un oeil sur l'état de la connection avec les plateformes Board Game Arena et Myludo</li>
-                                </ul>
-                            </Typography>
-                            <Typography variant="h6" component="div" align="center">
-                                Pour configurer le comportement selon votre goût
-                            </Typography>
-                            <Typography variant="h6" component="div" align="center">
-                                Il vous suffit de cliquer sur l'icône de l'extension !
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                <Container className="container">
+                    <Grid container spacing={1} justifyContent="center">
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h5" component="div">
+                                        Bienvenue sur BGA2Myludo
+                                    </Typography>
+                                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                        L'extension qui vous permet d'exporter vos parties BGA sur Myludo !
+                                    </Typography>
+                                    <Typography variant="body1" component="div" align="center">
+                                        Pour configurer le comportement selon votre goût
+                                    </Typography>
+                                    <Typography variant="body1" component="div" align="center">
+                                        Il vous suffit de cliquer sur l'icône de l'extension !
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        Version 3.1.0
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Maîtrisez l'extension avec notre dernière fonctionnalité : la correspondance des jeux !
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        Pour éviter que vos parties sur BGA ne soient liées à une édition inappropriée de votre jeu favori, suivez simplement ces étapes : rendez-vous dans le menu "Correspondance des jeux" et indiquez l'identifiant Myludo correspondant (trouvable dans l'URL, par exemple : https://www.myludo.fr/#!/game/trio-<span className="highlight">61611</span>).
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        Version 3.0.0
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Découvrez les évolutions incluses dans cette nouvelle version :
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <ul>
+                                            <li>Configurez l'extension selon vos préférences</li>
+                                            <li>Associez vos amis sur BGA avec ceux sur Myludo en toute simplicité</li>
+                                            <li>Sauvegardez et transférez votre configuration rapidement</li>
+                                            <li>Gardez un oeil sur l'état de la connection avec les plateformes Board Game Arena et Myludo</li>
+                                        </ul>
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
                 </Container>
             </div>
-        </ThemeProvider>
+        </ThemeProvider >
     )
 
 }
