@@ -84,7 +84,7 @@ function getStatus(promisePermission: Promise<boolean>, promiseConnectionState: 
 function handleClick(host: string, status: ConnectionStatus) {
     switch (status) {
         case ConnectionStatus.Disconnected:
-            window.open(getLoginPageUrl(host));
+            chrome.tabs.create({ url: getLoginPageUrl(host) });
             window.close();
             break;
         case ConnectionStatus.Unauthorized:
@@ -116,7 +116,12 @@ function Status({ onReleasesClick }: Props) {
     return (
         <Grid container>
             <Grid item xs={4} textAlign='center'>
-                <Button title={getMessage(bgaStatus)} fullWidth onClick={() => handleClick('bga', bgaStatus)}>
+                <Button
+                    title={getMessage(bgaStatus)}
+                    disabled={bgaStatus === ConnectionStatus.Connected}
+                    fullWidth
+                    onClick={() => handleClick('bga', bgaStatus)}
+                >
                     <div className="status">
                         <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
                         <span>{getStatusIcon('bga', bgaStatus)}</span>
@@ -124,7 +129,12 @@ function Status({ onReleasesClick }: Props) {
                 </Button>
             </Grid>
             <Grid item xs={4} textAlign='center'>
-                <Button title={getMessage(myludoStatus)} fullWidth onClick={() => handleClick('myludo', myludoStatus)}>
+                <Button
+                    title={getMessage(myludoStatus)}
+                    disabled={myludoStatus === ConnectionStatus.Connected}
+                    fullWidth
+                    onClick={() => handleClick('myludo', myludoStatus)}
+                >
                     <div className="status">
                         <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
                         <span>{getStatusIcon('myludo', myludoStatus)}</span>
