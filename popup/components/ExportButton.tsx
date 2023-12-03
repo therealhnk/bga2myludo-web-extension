@@ -1,6 +1,6 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { IconButton } from '@mui/material';
-import React, { useCallback } from 'react';
+import React from 'react';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/popup.scss';
 
@@ -9,19 +9,16 @@ type Props = {
 }
 
 export default function ExportButton({ configuration }: Props) {
-    const handleClick = useCallback(() => {
-        const blob = new Blob([JSON.stringify(configuration)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = "bga2myludo_configuration.json";
-        a.click();
-
-        URL.revokeObjectURL(url);
-    }, [configuration]);
+    const blob = new Blob([JSON.stringify(configuration)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
 
     return (
-        <IconButton size="small" title={chrome.i18n.getMessage("exportConfiguration")} onClick={handleClick}>
+        <IconButton
+            size="small"
+            title={chrome.i18n.getMessage("exportConfiguration")}
+            href={url}
+            download={"bga2myludo_configuration.json"}
+        >
             <FileDownloadIcon color="primary" />
         </IconButton>
     )
