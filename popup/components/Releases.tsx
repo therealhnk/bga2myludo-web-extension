@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.1.1 (03/12/2023)'
+                            secondary='Fix bugs on Firefox for Android'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.1.0 (28/11/2023)'
                             secondary='Add override games matching'
                         />
