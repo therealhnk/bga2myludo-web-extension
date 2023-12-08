@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.1.5 (08/12/2023)'
+                            secondary='fix encoding failed when username contains special characters'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.1.4 (06/12/2023)'
                             secondary='Fix screen regression'
                         />
