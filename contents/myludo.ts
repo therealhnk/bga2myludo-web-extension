@@ -162,7 +162,7 @@ function cancelLogin() {
 
 function getDataFromBGA() {
     const urlParams = new URL(`https://fake.com?${window.location.href.split("?")[1]}`).searchParams;
-    const json = atob(urlParams.get("bga2myludo_data"));
+    const json = Buffer.from(urlParams.get("bga2myludo_data"), 'base64').toString('utf-8');
 
     window.location.href = window.location.href.replace(/[?&][^=]+=[^&]+/g, "");
 

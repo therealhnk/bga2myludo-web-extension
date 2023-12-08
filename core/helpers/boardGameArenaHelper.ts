@@ -11,7 +11,7 @@ export default class boardGameArenaHelper {
         }
         else {
             const json = JSON.stringify(table);
-            const data = btoa(json);
+            const data = Buffer.from(json).toString('base64');
 
             href = `https://www.myludo.fr/#!/game/${myludoGameId}?bga2myludo=1&bga2myludo_data=${data}`
         }
