@@ -1,3 +1,4 @@
+import { BackgroundMessages } from "~core/models/backgroundMessages";
 import type { Friend, FriendsResponse } from "~core/models/boardGameArena/friendsResponse";
 import type { GameStatsParameters } from "~core/models/boardGameArena/gameStatsParameters";
 import type { GetGamesResponse } from "~core/models/boardGameArena/getGamesResponse";
@@ -126,7 +127,7 @@ export default class boardGameArenaService {
     }
 
     static async getFriends(): Promise<Friend[]> {
-        return chrome.runtime.sendMessage({ message: "getBGAToken" })
+        return chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_TOKEN })
             .then((token: string) => {
                 return boardGameArenaService
                     .fetch<FriendsResponse>(`https://boardgamearena.com/community/community/friends.html`, token)
