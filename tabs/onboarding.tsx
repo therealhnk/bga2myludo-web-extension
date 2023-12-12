@@ -46,7 +46,7 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
-                                        Version 3.1.0
+                                        Version 3.1
                                     </Typography>
                                     <Typography variant="body1">
                                         Maîtrisez l'extension avec notre dernière fonctionnalité : la correspondance des jeux !
@@ -61,7 +61,7 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
-                                        Version 3.0.0
+                                        Version 3.0
                                     </Typography>
                                     <Typography variant="body1">
                                         Découvrez les évolutions incluses dans cette nouvelle version :
