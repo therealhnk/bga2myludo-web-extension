@@ -2,20 +2,60 @@ import type { PlasmoCSConfig } from "plasmo";
 import documentHelper from "~core/helpers/documentHelper";
 import myludoHelper from "~core/helpers/myludoHelper";
 import type { Table } from "~core/models/table";
+import boardGameArenaService from "~core/services/boardGameArenaService";
 import configurationService from "~core/services/configurationService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://www.myludo.fr/*"]
 }
 
-const intervalID = setInterval(patch, 125);
+let intervalID = setInterval(check, 125);
+
+async function check() {
+    const url = window.location.href;
+
+    if (url.includes("bgatableid")) {
+        await init();
+    } else if (url.includes("bga2myludo_data")) {
+        console.log("patch");
+        await patch();
+    }
+}
+
+async function init() {
+    clearInterval(intervalID);
+
+    const urlParams = new URL(`https://fake.com?${window.location.href.split("?")[1]}`).searchParams;
+    const bgaTableId = urlParams.get("bgatableid");
+
+    const table = await boardGameArenaService.getTableInformations(bgaTableId);
+    if (!table) {
+        window.location.href = "https://www.myludo.fr";
+        return;
+    }
+
+    const gameInfo = await configurationService.getGame(table.gameId);
+
+    if (!gameInfo) {
+        window.location.href = `https://www.myludo.fr/#!/search/${table.gameId}`;
+        return;
+    }
+
+    const json = JSON.stringify(table);
+    const data = Buffer.from(json).toString('base64');
+
+    window.location.href = `https://www.myludo.fr/#!/game/${gameInfo.currentMyludoId}?bga2myludo_data=${data}`;
+
+    intervalID = setInterval(check, 125);
+
+    return;
+}
 
 async function patch() {
     // si l'onglet n'est pas actif, on ne présaisie pas les données
     if (document.visibilityState === "hidden") return;
 
-    if (!window.location.href.startsWith("https://www.myludo.fr/#!/game/")
-        || !window.location.href.includes("bga2myludo")) {
+    if (!window.location.href.includes("bga2myludo_data")) {
         clearInterval(intervalID);
         return;
     }
@@ -40,7 +80,7 @@ async function patch() {
         const configuration = await configurationService.get();
         const data = getDataFromBGA();
 
-        // override bga user with  configuration
+        // override bga user with configuration
         data.players.forEach(current => {
             const overridenUser = configuration.users.find(o => o.bgaUser === current.name);
             current.name = overridenUser && overridenUser.myludoUser && overridenUser.myludoUser.length > 0 ? overridenUser.myludoUser : current.name;
@@ -149,7 +189,7 @@ async function patch() {
                         modalContent.scrollTop = modalContent.scrollHeight;
                     }
                 }
-            }, 500);
+            }, 125);
         }));
     }
 }

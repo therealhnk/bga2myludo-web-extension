@@ -1,16 +1,11 @@
 import type { PlasmoCSConfig } from "plasmo";
 import boardGameArenaHelper from "~core/helpers/boardGameArenaHelper";
-import type { GameStatsParameters } from "~core/models/boardGameArena/gameStatsParameters";
-import type { User } from "~core/models/user";
-import boardGameArenaService from "~core/services/boardGameArenaService";
-import configurationService from "~core/services/configurationService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://boardgamearena.com/*"]
 }
 
-const myLudoEltId = "myludo_browserextension";
-const requestToken = getRequestToken();
+const myLudoEltId = "myludo-browser-extension-button";
 
 patch();
 
@@ -19,7 +14,7 @@ async function patch() {
     const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/.*\btable=\d+.*$/;
     const regexpGameStatsPage = /^https:\/\/boardgamearena\.com\/gamestats/;
 
-    if (!document.getElementById(myLudoEltId)) {
+    if (document.getElementsByClassName(myLudoEltId).length === 0) {
         if (regexTablePage.test(window.location.href)) {
             await patchTablePage();
         } else if (regexpEndGamePage.test(window.location.href)) {
@@ -29,7 +24,7 @@ async function patch() {
         }
     }
 
-    setTimeout(() => patch(), 500)
+    setTimeout(() => patch(), 125)
 }
 
 async function patchTablePage() {
@@ -44,30 +39,12 @@ async function patchTablePage() {
             if (bgaButtonBar !== null && bgaButtonBar.length > 0) {
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString);
-                const tableId = Number(urlParams.get("table"));
+                const tableId = urlParams.get("table");
 
-                await boardGameArenaService
-                    .getUser()
-                    .then(async user => {
-                        await boardGameArenaService
-                            .getGamesFromTable(requestToken, user, tableId)
-                            .then(async table => {
-                                const myludoId = await configurationService.getGame(table.gameId);
-
-                                await boardGameArenaHelper
-                                    .getMyLudoLink(myludoId.currentMyludoId, table)
-                                    .then(link => {
-                                        if (link === null) {
-                                            addMyLudoField();
-                                        }
-                                        else {
-                                            Array.from(bgaButtonBar).forEach((element) => {
-                                                element.appendChild(link);
-                                            });
-                                        }
-                                    });
-                            });
-                    });
+                const link = boardGameArenaHelper.getMyLudoLink(tableId);
+                Array.from(bgaButtonBar).forEach((element) => {
+                    element.appendChild(link);
+                });
             }
         }
     }
@@ -85,28 +62,10 @@ async function patchEndGamePage() {
             if (bgaButtonBar !== null) {
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString);
-                const tableId = Number(urlParams.get("table"));
+                const tableId = urlParams.get("table");
 
-                await boardGameArenaService
-                    .getUser()
-                    .then(async user => {
-                        await boardGameArenaService
-                            .getGamesFromTable(requestToken, user, tableId)
-                            .then(async table => {
-                                const myludoId = await configurationService.getGame(table.gameId);
-
-                                await boardGameArenaHelper
-                                    .getMyLudoLink(myludoId.currentMyludoId, table)
-                                    .then(link => {
-                                        if (link === null) {
-                                            addMyLudoField();
-                                        }
-                                        else {
-                                            bgaButtonBar.appendChild(link);
-                                        }
-                                    });
-                            });
-                    });
+                const link = boardGameArenaHelper.getMyLudoLink(tableId);
+                bgaButtonBar.appendChild(link);
             }
         }
     }
@@ -121,80 +80,34 @@ async function patchGameStatsPage() {
 
     if (displayStyle !== 'none' && displayStyle !== 'hide') return;
 
-    await boardGameArenaService
-        .getUser()
-        .then(async user => {
-            let page = 1;
+    let page = 1;
 
-            await fetchAndFeedStatsPage(user, page);
+    fetchAndFeedStatsPage(page);
 
-            document.querySelector("#see_more_tables").addEventListener("click", () => {
-                fetchAndFeedStatsPage(user, ++page);
-            });
+    document.querySelector("#see_more_tables").addEventListener("click", () => {
+        fetchAndFeedStatsPage(++page);
+    });
+}
+
+function fetchAndFeedStatsPage(page: number) {
+    const timeout = setTimeout(() => {
+        // on vérifie si toutes les tables sont chargés et rendues
+        const rows = document.querySelectorAll('#gamelist_inner tr:not(:has(a[href*="www.myludo.fr"]))');
+        if (!rows) return;
+
+        rows.forEach((row) => {
+            const tableText = row.querySelector('a.table_name.bga-link').textContent;
+
+            const tableId = tableText.slice(1); // on vire le # en début de ligne
+
+            const link = boardGameArenaHelper.getMyLudoLink(tableId);
+
+            const cell = document.createElement("td");
+            cell.appendChild(link);
+
+            document.querySelector(`#gamelist_inner a[href="/table?table=${tableId}"]`).closest("tr").appendChild(cell);
         });
-}
 
-async function fetchAndFeedStatsPage(connectedUser: User, page: number) {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const games = await configurationService.getGames();
-
-    const parameters: GameStatsParameters = {
-        player: urlParams.get("player"),
-        startDate: urlParams.get("start_date"),
-        endDate: urlParams.get("end_date"),
-        gameId: urlParams.get("game_id"),
-        finished: urlParams.get("finished"),
-        opponentId: urlParams.get("opponent_id"),
-        page: page
-    };
-
-    await boardGameArenaService
-        .getGameStats(requestToken, connectedUser, parameters)
-        .then(tables => {
-            if (tables.length > 0) {
-                const timeout = setTimeout(() => {
-                    // on vérifie si toutes les tables sont chargés et rendues
-                    if (!document.querySelector(`#gamelist_inner a[href="/table?table=${tables[tables.length - 1].tableId}"]`)) return;
-
-                    clearTimeout(timeout);
-
-                    tables.forEach(async (table) => {
-                        await boardGameArenaHelper
-                            .getMyLudoLink(games.find(o => o.bgaId === table.gameId)?.currentMyludoId, table)
-                            .then(link => {
-                                if (link === null) {
-                                    addMyLudoField();
-                                }
-                                else {
-                                    const cell = document.createElement("td");
-                                    cell.appendChild(link);
-
-                                    document.querySelector(`#gamelist_inner a[href="/table?table=${table.tableId}"]`).closest("tr").appendChild(cell);
-                                }
-                            });
-                    });
-                }, 250);
-            }
-        });
-}
-
-function addMyLudoField() {
-    const input = document.createElement("input");
-    input.setAttribute("type", "hidden");
-    input.setAttribute("id", myLudoEltId);
-
-    document.getElementById("main-content").appendChild(input);
-}
-
-function getRequestToken() {
-    const regex = /requestToken:\s+'([^']+)'/;
-
-    const requestToken = document.head.outerHTML.match(regex);
-
-    if (requestToken) {
-        return requestToken[1];
-    } else {
-        return null;
-    }
+        clearTimeout(timeout);
+    }, 125);
 }

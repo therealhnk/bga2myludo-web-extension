@@ -1,4 +1,7 @@
 import { BackgroundMessages } from "~core/models/backgroundMessages";
+import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse";
+import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
+import type { User } from "~core/models/user";
 
 export { };
 
@@ -27,6 +30,38 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 const requestToken = response.match(regex);
 
                 sendResponse(requestToken[1]);
+            })
+            .catch(() => sendResponse(null));
+    }
+
+    if (request.message === BackgroundMessages.GET_BGA_TABLE) {
+        fetch("https://boardgamearena.com/", { method: "GET" })
+            .then(response => { return response.text() })
+            .then(response => {
+                const regex = /requestToken:\s+'([^']+)'/;
+
+                const requestToken = response.match(regex);
+
+                const headers = new Headers([["x-request-token", requestToken[1]]]);
+
+                fetch(`https://boardgamearena.com/table/table/tableinfos.html?id=${request.tableId}`, { headers })
+                    .then(response => { return response.json() })
+                    .then(response => { return response as TableInfos })
+                    .then(response => { sendResponse(response); })
+                    .catch(() => sendResponse(null));
+            })
+            .catch(() => sendResponse(null));
+    }
+
+    if (request.message === BackgroundMessages.GET_BGA_USER) {
+        return fetch(`https://boardgamearena.com/my?who`, {})
+            .then(response => { return response.json() })
+            .then(response => { return response as WhoResponse })
+            .then(response => {
+                sendResponse({
+                    id: response.id,
+                    nickname: response.n
+                } as User);
             })
             .catch(() => sendResponse(null));
     }
