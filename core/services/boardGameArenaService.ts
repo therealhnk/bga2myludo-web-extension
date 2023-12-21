@@ -1,6 +1,5 @@
 import { BackgroundMessages } from "~core/models/backgroundMessages";
-import type { Friend, FriendsResponse } from "~core/models/boardGameArena/friendsResponse";
-import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
+import type { Friend } from "~core/models/boardGameArena/friendsResponse";
 import type { Table } from "~core/models/table";
 import configurationService from "./configurationService";
 
@@ -49,28 +48,13 @@ export default class boardGameArenaService {
     }
 
     static async getFriends(): Promise<Friend[]> {
-        return chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_TOKEN })
-            .then((token: string) => {
-                return boardGameArenaService
-                    .fetch<FriendsResponse>(`https://boardgamearena.com/community/community/friends.html`, token)
-                    .then(response => {
-                        if (!response.data && !response.data.friends) {
-                            return [];
-                        }
-                        else {
-                            return response.data.friends;
-                        }
-                    });
-            })
-            .catch(() => { return []; });
+        return await chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_FRIENDS });
     }
 
     static async isConnected() {
-        return fetch(`https://boardgamearena.com/my?who`, {})
-            .then(response => { return response.json() })
-            .then(response => { return response as WhoResponse })
-            .then(response => { return !response.error; })
-            .catch(() => { return false });
+        return chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_USER })
+            .then(response => { return response !== null; })
+            .catch(() => { return false; });
     }
 
     static async hasPermission(): Promise<boolean> {
@@ -82,11 +66,5 @@ export default class boardGameArenaService {
 
     static async requestPermission() {
         chrome.permissions.request({ origins: ['https://boardgamearena.com/*'] });
-    }
-
-    static async fetch<T>(url: string, requestToken: string) {
-        const headers = new Headers([["x-request-token", requestToken]]);
-
-        return fetch(url, { headers }).then(response => response.json() as T);
     }
 }
