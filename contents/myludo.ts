@@ -17,7 +17,6 @@ async function check() {
     if (url.includes("bgatableid")) {
         await init();
     } else if (url.includes("bga2myludo_data")) {
-        console.log("patch");
         await patch();
     }
 }
@@ -186,7 +185,7 @@ async function patch() {
                     }
                     else {
                         const modalContent = document.querySelector("#form-play .modal-content");
-                        modalContent.scrollTop = modalContent.scrollHeight;
+                        setTimeout(function () { modalContent.scrollTop = modalContent.scrollHeight; }, 0);
                     }
                 }
             }, 125);
@@ -284,6 +283,4 @@ function addWarning() {
     const modalContent = document.querySelector("#form-play .modal-content");
     modalContent.appendChild(divider);
     modalContent.appendChild(row);
-
-    warningIcon.scrollIntoView();
 }
