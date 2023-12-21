@@ -5,69 +5,85 @@ import type { User } from "~core/models/user";
 
 export { };
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.message === BackgroundMessages.GET_MYLUDO_TOKEN) {
-        //récupérer la home page pour récupérer le x-csrf-token dans les balises meta
-        fetch("https://www.myludo.fr/", { method: "GET" })
-            .then(response => { return response.text() })
-            .then(response => {
-                var regex = /<meta\s+name="csrf-token"\s+content="([^"]+)"/;
-
-                const requestToken = response.match(regex);
-
-                sendResponse(requestToken[1]);
-            })
-            .catch(() => sendResponse(null));
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+    let result = null;
+    switch (request.message) {
+        case BackgroundMessages.GET_BGA_TABLE:
+            result = await getBgaTable(request.tableId);
+            break;
+        case BackgroundMessages.GET_BGA_USER:
+            result = await getBgaUser();
+            break;
+        case BackgroundMessages.GET_BGA_FRIENDS:
+            result = await getBgaFriends();
+            break;
+        case BackgroundMessages.GET_MYLUDO_USER:
+            result = await getMyludoUser();
+            break;
     }
 
-    if (request.message === BackgroundMessages.GET_BGA_TOKEN) {
-        //récupérer la home page pour récupérer le requestToken dans les balises meta
-        fetch("https://boardgamearena.com/", { method: "GET" })
-            .then(response => { return response.text() })
-            .then(response => {
-                const regex = /requestToken:\s+'([^']+)'/;
-
-                const requestToken = response.match(regex);
-
-                sendResponse(requestToken[1]);
-            })
-            .catch(() => sendResponse(null));
-    }
-
-    if (request.message === BackgroundMessages.GET_BGA_TABLE) {
-        fetch("https://boardgamearena.com/", { method: "GET" })
-            .then(response => { return response.text() })
-            .then(response => {
-                const regex = /requestToken:\s+'([^']+)'/;
-
-                const requestToken = response.match(regex);
-
-                const headers = new Headers([["x-request-token", requestToken[1]]]);
-
-                fetch(`https://boardgamearena.com/table/table/tableinfos.html?id=${request.tableId}`, { headers })
-                    .then(response => { return response.json() })
-                    .then(response => { return response as TableInfos })
-                    .then(response => { sendResponse(response); })
-                    .catch(() => sendResponse(null));
-            })
-            .catch(() => sendResponse(null));
-    }
-
-    if (request.message === BackgroundMessages.GET_BGA_USER) {
-        return fetch(`https://boardgamearena.com/my?who`, {})
-            .then(response => { return response.json() })
-            .then(response => { return response as WhoResponse })
-            .then(response => {
-                sendResponse({
-                    id: response.id,
-                    nickname: response.n
-                } as User);
-            })
-            .catch(() => sendResponse(null));
-    }
+    sendResponse(result);
 
     return true;
 });
+
+async function getBgaTable(tableId) {
+    const headers = await getBgaHeaders();
+
+    if (!headers) return null;
+
+    return fetch(`https://boardgamearena.com/table/table/tableinfos.html?id=${tableId}`, { headers })
+        .then(response => { return response.json() })
+        .then(response => { return response as TableInfos })
+        .catch(() => { return null; });
+}
+
+async function getBgaUser() {
+    return fetch(`https://boardgamearena.com/my?who`, {})
+        .then(response => { return response.json() })
+        .then(response => { return response as WhoResponse })
+        .then(response => {
+            return {
+                id: response.id,
+                nickname: response.n
+            } as User;
+        }).catch(() => { return null; });
+}
+
+async function getMyludoUser() {
+    const headers = await getMyludoHeaders();
+
+    if (!headers) return null;
+
+    return fetch(`https://www.myludo.fr/views/login/datas.php?type=init`, { method: "GET", headers })
+        .then(response => { return response.json(); })
+        .then(response => response.user)
+        .catch(() => { return null; });
+}
+
+async function getBgaFriends() { }
+
+async function getBgaHeaders() {
+    //récupérer la home page pour récupérer le requestToken dans les balises meta
+    return fetch("https://boardgamearena.com/", { method: "GET" })
+        .then(response => { return response.text() })
+        .then(response => {
+            const regex = /requestToken:\s+'([^']+)'/;
+            return new Headers([["x-request-token", response.match(regex)[1]]]);
+        })
+        .catch(() => { return null; })
+}
+
+async function getMyludoHeaders() {
+    //récupérer la home page pour récupérer le x-csrf-token dans les balises meta
+    return fetch("https://www.myludo.fr/", { method: "GET" })
+        .then(response => { return response.text() })
+        .then(response => {
+            var regex = /<meta\s+name="csrf-token"\s+content="([^"]+)"/;
+            return new Headers([["X-Csrf-Token", response.match(regex)[1]]]);
+        })
+        .catch(() => { return null; })
+}
 
 chrome.runtime.onInstalled.addListener(function (object) {
     let showBoarding = false;
