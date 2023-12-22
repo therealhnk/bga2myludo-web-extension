@@ -89,17 +89,25 @@ export default function Releases() {
                         <ListItemText
                             primary='version 3.0.0 (24/11/2023)'
                             secondary={
-                                <div>
-                                    <div>Big improvements in customization of the behavior of the plugin</div>
-                                    <div>Popup for extension</div>
-                                    <div>Options screen</div>
-                                    <div>BGA/Myludo Status</div>
-                                    <div>Players customization</div>
-                                    <div>Behavior configurations</div>
-                                    <div>Night mode</div>
-                                    <div>Import/export current configuration</div>
-                                    <div>Releases screen</div>
-                                </div>
+                                <span>
+                                    Big improvements in customization of the behavior of the plugin
+                                    <br />
+                                    Popup for extension
+                                    <br />
+                                    Options screen
+                                    <br />
+                                    BGA/Myludo Status
+                                    <br />
+                                    Players customization
+                                    <br />
+                                    Behavior configurations
+                                    <br />
+                                    Night mode
+                                    <br />
+                                    Import/export current configuration
+                                    <br />
+                                    Releases screen
+                                </span>
                             }
                         />
                     </ListItem>
@@ -161,11 +169,13 @@ export default function Releases() {
                         <ListItemText
                             primary='version 2.1.0 (20/10/2023)'
                             secondary={
-                                <div>
-                                    <div>Add duration on realtime mode</div>
-                                    <div>Security update</div>
-                                    <div>Technical updates</div>
-                                </div>
+                                <span>
+                                    Add duration on realtime mode
+                                    <br />
+                                    Security update
+                                    <br />
+                                    Technical updates
+                                </span>
                             }
                         />
                     </ListItem>
@@ -173,10 +183,11 @@ export default function Releases() {
                         <ListItemText
                             primary='version 2.0.9 (13/10/2023)'
                             secondary={
-                                <div>
-                                    <div>Update game list</div>
-                                    <div>Fix scroll on myludo popup</div>
-                                </div>
+                                <span>
+                                    Update game list
+                                    <br />
+                                    Fix scroll on myludo popup
+                                </span>
                             }
                         />
                     </ListItem>
@@ -242,10 +253,11 @@ export default function Releases() {
                         <ListItemText
                             primary='version 1.1.0.2 (25/09/2023)'
                             secondary={
-                                <div>
-                                    <div>Update game list</div>
-                                    <div>Fix duplicate table comparison</div>
-                                </div>
+                                <span>
+                                    Update game list
+                                    <br />
+                                    Fix duplicate table comparison
+                                </span>
                             }
                         />
                     </ListItem>
@@ -258,11 +270,13 @@ export default function Releases() {
                         <ListItemText
                             primary='version 1.1.0.0 (20/09/2023)'
                             secondary={
-                                <div>
-                                    <div>Add table link on Myludo</div>
-                                    <div>Add warning on duplicate table</div>
-                                    <div>Encode BGA information</div>
-                                </div>
+                                <span>
+                                    Add table link on Myludo
+                                    <br />
+                                    Add warning on duplicate table
+                                    <br />
+                                    Encode BGA information
+                                </span>
                             }
                         />
                     </ListItem>
