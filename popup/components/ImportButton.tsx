@@ -1,6 +1,6 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { IconButton } from '@mui/material';
-import React, { useCallback, useRef } from 'react';
+import React, { forwardRef, useCallback, useRef } from 'react';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/popup.scss';
 
@@ -9,8 +9,8 @@ type Props = {
     onConfigurationUpdated: (configuration: Configuration) => void;
 }
 
-export default function ImportButton({ configuration, onConfigurationUpdated }: Props) {
-    const hiddenFileInput = useRef(null);
+const ImportButton = forwardRef<HTMLInputElement, Props>((props, ref) => {
+    const hiddenFileInput = useRef<HTMLInputElement>(null);
 
     const importConfiguration = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
@@ -20,30 +20,32 @@ export default function ImportButton({ configuration, onConfigurationUpdated }: 
                 if (event.target) {
                     const content = event.target.result as string;
                     const data = JSON.parse(content) as Configuration;
-                    onConfigurationUpdated(data);
+                    props.onConfigurationUpdated(data);
                 }
             };
             reader.readAsText(file);
         }
         e.target.value = '';
-    }, [onConfigurationUpdated]);
+    }, [props.onConfigurationUpdated]);
 
     const handleClick = useCallback(() => {
-        hiddenFileInput.current.click();
+        hiddenFileInput.current?.click();
     }, [hiddenFileInput]);
 
     return (
         <>
-            <IconButton size="small" title={chrome.i18n.getMessage("importConfiguration")} onClick={handleClick}>
+            <IconButton size="small" onClick={handleClick}>
                 <FileUploadIcon color="primary" />
             </IconButton>
             <input
                 type="file"
                 onChange={importConfiguration}
-                ref={hiddenFileInput}
+                ref={(hiddenFileInput as React.RefObject<HTMLInputElement>) || ref}
                 style={{ display: 'none' }}
                 accept=".json"
             />
         </>
-    )
-}
+    );
+});
+
+export default ImportButton;
