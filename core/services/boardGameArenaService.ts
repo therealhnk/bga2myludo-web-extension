@@ -53,7 +53,7 @@ export default class boardGameArenaService {
 
     static async isConnected() {
         return chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_USER })
-            .then(response => { return response !== null; })
+            .then(response => { return response; })
             .catch(() => { return false; });
     }
 
