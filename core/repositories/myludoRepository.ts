@@ -18,7 +18,7 @@ export default class myludoRepository {
 
         return fetch(`https://www.myludo.fr/views/login/datas.php?type=init`, { method: "GET", headers })
             .then(response => { return response.json(); })
-            .then(response => response.user)
+            .then(response => { return response.user })
             .catch(() => { return null; });
     }
 }
