@@ -2,7 +2,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import RestoreIcon from '@mui/icons-material/Restore';
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { MRT_GlobalFilterTextField, MRT_TablePagination, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef, type MRT_TableOptions } from 'material-react-table';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Configuration } from '~core/models/configuration';
@@ -143,13 +143,17 @@ export default function OverriddenGames({ configuration, onConfigurationUpdated 
         onEditingRowSave: handleSaveGame,
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.75rem' }}>
-                <IconButton title={chrome.i18n.getMessage("overridenGamesEditGame")} onClick={() => table.setEditingRow(row)}>
-                    <EditIcon fontSize='small' color="primary" />
-                </IconButton>
-                <IconButton title={chrome.i18n.getMessage("overridenGamesResetGame")} onClick={() => resetGame(row.original.bgaId)}>
-                    <RestoreIcon fontSize='small' color="primary" />
-                </IconButton>
-            </Box>
+                <Tooltip title={chrome.i18n.getMessage("overridenGamesEditGame")}>
+                    <IconButton onClick={() => table.setEditingRow(row)}>
+                        <EditIcon fontSize='small' color="primary" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title={chrome.i18n.getMessage("overridenGamesResetGame")}>
+                    <IconButton onClick={() => resetGame(row.original.bgaId)}>
+                        <RestoreIcon fontSize='small' color="primary" />
+                    </IconButton>
+                </Tooltip>
+            </Box >
         ),
         renderTopToolbar: ({ table }) => (
             <Grid container className='matching-top-toolbar'>

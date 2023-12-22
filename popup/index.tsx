@@ -3,7 +3,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import TuneIcon from '@mui/icons-material/Tune';
-import { CssBaseline, Divider, IconButton, ThemeProvider } from '@mui/material';
+import { CssBaseline, Divider, IconButton, ThemeProvider, Tooltip } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import React, { useCallback, useEffect, useState } from 'react';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
@@ -58,23 +58,36 @@ export default function PopupIndex() {
                         <span>{chrome.i18n.getMessage("extensionName")}</span>
                     </div>
 
-                    <IconButton size="small" title={chrome.i18n.getMessage("configuration")} onClick={() => setActiveSection('Configuration')}>
-                        <SettingsIcon color="primary" />
-                    </IconButton>
-                    <IconButton size="small" title={chrome.i18n.getMessage("userMatching")} onClick={() => setActiveSection('UserMatching')}>
-                        <SocialDistanceIcon color="primary" />
-                    </IconButton>
-                    <IconButton size="small" title={chrome.i18n.getMessage("overridenGames")} onClick={() => setActiveSection('OverridenGames')}>
-                        <TuneIcon color="primary" />
-                    </IconButton>
-                    <ImportButton configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
-                    <ExportButton configuration={configuration} />
-                    <IconButton
-                        onClick={toggleTheme}
-                        title={theme.palette.mode === 'dark' ? chrome.i18n.getMessage("dayMode") : chrome.i18n.getMessage("nightMode")}
-                    >
-                        {theme.palette.mode === 'dark' ? <DarkModeIcon color="primary" /> : <LightModeIcon color="primary" />}
-                    </IconButton>
+                    <Tooltip title={chrome.i18n.getMessage("configuration")}>
+                        <IconButton size="small" onClick={() => setActiveSection('Configuration')}>
+                            <SettingsIcon color="primary" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={chrome.i18n.getMessage("userMatching")}>
+                        <IconButton size="small" onClick={() => setActiveSection('UserMatching')}>
+                            <SocialDistanceIcon color="primary" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={chrome.i18n.getMessage("overridenGames")}>
+                        <IconButton size="small" onClick={() => setActiveSection('OverridenGames')}>
+                            <TuneIcon color="primary" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={chrome.i18n.getMessage("importConfiguration")}>
+                        <span>
+                            <ImportButton configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
+                        </span>
+                    </Tooltip>
+                    <Tooltip title={chrome.i18n.getMessage("exportConfiguration")}>
+                        <span>
+                            <ExportButton configuration={configuration} />
+                        </span>
+                    </Tooltip>
+                    <Tooltip title={theme.palette.mode === 'dark' ? chrome.i18n.getMessage("dayMode") : chrome.i18n.getMessage("nightMode")}>
+                        <IconButton onClick={toggleTheme}>
+                            {theme.palette.mode === 'dark' ? <DarkModeIcon color="primary" /> : <LightModeIcon color="primary" />}
+                        </IconButton>
+                    </Tooltip>
                 </header >
 
                 <Divider />

@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { MRT_GlobalFilterTextField, MRT_TablePagination, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef, type MRT_TableOptions } from 'material-react-table';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -215,20 +215,26 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         onEditingRowSave: handleSaveUser,
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.75rem' }}>
-                <IconButton title={chrome.i18n.getMessage("userMatchingEditUser")} onClick={() => table.setEditingRow(row)}>
-                    <EditIcon fontSize='small' color="primary" />
-                </IconButton>
-                <IconButton title={chrome.i18n.getMessage("userMatchingDeleteUser")} onClick={() => deleteUser(row.original.id)}>
-                    <DeleteIcon fontSize='small' color="primary" />
-                </IconButton>
+                <Tooltip title={chrome.i18n.getMessage("userMatchingEditUser")} >
+                    <IconButton onClick={() => table.setEditingRow(row)}>
+                        <EditIcon fontSize='small' color="primary" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title={chrome.i18n.getMessage("userMatchingDeleteUser")}>
+                    <IconButton onClick={() => deleteUser(row.original.id)}>
+                        <DeleteIcon fontSize='small' color="primary" />
+                    </IconButton>
+                </Tooltip>
             </Box>
         ),
         renderTopToolbar: ({ table }) => (
             <Grid container className='top-toolbar'>
                 <Grid item xs={6}>
-                    <IconButton size="small" title={chrome.i18n.getMessage("userMatchingAddUser")} onClick={() => table.setCreatingRow(true)}>
-                        <PersonAddIcon color="primary" />
-                    </IconButton>
+                    <Tooltip title={chrome.i18n.getMessage("userMatchingAddUser")}>
+                        <IconButton size="small" onClick={() => table.setCreatingRow(true)}>
+                            <PersonAddIcon color="primary" />
+                        </IconButton>
+                    </Tooltip>
                 </Grid>
                 <Grid item xs={6}>
                     <MRT_GlobalFilterTextField table={table} />
