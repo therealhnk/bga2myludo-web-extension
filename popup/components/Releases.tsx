@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.1.9 (22/12/2023)'
+                            secondary='fix myludo connection status'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.1.8 (22/12/2023)'
                             secondary='Technical update to minimize call to bga api'
                         />
