@@ -1,7 +1,7 @@
 import CheckIcon from "@mui/icons-material/Check";
 import ErrorIcon from "@mui/icons-material/Error";
 import WarningIcon from "@mui/icons-material/Warning";
-import { Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Grid, Tooltip, Typography } from "@mui/material";
 import { green, orange, red } from "@mui/material/colors";
 import bgaIcon from "data-base64:~assets/bga_icon.png";
 import myludoIcon from "data-base64:~assets/myludo_icon.png";
@@ -116,35 +116,43 @@ function Status({ onReleasesClick }: Props) {
     return (
         <Grid container>
             <Grid item xs={4} textAlign='center'>
-                <Button
-                    title={getMessage(bgaStatus)}
-                    disabled={bgaStatus === ConnectionStatus.Connected}
-                    fullWidth
-                    onClick={() => handleClick('bga', bgaStatus)}
-                >
-                    <div className="status">
-                        <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
-                        <span>{getStatusIcon('bga', bgaStatus)}</span>
-                    </div>
-                </Button>
+                <Tooltip title={getMessage(bgaStatus)}>
+                    <span>
+                        <Button
+                            disabled={bgaStatus === ConnectionStatus.Connected}
+                            fullWidth
+                            onClick={() => handleClick('bga', bgaStatus)}
+                        >
+                            <div className="status">
+                                <span><img className="icon" src={bgaIcon} alt="Board Game Arena" /></span>
+                                <span>{getStatusIcon('bga', bgaStatus)}</span>
+                            </div>
+                        </Button>
+                    </span>
+                </Tooltip>
             </Grid>
             <Grid item xs={4} textAlign='center'>
-                <Button
-                    title={getMessage(myludoStatus)}
-                    disabled={myludoStatus === ConnectionStatus.Connected}
-                    fullWidth
-                    onClick={() => handleClick('myludo', myludoStatus)}
-                >
-                    <div className="status">
-                        <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
-                        <span>{getStatusIcon('myludo', myludoStatus)}</span>
-                    </div>
-                </Button>
+                <Tooltip title={getMessage(myludoStatus)}>
+                    <span>
+                        <Button
+                            disabled={myludoStatus === ConnectionStatus.Connected}
+                            fullWidth
+                            onClick={() => handleClick('myludo', myludoStatus)}
+                        >
+                            <div className="status">
+                                <span><img className="icon" src={myludoIcon} alt="Myludo" /></span>
+                                <span>{getStatusIcon('myludo', myludoStatus)}</span>
+                            </div>
+                        </Button>
+                    </span>
+                </Tooltip>
             </Grid>
             <Grid item xs={4} textAlign='center'>
-                <Button title={chrome.i18n.getMessage("seeReleases")} fullWidth onClick={onReleasesClick}>
-                    <Typography color='primary' className="version">version {currentVersion}</Typography>
-                </Button>
+                <Tooltip title={chrome.i18n.getMessage("seeReleases")}>
+                    <Button fullWidth onClick={onReleasesClick}>
+                        <Typography color='primary' className="version">version {currentVersion}</Typography>
+                    </Button>
+                </Tooltip>
             </Grid>
         </Grid>
     )

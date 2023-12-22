@@ -1,35 +1,27 @@
 import { BackgroundMessages } from "~core/models/backgroundMessages";
+import boardGameArenaRepository from "~core/repositories/boardGameArenaRepository";
+import myludoRepository from "~core/repositories/myludoRepository";
 
 export { };
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.message === BackgroundMessages.GET_MYLUDO_TOKEN) {
-        //récupérer la home page pour récupérer le x-csrf-token dans les balises meta
-        fetch("https://www.myludo.fr/", { method: "GET" })
-            .then(response => { return response.text() })
-            .then(response => {
-                var regex = /<meta\s+name="csrf-token"\s+content="([^"]+)"/;
-
-                const requestToken = response.match(regex);
-
-                sendResponse(requestToken[1]);
-            })
-            .catch(() => sendResponse(null));
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+    let result = null;
+    switch (request.message) {
+        case BackgroundMessages.GET_BGA_TABLE:
+            result = await boardGameArenaRepository.getTable(request.tableId);
+            break;
+        case BackgroundMessages.GET_BGA_USER:
+            result = await boardGameArenaRepository.getUser();
+            break;
+        case BackgroundMessages.GET_BGA_FRIENDS:
+            result = await boardGameArenaRepository.getFriends();
+            break;
+        case BackgroundMessages.GET_MYLUDO_USER:
+            result = await myludoRepository.getUser();
+            break;
     }
 
-    if (request.message === BackgroundMessages.GET_BGA_TOKEN) {
-        //récupérer la home page pour récupérer le requestToken dans les balises meta
-        fetch("https://boardgamearena.com/", { method: "GET" })
-            .then(response => { return response.text() })
-            .then(response => {
-                const regex = /requestToken:\s+'([^']+)'/;
-
-                const requestToken = response.match(regex);
-
-                sendResponse(requestToken[1]);
-            })
-            .catch(() => sendResponse(null));
-    }
+    sendResponse(result);
 
     return true;
 });

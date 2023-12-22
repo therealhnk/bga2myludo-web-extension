@@ -15,7 +15,6 @@ export default function ExportButton({ configuration }: Props) {
     return (
         <IconButton
             size="small"
-            title={chrome.i18n.getMessage("exportConfiguration")}
             href={url}
             download={"bga2myludo_configuration.json"}
         >

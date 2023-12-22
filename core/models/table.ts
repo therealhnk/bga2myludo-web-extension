@@ -1,7 +1,7 @@
 import type { Player } from "./player";
 
 export class Table {
-    tableId: number;
+    tableId: string;
     players: Player[];
     end: Date;
     isCooperative: boolean;
