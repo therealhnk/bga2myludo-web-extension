@@ -35,7 +35,7 @@ export default function OverriddenGames({ configuration, onConfigurationUpdated 
 
         if (gameIdx >= 0) {
             overridenGamesUpdated[gameIdx].bgaId = game.bgaId;
-            overridenGamesUpdated[gameIdx].overridenMyludoId = game.overridenMyludoId.trim();
+            overridenGamesUpdated[gameIdx].overridenMyludoId = game.overridenMyludoId;
         }
         else {
             overridenGamesUpdated.push(game);
