@@ -66,7 +66,7 @@ function BoardingPage() {
                                     <Typography variant="body1">
                                         Découvrez les évolutions incluses dans cette nouvelle version :
                                     </Typography>
-                                    <Typography variant="body2">
+                                    <Typography variant="body2" component="div">
                                         <ul>
                                             <li>Configurez l'extension selon vos préférences</li>
                                             <li>Associez vos amis sur BGA avec ceux sur Myludo en toute simplicité</li>
