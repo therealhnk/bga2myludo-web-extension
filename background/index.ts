@@ -4,6 +4,8 @@ import myludoRepository from "~core/repositories/myludoRepository";
 
 export { };
 
+// wait for PLASMO 0.85+ for fix !
+// temporary : can remove that after plasmo fix
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     let result = null;
     switch (request.message) {
@@ -19,11 +21,13 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         case BackgroundMessages.GET_MYLUDO_USER:
             result = await myludoRepository.getUser();
             break;
+        default:
+            console.error("Message to background unsupported : " + request.message);
     }
 
     sendResponse(result);
 
-    return true;
+    return result;
 });
 
 chrome.runtime.onInstalled.addListener(function (object) {

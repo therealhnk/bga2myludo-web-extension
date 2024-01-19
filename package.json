@@ -1,7 +1,7 @@
 {
   "name": "BGA2Myludo",
   "displayName": "BGA2Myludo",
-  "version": "3.1.9",
+  "version": "3.2.0",
   "description": "Facilitez vous la saisie des parties de Board Game Arena sur Myludo !",
   "author": "Benjamin Bigot",
   "scripts": {
@@ -10,13 +10,14 @@
     "test": "plasmo test"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.1",
-    "@mui/material": "^5.15.1",
-    "@mui/x-date-pickers": "^6.18.5",
+    "@mui/icons-material": "^5.15.2",
+    "@mui/material": "^5.15.2",
+    "@mui/x-date-pickers": "^6.18.6",
+    "@plasmohq/messaging": "^0.6.1",
     "@plasmohq/storage": "^1.9.0",
-    "material-react-table": "^2.0.6",
+    "material-react-table": "^2.1.0",
     "plasmo": "0.84.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
