@@ -1,3 +1,4 @@
+import { sendToBackground } from "@plasmohq/messaging";
 import { BackgroundMessages } from "~core/models/backgroundMessages";
 import type { Friend } from "~core/models/boardGameArena/friendsResponse";
 import type { Table } from "~core/models/table";
@@ -7,23 +8,17 @@ export default class boardGameArenaService {
     static async getTableInformations(tableId: string) {
         const realTimeMode = ["0", "1", "2", "5", "9", 0, 1, 2, 5, 9];
 
-        const connectedUser = await chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_USER })
-            // wait for PLASMO 0.85+ for fix !
-            //const connectedUser = await sendToBackground({ name: BackgroundMessages.GET_BGA_USER })
-            .then(response => { return response; })
-            .catch(() => { return [] });
+        const connectedUser = await sendToBackground({ name: BackgroundMessages.GET_BGA_USER }).then(response => { return response.message; });
 
         if (!connectedUser) return null;
 
-        const response = await chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_TABLE, tableId: tableId })
-            // wait for PLASMO 0.85+ for fix !
-            //const response = await sendToBackground({ name: BackgroundMessages.GET_BGA_TABLE, body: { tableId: tableId } })
-            .then(response => { return response; })
-            .catch(() => { return [] });
+        const response = await sendToBackground({ name: BackgroundMessages.GET_BGA_TABLE, body: { tableId: tableId } }).then(response => { return response.message; });
 
         if (!response) return null;
 
         const configuration = await configurationService.get();
+
+
 
         const table: Table = {
             tableId: tableId,
@@ -56,16 +51,14 @@ export default class boardGameArenaService {
     }
 
     static async getFriends(): Promise<Friend[]> {
-        return chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_FRIENDS })
-            //return await sendToBackground({ name: BackgroundMessages.GET_BGA_FRIENDS })
-            .then(response => { return response; })
+        return await sendToBackground({ name: BackgroundMessages.GET_BGA_FRIENDS })
+            .then(response => { return response.message; })
             .catch(() => { return [] });
     }
 
     static async isConnected() {
-        return chrome.runtime.sendMessage({ message: BackgroundMessages.GET_BGA_USER })
-            //        return sendToBackground({ name: BackgroundMessages.GET_BGA_USER })
-            .then(response => { return response; })
+        return sendToBackground({ name: BackgroundMessages.GET_BGA_USER })
+            .then(response => { return response.message; })
             .catch(() => { return false; });
     }
 

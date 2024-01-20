@@ -3,8 +3,7 @@ import boardGameArenaRepository from "~core/repositories/boardGameArenaRepositor
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
     const message = await boardGameArenaRepository.getUser();
-
-    res.send({ message })
+    res.send({ message });
 }
 
 export default handler
