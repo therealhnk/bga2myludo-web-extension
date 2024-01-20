@@ -46,6 +46,37 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 3.3
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        On the road again !
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        Désolé de vous avoir fait subir une version toute naze avec la 3.2 :-(<br />
+                                        Au passage, j'ai pu constater que de nombreuses personnes ne savaient pas qu'il était possible de configurer le comportement du plugin.<br />
+                                        J'ai fait une petite vidéo pour vous montrer comment faire.
+                                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/AQTH3saUhvQ?si=HACFggMimjtvd6V-" title="How to pin extension and browse configuration" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                                        Bisous, Benjamin.
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        Version 3.2
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Shit happens
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 3.1
                                     </Typography>
                                     <Typography variant="body1">

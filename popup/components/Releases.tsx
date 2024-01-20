@@ -9,6 +9,30 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.3.0 (20/01/2024)'
+                            secondary='Apologies & update game list'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 3.2.1 (20/01/2024)'
+                            secondary='Try to fix version 3.2.0 issues'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 3.2.0 (19/01/2024)'
+                            secondary='buggy shitty version :-('
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
+                            primary='version 3.1.10 (22/12/2023)'
+                            secondary='rollbacked version 3.1.9'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.1.9 (22/12/2023)'
                             secondary='fix myludo connection status'
                         />
