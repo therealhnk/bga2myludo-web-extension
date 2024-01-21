@@ -9,8 +9,30 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.3.1 (21/01/2024)'
+                            secondary={
+                                <span>
+                                    Fix configuration upload on Firefox
+                                    <br />
+                                    Update game list
+                                </span>
+                            }
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.3.0 (20/01/2024)'
-                            secondary='Apologies & update game list'
+                            secondary={
+                                <span>
+                                    Apologies for 3.2.0
+                                    <br />
+                                    All API calls are made by the background service worker to overcome CORS restrictions
+                                    <br />
+                                    No more difference between informations from BGA history and BGA end game page
+                                    <br />
+                                    Update game list
+                                </span>
+                            }
                         />
                     </ListItem>
                     <ListItem>
@@ -22,19 +44,19 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.2.0 (19/01/2024)'
-                            secondary='buggy shitty version :-('
+                            secondary='Buggy shitty version :-('
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.1.10 (22/12/2023)'
-                            secondary='rollbacked version 3.1.9'
+                            secondary='Rollbacked version 3.1.9'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.1.9 (22/12/2023)'
-                            secondary='fix myludo connection status'
+                            secondary='Fix myludo connection status'
                         />
                     </ListItem>
                     <ListItem>

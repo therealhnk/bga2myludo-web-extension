@@ -1,6 +1,7 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { IconButton } from '@mui/material';
 import React, { forwardRef, useCallback, useRef } from 'react';
+import { isFirefox } from 'react-device-detect';
 import type { Configuration } from '~core/models/configuration';
 import '~popup/popup.scss';
 
@@ -29,7 +30,26 @@ const ImportButton = forwardRef<HTMLInputElement, Props>((props, ref) => {
     }, [props.onConfigurationUpdated]);
 
     const handleClick = useCallback(() => {
-        hiddenFileInput.current?.click();
+        if (isFirefox) {
+            const windowWidth = 400;
+            const windowHeight = 100;
+
+            const left = Math.round((screen.width - windowWidth) / 2);
+            const top = Math.round((screen.height - windowHeight) / 2);
+
+            chrome.windows.create({
+                url: 'tabs/uploadConfiguration.html',
+                type: 'popup',
+                width: windowWidth,
+                height: windowHeight,
+                left,
+                top
+            });
+        }
+        else {
+            hiddenFileInput.current?.click();
+        }
+
     }, [hiddenFileInput]);
 
     return (

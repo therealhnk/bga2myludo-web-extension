@@ -1,0 +1,28 @@
+.popup {
+    width: 100%;
+    padding: 26px 20px;
+}
+
+header {
+    .extension-name {
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+        float: left;
+
+        span {
+            position: fixed;
+            top: 32px;
+        }
+
+        img {
+            width: 32px;
+            height: 32px;
+            margin-right: 4px;
+        }
+    }
+
+    .file-upload {
+        float: right;
+    }
+}
