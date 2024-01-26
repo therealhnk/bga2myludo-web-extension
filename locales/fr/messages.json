@@ -226,5 +226,11 @@
     },
     "reactTableSortedByColumnDesc": {
         "message": "Trié par {column} descendant"
+    },
+    "notification": {
+        "message": "Voir les notifications"
+    },
+    "notificationsTitle": {
+        "message": "Notifications"
     }
 }

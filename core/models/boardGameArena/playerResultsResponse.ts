@@ -1,4 +1,7 @@
-export type PlayerResultsResponse = PlayerResult[]
+export interface PlayerResultsResponse {
+    status: number
+    data: PlayerResult[]
+}
 
 export interface PlayerResult {
     id: string

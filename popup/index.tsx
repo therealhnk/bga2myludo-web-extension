@@ -1,12 +1,15 @@
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import TuneIcon from '@mui/icons-material/Tune';
-import { CssBaseline, Divider, IconButton, ThemeProvider, Tooltip } from '@mui/material';
+import { Badge, CssBaseline, Divider, IconButton, ThemeProvider, Tooltip } from '@mui/material';
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import React, { useCallback, useEffect, useState } from 'react';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
+import type { Notification as NotificationModel } from '~core/models/notification';
+import boardGameArenaService from '~core/services/boardGameArenaService';
 import configurationService from "~core/services/configurationService";
 import Configuration from '~popup/components/Configuration';
 import '~popup/popup.scss';
@@ -15,6 +18,7 @@ import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
 import ImportButton from "./components/ImportButton";
 import Loader from "./components/Loader";
+import Notifications from './components/Notifications';
 import OverridenGames from './components/OverriddenGames';
 import Releases from './components/Releases';
 import Status from "./components/Status";
@@ -22,6 +26,7 @@ import UserMatching from "./components/UserMatching";
 
 export default function PopupIndex() {
     const [configuration, setConfiguration] = useState<ConfigurationModel>();
+    const [notifications, setNotifications] = useState<NotificationModel[]>([]);
     const [showLoader, setShowLoader] = useState(true);
     const [activeSection, setActiveSection] = useState('Home');
 
@@ -30,8 +35,11 @@ export default function PopupIndex() {
     useEffect(() => {
         configurationService.get().then((result) => {
             setConfiguration(result);
+            boardGameArenaService.getLatestPlayerResults(result.lastNotification?.timestamp, result.lastNotification?.id)
+                .then((notifications) => { setNotifications(notifications); });
             setShowLoader(false);
         });
+
     }, []);
 
     const refreshConfiguration = useCallback((configuration: ConfigurationModel) => {
@@ -58,6 +66,13 @@ export default function PopupIndex() {
                         <span>{chrome.i18n.getMessage("extensionName")}</span>
                     </div>
 
+                    <Tooltip title={chrome.i18n.getMessage("notification")}>
+                        <IconButton size="small" onClick={() => setActiveSection('Notification')}>
+                            <Badge badgeContent={notifications.length} color="error">
+                                <NotificationsIcon color="primary" />
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title={chrome.i18n.getMessage("configuration")}>
                         <IconButton size="small" onClick={() => setActiveSection('Configuration')}>
                             <SettingsIcon color="primary" />
@@ -97,6 +112,7 @@ export default function PopupIndex() {
                     :
                     <div className="popup-body">
                         {activeSection === 'Home' && <Home />}
+                        {activeSection === 'Notification' && <Notifications notifications={notifications} configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'Configuration' && <Configuration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'OverridenGames' && <OverridenGames configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}

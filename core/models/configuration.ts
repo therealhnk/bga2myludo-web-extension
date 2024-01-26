@@ -1,5 +1,6 @@
 import type { MappedGame } from "./mappedGame";
 import type { MappedUser } from "./mappedUser";
+import type { Notification as NotificationModel } from "./notification";
 
 export class Configuration {
     customizeCurrentPlayer?: boolean;
@@ -13,4 +14,5 @@ export class Configuration {
     users: MappedUser[];
     overridenGames: MappedGame[];
     autoUpdateUsers: boolean;
+    lastNotification: NotificationModel;
 }

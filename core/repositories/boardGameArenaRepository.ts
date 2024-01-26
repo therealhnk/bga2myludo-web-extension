@@ -1,19 +1,41 @@
 import type { PlayerResultsResponse } from "~core/models/boardGameArena/playerResultsResponse";
 import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse";
 import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
+import type { Notification as NotificationModel } from '~core/models/notification';
 import type { User } from "~core/models/user";
 
 export default class boardGameArenaRepository {
-    static async getLatestPlayerResults(fromTime?: number, fromId?: number) {
+    static async getLatestPlayerResults(fromTime?: string, fromId?: string) {
         const user = await boardGameArenaRepository.getUser();
 
         const headers = await boardGameArenaRepository.getHeaders();
 
         if (!headers) return null;
 
-        return fetch(`https://boardgamearena.com/message/board?type=playerresult&id=${user.id}&social=false&page=0&per_page=10&from_time=${fromTime}&from_id=${fromId}`, { headers })
+        let url = `https://boardgamearena.com/message/board?type=playerresult&id=${user.id}&social=false&page=0&per_page=10`;
+
+        if (fromTime && fromId) {
+            url += `&from_time=${fromTime}&from_id=${fromId}`;
+        }
+
+        return fetch(url, { headers })
             .then(response => { return response.json() })
             .then(response => { return response as PlayerResultsResponse })
+            .then(response => {
+                if (!response) {
+                    return [];
+                }
+                else {
+                    return response.data.map(o => {
+                        return {
+                            id: o.id,
+                            timestamp: o.timestamp,
+                            gameName: '',
+                            gameLink: ''
+                        } as NotificationModel;
+                    });
+                }
+            })
             .catch(() => { return null; });
     }
 

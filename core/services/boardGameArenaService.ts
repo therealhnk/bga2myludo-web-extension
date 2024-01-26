@@ -5,16 +5,14 @@ import type { Table } from "~core/models/table";
 import configurationService from "./configurationService";
 
 export default class boardGameArenaService {
-    static async getLatestPlayerResults(fromTime?: number, fromId?: number): Promise<any> {
-        return await sendToBackground(
-            {
-                name: BackgroundMessages.GET_LATEST_PLAYER_RESULTS,
-                body: {
-                    fromTime: fromTime,
-                    fromId: fromId
-                }
+    static async getLatestPlayerResults(fromTime?: string, fromId?: string): Promise<Notification[]> {
+        return await sendToBackground({
+            name: BackgroundMessages.GET_LATEST_PLAYER_RESULTS,
+            body: {
+                fromTime: fromTime,
+                fromId: fromId
             }
-        ).then(response => { return response.message; });
+        }).then(response => { return response.message; });
     }
 
     static async getTableInformations(tableId: string) {
@@ -35,8 +33,6 @@ export default class boardGameArenaService {
         if (!response) return null;
 
         const configuration = await configurationService.get();
-
-
 
         const table: Table = {
             tableId: tableId,
