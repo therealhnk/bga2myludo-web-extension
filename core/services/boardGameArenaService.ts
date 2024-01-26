@@ -5,14 +5,32 @@ import type { Table } from "~core/models/table";
 import configurationService from "./configurationService";
 
 export default class boardGameArenaService {
+    static async getLatestPlayerResults(fromTime?: number, fromId?: number): Promise<any> {
+        return await sendToBackground(
+            {
+                name: BackgroundMessages.GET_LATEST_PLAYER_RESULTS,
+                body: {
+                    fromTime: fromTime,
+                    fromId: fromId
+                }
+            }
+        ).then(response => { return response.message; });
+    }
+
     static async getTableInformations(tableId: string) {
         const realTimeMode = ["0", "1", "2", "5", "9", 0, 1, 2, 5, 9];
 
-        const connectedUser = await sendToBackground({ name: BackgroundMessages.GET_BGA_USER }).then(response => { return response.message; });
+        const connectedUser = await sendToBackground({ name: BackgroundMessages.GET_BGA_USER })
+            .then(response => { return response.message; });
 
         if (!connectedUser) return null;
 
-        const response = await sendToBackground({ name: BackgroundMessages.GET_BGA_TABLE, body: { tableId: tableId } }).then(response => { return response.message; });
+        const response = await sendToBackground(
+            {
+                name: BackgroundMessages.GET_BGA_TABLE,
+                body: { tableId: tableId }
+            }
+        ).then(response => { return response.message; });
 
         if (!response) return null;
 
