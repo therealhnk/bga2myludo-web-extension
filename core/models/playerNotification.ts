@@ -4,8 +4,6 @@ export class PlayerNotification {
     type: string;
     dateAgo: number;
     timestamp: number;
-    html: string;
-    img: string;
-    gameName: string;
+    gameId: string;
     tableId: string;
 }

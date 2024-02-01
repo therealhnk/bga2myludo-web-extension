@@ -9,7 +9,6 @@ import { Storage } from "@plasmohq/storage";
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import React, { useCallback, useEffect, useState } from 'react';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
-import type { PlayerNotification } from '~core/models/playerNotification';
 import configurationService from "~core/services/configurationService";
 import Configuration from '~popup/components/Configuration';
 import '~popup/popup.scss';
@@ -26,9 +25,9 @@ import UserMatching from "./components/UserMatching";
 
 export default function PopupIndex() {
     const [configuration, setConfiguration] = useState<ConfigurationModel>();
-    const [lastNotifications, setLastNotifications] = useState<PlayerNotification[]>([]);
     const [showLoader, setShowLoader] = useState(true);
     const [activeSection, setActiveSection] = useState('Home');
+    const [notificationsCount, setNotificationsCount] = useState(0);
 
     const storage = new Storage({ area: "local" });
 
@@ -40,9 +39,9 @@ export default function PopupIndex() {
             setShowLoader(false);
         });
 
-        storage.get('lastNotifications').then(result => {
+        storage.get('notificationsCount').then(result => {
             if (result) {
-                setLastNotifications(JSON.parse(result) as PlayerNotification[]);
+                setNotificationsCount(Number(result));
             }
         });
     }, []);
@@ -51,6 +50,12 @@ export default function PopupIndex() {
         configurationService.set(configuration);
         setConfiguration(configuration);
     }, []);
+
+    const refreshBadge = useCallback(() => {
+        storage.set('notificationsCount', 0);
+        setNotificationsCount(0);
+        chrome.action.setBadgeText({ text: '' });
+    }, [storage]);
 
     const toggleTheme = useCallback(() => {
         setConfiguration(current => {
@@ -73,8 +78,8 @@ export default function PopupIndex() {
 
                     <Tooltip title={chrome.i18n.getMessage("notification")}>
                         <IconButton size="small" onClick={() => setActiveSection('Notification')}>
-                            {lastNotifications ?
-                                <Badge badgeContent={lastNotifications.length > 9 ? "9+" : lastNotifications.length} color="error">
+                            {notificationsCount > 0 ?
+                                <Badge badgeContent={notificationsCount > 99 ? "99+" : notificationsCount} color="error">
                                     <NotificationsIcon color="primary" />
                                 </Badge>
                                 :
@@ -120,7 +125,7 @@ export default function PopupIndex() {
                     :
                     <div className="popup-body">
                         {activeSection === 'Home' && <Home />}
-                        {activeSection === 'Notification' && <Notifications notifications={lastNotifications} configuration={configuration} />}
+                        {activeSection === 'Notification' && <Notifications onNotificationsRefresh={refreshBadge} />}
                         {activeSection === 'Configuration' && <Configuration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'OverridenGames' && <OverridenGames configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}

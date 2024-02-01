@@ -228,13 +228,13 @@
         "message": "Trié par {column} descendant"
     },
     "notification": {
-        "message": "Voir les notifications"
+        "message": "Voir les dernières parties"
     },
     "notificationsTitle": {
-        "message": "Notifications"
+        "message": "Vos dernières parties"
     },
-    "notificationsMessage": {
-        "message": "Vos dernières parties jouées"
+    "notificationsMessageEmpty": {
+        "message": "Aucune notification de partie terminée"
     },
     "notificationsBgaLink": {
         "message": "Voir la partie sur BoardGameArena"

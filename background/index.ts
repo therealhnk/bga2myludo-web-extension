@@ -25,29 +25,45 @@ chrome.runtime.onInstalled.addListener(async ({ reason, previousVersion }) => {
 
     await chrome.alarms.create('check-notifications', {
         when: Date.now(),
-        periodInMinutes: 1
+        periodInMinutes: 10
     });
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
     const storage = new Storage({ area: "local" });
 
-    let lastNotifications: PlayerNotification[] = [];
     const lastNotificationsSerialized = await storage.get('lastNotifications');
+    const notificationCountSerialized = await storage.get('notificationsCount');
 
-    if (lastNotificationsSerialized) {
-        lastNotifications = JSON.parse(lastNotificationsSerialized) as PlayerNotification[];
-    }
+    let lastNotifications: PlayerNotification[] = lastNotificationsSerialized ? JSON.parse(lastNotificationsSerialized) as [] : [];
+    let notificationsCount = notificationCountSerialized ? Number(notificationCountSerialized) : 0;
 
-    console.error("refresh notifications : " + lastNotifications && lastNotifications.length > 0 ? `${lastNotifications[0].id} : ${lastNotifications[0].timestamp}` : "from start");
-    console.error(JSON.stringify(lastNotifications));
-    console.error(JSON.stringify(lastNotifications[0]));
-
-    boardGameArenaRepository.getPlayerNotifications(lastNotifications && lastNotifications.length > 0 ? lastNotifications[0] : null)
+    boardGameArenaRepository.getPlayerNotifications()
         .then(response => {
-            storage.set("lastNotifications", JSON.stringify(response));
+            if (response && response.length > 0) {
+                response.forEach(notification => {
+                    const alreadyExist = lastNotifications.find(o => o.id === notification.id);
+                    if (!alreadyExist) {
+                        lastNotifications.push(notification);
+                        notificationsCount++;
+                    }
+                });
+
+                storage.set("lastNotifications", JSON.stringify(
+                    lastNotifications
+                        .sort((x, y) => y.timestamp - x.timestamp)
+                        .slice(0, 99)));
+
+                storage.set("notificationsCount", notificationsCount);
+            }
+
+            if (notificationsCount > 0) {
+                chrome.action.setBadgeTextColor({ color: "white" });
+                chrome.action.setBadgeBackgroundColor({ color: '#d32f2f' });
+                chrome.action.setBadgeText({ text: notificationsCount > 99 ? "99+" : notificationsCount.toString() });
+            }
+            else {
+                chrome.action.setBadgeText({ text: '' });
+            }
         });
-    // chrome.action.setIcon({
-    //     path: getIconPath(alarm.name),
-    // });
 })

@@ -5,7 +5,7 @@ import { PlayerNotification } from "~core/models/playerNotification";
 import type { User } from "~core/models/user";
 
 export default class boardGameArenaRepository {
-    static async getPlayerNotifications(lastNotification: PlayerNotification): Promise<PlayerNotification[]> {
+    static async getPlayerNotifications(): Promise<PlayerNotification[]> {
         const user = await boardGameArenaRepository.getUser();
 
         const headers = await boardGameArenaRepository.getHeaders();
@@ -19,12 +19,6 @@ export default class boardGameArenaRepository {
         formData.append('social', 'false');
         formData.append('per_page', '20');
         formData.append('id', user.id);
-
-        if (lastNotification) {
-            formData.append('from_time', lastNotification.timestamp.toString())
-            formData.append('from_id', lastNotification.id);
-            formData.append('page', "0");
-        };
 
         return fetch(url,
             {
@@ -44,11 +38,13 @@ export default class boardGameArenaRepository {
                 }
                 else {
                     const regex = /<a\s+href="\/table\?table=([^"]+)"><span class="gamename">([^<]+)<\/span>/;
+                    const regexGameId = /\/(\w+)\/icon\//;
 
                     const playerNotifications: PlayerNotification[] = [];
 
                     response.data.forEach(o => {
                         const match = o.html.match(regex);
+                        const matchGameId = o.img.match(regexGameId);
 
                         if (match && match.length > 2) {
                             const tableId = match[1];
@@ -59,9 +55,7 @@ export default class boardGameArenaRepository {
                                 type: o.news_type,
                                 dateAgo: Number(o.date_ago),
                                 timestamp: Number(o.timestamp),
-                                html: o.html,
-                                img: o.img,
-                                gameName: gameName,
+                                gameId: matchGameId[1],
                                 tableId: tableId
                             });
                         }

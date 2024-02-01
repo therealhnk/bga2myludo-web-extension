@@ -1,19 +1,30 @@
-import HistoryIcon from '@mui/icons-material/History';
 import SaveIcon from '@mui/icons-material/Save';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Avatar, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Tooltip, Typography } from '@mui/material';
-import { Fragment } from 'react';
-import type { Configuration as ConfigurationModel } from '~core/models/configuration';
+import { IconButton, ImageList, ImageListItem, ImageListItemBar, Tooltip } from '@mui/material';
+import { Storage } from "@plasmohq/storage";
+import React, { useEffect, useState } from 'react';
 import type { PlayerNotification } from '~core/models/playerNotification';
 import '~popup/popup.scss';
-import React = require('react');
 
 type Props = {
-    configuration: ConfigurationModel;
-    notifications: PlayerNotification[];
+    onNotificationsRefresh: () => void;
 }
 
-export default function Notifications({ notifications, configuration }: Props) {
+export default function Notifications({ onNotificationsRefresh }: Props) {
+    const [notifications, setNotifications] = useState<PlayerNotification[]>([]);
+
+    const storage = new Storage({ area: "local" });
+
+    useEffect(() => {
+        onNotificationsRefresh();
+
+        storage.get('lastNotifications').then(result => {
+            if (result) {
+                setNotifications(JSON.parse(result) as PlayerNotification[]);
+            }
+        });
+    }, [storage]);
+
     const getFormattedDateAgo = (minutes: number) => {
         const minutesParHeure = 60;
         const secondesParJour = 1440;
@@ -32,57 +43,52 @@ export default function Notifications({ notifications, configuration }: Props) {
     return (
         <div className="notifications">
             <div className="title">{chrome.i18n.getMessage("notificationsTitle")}</div>
-            <Typography color='secondary' className="message">
-                {chrome.i18n.getMessage("notificationsMessage")}
-            </Typography>
+            {(!notifications || notifications.length === 0) &&
+                <div className="message">{chrome.i18n.getMessage("notificationsMessageEmpty")}</div>
+            }
             <div>
-                <List dense disablePadding>
+                <ImageList>
                     {notifications && notifications.map((o, index) =>
-                        <Fragment>
-                            <ListItem key={o.id} alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt={o.gameName} src={o.img} />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={
-                                        <span>
-                                            <span className='notifications-item-primary'>{o.gameName}</span>
-                                        </span>
-                                    }
-                                    secondary={
-                                        <span>
-                                            <div className='notifications-item-secondary'>
-                                                <HistoryIcon className='icon' />
-                                                <span className='text' >{chrome.i18n.getMessage("notificationsdateAgoPrefix")}{getFormattedDateAgo(o.dateAgo)}</span>
-                                            </div>
-                                            <div>
-                                                <Tooltip title={chrome.i18n.getMessage("notificationsBgaLink")}>
-                                                    <span>
-                                                        <IconButton target='_blank' href={`https://boardgamearena.com/table?table=${o.tableId}`}>
-                                                            <VisibilityIcon color="primary" />
-                                                        </IconButton>
-                                                    </span>
-                                                </Tooltip>
-                                                <Tooltip title={chrome.i18n.getMessage("notificationMyludoLink")}>
-                                                    <span>
-                                                        <IconButton target='_blank' href={`https://www.myludo.fr/#!/?bgatableid=${o.tableId}`}>
-                                                            <SaveIcon color="primary" />
-                                                        </IconButton>
-                                                    </span>
-                                                </Tooltip>
-                                            </div>
-                                        </span>
-                                    }
-                                />
-
-                            </ListItem>
-                            {index < notifications.length - 1 &&
-                                < Divider />
-                            }
-                        </Fragment>
+                        <ImageListItem key={o.id}>
+                            <div style={{
+                                width: "100%",
+                                height: "125px",
+                                backgroundImage: `url(https://x.boardgamearena.net/data/gamemedia/${o.gameId}/banner/default_500.jpg)`,
+                                backgroundPosition: 'center'
+                            }}>
+                                <div style={{
+                                    width: "100%",
+                                    height: "125px",
+                                    backgroundImage: `url(https://x.boardgamearena.net/data/gamemedia/${o.gameId}/title/en_500.png)`,
+                                    backgroundPosition: 'center center',
+                                    backgroundSize: "cover"
+                                }}></div>
+                            </div>
+                            <ImageListItemBar
+                                subtitle={`${chrome.i18n.getMessage("notificationsdateAgoPrefix")}${getFormattedDateAgo(o.dateAgo)}`}
+                                actionIcon={
+                                    <span>
+                                        <Tooltip title={chrome.i18n.getMessage("notificationsBgaLink")}>
+                                            <span>
+                                                <IconButton target='_blank' href={`https://boardgamearena.com/table?table=${o.tableId}`}>
+                                                    <VisibilityIcon sx={{ color: "white" }} />
+                                                </IconButton>
+                                            </span>
+                                        </Tooltip>
+                                        <Tooltip title={chrome.i18n.getMessage("notificationMyludoLink")}>
+                                            <span>
+                                                <IconButton target='_blank' href={`https://www.myludo.fr/#!/?bgatableid=${o.tableId}`}>
+                                                    <SaveIcon sx={{ color: "white" }} />
+                                                </IconButton>
+                                            </span>
+                                        </Tooltip>
+                                    </span>
+                                }
+                            />
+                        </ImageListItem>
                     )}
-                </List>
-            </div>
+                </ImageList >
+            </div >
         </div >
     )
 }
