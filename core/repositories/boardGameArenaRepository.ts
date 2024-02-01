@@ -1,42 +1,76 @@
-import type { PlayerResultsResponse } from "~core/models/boardGameArena/playerResultsResponse";
+import type { BoardResponse } from "~core/models/boardGameArena/BoardResponse";
 import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse";
 import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
-import type { Notification as NotificationModel } from '~core/models/notification';
+import { PlayerNotification } from "~core/models/playerNotification";
 import type { User } from "~core/models/user";
 
 export default class boardGameArenaRepository {
-    static async getLatestPlayerResults(fromTime?: string, fromId?: string) {
+    static async getPlayerNotifications(lastNotification: PlayerNotification): Promise<PlayerNotification[]> {
         const user = await boardGameArenaRepository.getUser();
 
         const headers = await boardGameArenaRepository.getHeaders();
 
         if (!headers) return null;
 
-        let url = `https://boardgamearena.com/message/board?type=playerresult&id=${user.id}&social=false&page=0&per_page=10`;
+        let url = `https://boardgamearena.com/message/board`;
 
-        if (fromTime && fromId) {
-            url += `&from_time=${fromTime}&from_id=${fromId}`;
-        }
+        const formData = new FormData();
+        formData.append('type', 'playernotif');
+        formData.append('social', 'false');
+        formData.append('per_page', '20');
+        formData.append('id', user.id);
 
-        return fetch(url, { headers })
-            .then(response => { return response.json() })
-            .then(response => { return response as PlayerResultsResponse })
+        if (lastNotification) {
+            formData.append('from_time', lastNotification.timestamp.toString())
+            formData.append('from_id', lastNotification.id);
+            formData.append('page', "0");
+        };
+
+        return fetch(url,
+            {
+                headers,
+                method: 'POST',
+                body: formData
+            })
+            .then(async response => {
+                return response.json();
+            })
+            .then(response => {
+                return response as BoardResponse;
+            })
             .then(response => {
                 if (!response) {
                     return [];
                 }
                 else {
-                    return response.data.map(o => {
-                        return {
-                            id: o.id,
-                            timestamp: o.timestamp,
-                            gameName: '',
-                            gameLink: ''
-                        } as NotificationModel;
+                    const regex = /<a\s+href="\/table\?table=([^"]+)"><span class="gamename">([^<]+)<\/span>/;
+
+                    const playerNotifications: PlayerNotification[] = [];
+
+                    response.data.forEach(o => {
+                        const match = o.html.match(regex);
+
+                        if (match && match.length > 2) {
+                            const tableId = match[1];
+                            const gameName = match[2];
+
+                            playerNotifications.push({
+                                id: o.id,
+                                type: o.news_type,
+                                dateAgo: Number(o.date_ago),
+                                timestamp: Number(o.timestamp),
+                                html: o.html,
+                                img: o.img,
+                                gameName: gameName,
+                                tableId: tableId
+                            });
+                        }
                     });
+
+                    return playerNotifications.sort((x, y) => y.timestamp - x.timestamp);
                 }
             })
-            .catch(() => { return null; });
+            .catch(() => { return []; });
     }
 
     static async getTable(tableId: string) {

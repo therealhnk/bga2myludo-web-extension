@@ -1,9 +1,9 @@
-export interface PlayerResultsResponse {
+export interface BoardResponse {
     status: number
-    data: PlayerResult[]
+    data: News[]
 }
 
-export interface PlayerResult {
+export interface News {
     id: string
     refid: string
     news_type: string

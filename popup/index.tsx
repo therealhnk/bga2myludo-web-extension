@@ -5,11 +5,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Badge, CssBaseline, Divider, IconButton, ThemeProvider, Tooltip } from '@mui/material';
+import { Storage } from "@plasmohq/storage";
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import React, { useCallback, useEffect, useState } from 'react';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
-import type { Notification as NotificationModel } from '~core/models/notification';
-import boardGameArenaService from '~core/services/boardGameArenaService';
+import type { PlayerNotification } from '~core/models/playerNotification';
 import configurationService from "~core/services/configurationService";
 import Configuration from '~popup/components/Configuration';
 import '~popup/popup.scss';
@@ -26,20 +26,25 @@ import UserMatching from "./components/UserMatching";
 
 export default function PopupIndex() {
     const [configuration, setConfiguration] = useState<ConfigurationModel>();
-    const [notifications, setNotifications] = useState<NotificationModel[]>([]);
+    const [lastNotifications, setLastNotifications] = useState<PlayerNotification[]>([]);
     const [showLoader, setShowLoader] = useState(true);
     const [activeSection, setActiveSection] = useState('Home');
+
+    const storage = new Storage({ area: "local" });
 
     const theme = getTheme(configuration && configuration.darkMode);
 
     useEffect(() => {
         configurationService.get().then((result) => {
             setConfiguration(result);
-            boardGameArenaService.getLatestPlayerResults(result.lastNotification?.timestamp, result.lastNotification?.id)
-                .then((notifications) => { setNotifications(notifications); });
             setShowLoader(false);
         });
 
+        storage.get('lastNotifications').then(result => {
+            if (result) {
+                setLastNotifications(JSON.parse(result) as PlayerNotification[]);
+            }
+        });
     }, []);
 
     const refreshConfiguration = useCallback((configuration: ConfigurationModel) => {
@@ -68,9 +73,13 @@ export default function PopupIndex() {
 
                     <Tooltip title={chrome.i18n.getMessage("notification")}>
                         <IconButton size="small" onClick={() => setActiveSection('Notification')}>
-                            <Badge badgeContent={notifications.length} color="error">
+                            {lastNotifications ?
+                                <Badge badgeContent={lastNotifications.length > 9 ? "9+" : lastNotifications.length} color="error">
+                                    <NotificationsIcon color="primary" />
+                                </Badge>
+                                :
                                 <NotificationsIcon color="primary" />
-                            </Badge>
+                            }
                         </IconButton>
                     </Tooltip>
                     <Tooltip title={chrome.i18n.getMessage("configuration")}>
@@ -106,13 +115,12 @@ export default function PopupIndex() {
                 </header >
 
                 <Divider />
-
                 {(showLoader) ?
                     <Loader />
                     :
                     <div className="popup-body">
                         {activeSection === 'Home' && <Home />}
-                        {activeSection === 'Notification' && <Notifications notifications={notifications} configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
+                        {activeSection === 'Notification' && <Notifications notifications={lastNotifications} configuration={configuration} />}
                         {activeSection === 'Configuration' && <Configuration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'OverridenGames' && <OverridenGames configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
@@ -126,6 +134,6 @@ export default function PopupIndex() {
                     <Status onReleasesClick={() => setActiveSection('Releases')} />
                 </footer>
             </div >
-        </ThemeProvider>
+        </ThemeProvider >
     )
 }

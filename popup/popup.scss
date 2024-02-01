@@ -42,14 +42,18 @@ header {
     max-height: 486px;
 }
 
+.home {
+    align-items: center;
+}
+
 .home,
 .user-matching,
 .overriden-games,
 .configuration,
-.releases {
+.releases,
+.notifications {
     margin: 12px 0 0 0;
     display: flex;
-    align-items: center;
     justify-content: center;
     flex-direction: column;
 
@@ -88,6 +92,32 @@ header {
         flex-flow: column;
         align-items: center;
         height: 55px;
+    }
+}
+
+.notifications {
+    .notifications-item-primary {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .notifications-item-secondary {
+        font-size: 12px;
+        font-weight: 300;
+
+        .icon {
+            padding-top: 6px;
+        }
+
+        .text {
+            top: -5px;
+            position: relative;
+        }
+    }
+
+    .notifications-textfield {
+        margin-left: 71px;
+        padding-bottom: 8px;
     }
 }
 

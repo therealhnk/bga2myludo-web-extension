@@ -232,5 +232,26 @@
     },
     "notificationsTitle": {
         "message": "Notifications"
+    },
+    "notificationsMessage": {
+        "message": "Vos dernières parties jouées"
+    },
+    "notificationsBgaLink": {
+        "message": "Voir la partie sur BoardGameArena"
+    },
+    "notificationMyludoLink": {
+        "message": "Enregistrer la partie sur Myludo"
+    },
+    "notificationsdateAgoSuffixDay": {
+        "message": "jour"
+    },
+    "notificationsdateAgoSuffixHour": {
+        "message": "heure"
+    },
+    "notificationsdateAgoSuffixMinute": {
+        "message": "minute"
+    },
+    "notificationsdateAgoPrefix": {
+        "message": "Il y a "
     }
 }

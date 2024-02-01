@@ -5,16 +5,6 @@ import type { Table } from "~core/models/table";
 import configurationService from "./configurationService";
 
 export default class boardGameArenaService {
-    static async getLatestPlayerResults(fromTime?: string, fromId?: string): Promise<Notification[]> {
-        return await sendToBackground({
-            name: BackgroundMessages.GET_LATEST_PLAYER_RESULTS,
-            body: {
-                fromTime: fromTime,
-                fromId: fromId
-            }
-        }).then(response => { return response.message; });
-    }
-
     static async getTableInformations(tableId: string) {
         const realTimeMode = ["0", "1", "2", "5", "9", 0, 1, 2, 5, 9];
 
