@@ -34,9 +34,9 @@ export default function Notifications({ onNotificationsRefresh }: Props) {
             return `${jours} ${chrome.i18n.getMessage("notificationsdateAgoSuffixDay")}${jours > 1 ? 's' : ''}`;
         } else if (minutes >= minutesParHeure) {
             const heures = Math.floor(minutes / minutesParHeure);
-            return `${heures} ${chrome.i18n.getMessage("notificationsdateAgoSuffixHour")}heure${heures > 1 ? 's' : ''}`;
+            return `${heures} ${chrome.i18n.getMessage("notificationsdateAgoSuffixHour")}${heures > 1 ? 's' : ''}`;
         } else {
-            return `${minutes} ${chrome.i18n.getMessage("notificationsdateAgoSuffixMinute")}minute${minutes > 1 ? 's' : ''}`;
+            return `${minutes} ${chrome.i18n.getMessage("notificationsdateAgoSuffixMinute")}${minutes > 1 ? 's' : ''}`;
         }
     };
 
