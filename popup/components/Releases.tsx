@@ -9,10 +9,10 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
-                            primary='version 3.4.0 (21/01/2024)'
+                            primary='version 3.4.0 (02/02/2024)'
                             secondary={
                                 <span>
-                                    Add Notifications for last played games
+                                    Add Notifications from BGA for ended tables
                                     <br />
                                     Update game list
                                     <br />

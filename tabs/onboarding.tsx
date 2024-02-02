@@ -46,6 +46,21 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 3.4
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Ajout des notifications
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        Si, comme moi, vous jouez en tour par tour, il peut arriver de passer à côté des parties terminées. Désormais, le plugin vous alerte dès qu'une partie vient de se terminer. Il vous suffira ensuite de vous rendre sur la cloche et de cliquer sur le bouton "Sauvegarder".
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 3.3
                                     </Typography>
                                     <Typography variant="body1">
