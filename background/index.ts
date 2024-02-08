@@ -4,11 +4,6 @@ import notificationsService from "~core/services/notificationsService";
 chrome.runtime.onInstalled.addListener(async ({ reason, previousVersion }) => {
     const manifestData = chrome.runtime.getManifest();
 
-    // temp : renouveler les notifications 
-    if (reason === "update" && manifestData.version === '3.4.2') {
-        notificationsService.updateNotifications([]);
-    }
-
     let showBoarding = false;
     if (reason === "install") {
         showBoarding = true;
