@@ -1,9 +1,9 @@
 import SaveIcon from '@mui/icons-material/Save';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { IconButton, ImageList, ImageListItem, ImageListItemBar, Tooltip } from '@mui/material';
-import { Storage } from "@plasmohq/storage";
 import React, { useEffect, useState } from 'react';
 import type { PlayerNotification } from '~core/models/playerNotification';
+import notificationsService from '~core/services/notificationsService';
 import '~popup/popup.scss';
 
 type Props = {
@@ -13,32 +13,14 @@ type Props = {
 export default function Notifications({ onNotificationsRefresh }: Props) {
     const [notifications, setNotifications] = useState<PlayerNotification[]>([]);
 
-    const storage = new Storage({ area: "local" });
-
     useEffect(() => {
         onNotificationsRefresh();
 
-        storage.get('lastNotifications').then(result => {
-            if (result) {
-                setNotifications(JSON.parse(result) as PlayerNotification[]);
-            }
-        });
-    }, [storage]);
-
-    const getFormattedDateAgo = (minutes: number) => {
-        const minutesParHeure = 60;
-        const secondesParJour = 1440;
-
-        if (minutes >= secondesParJour) {
-            const jours = Math.ceil(minutes / secondesParJour);
-            return `${jours} ${chrome.i18n.getMessage("notificationsdateAgoSuffixDay")}${jours > 1 ? 's' : ''}`;
-        } else if (minutes >= minutesParHeure) {
-            const heures = Math.floor(minutes / minutesParHeure);
-            return `${heures} ${chrome.i18n.getMessage("notificationsdateAgoSuffixHour")}${heures > 1 ? 's' : ''}`;
-        } else {
-            return `${minutes} ${chrome.i18n.getMessage("notificationsdateAgoSuffixMinute")}${minutes > 1 ? 's' : ''}`;
-        }
-    };
+        notificationsService.getLastNotifications()
+            .then(result => {
+                setNotifications(result);
+            })
+    }, []);
 
     return (
         <div className="notifications">
@@ -48,7 +30,7 @@ export default function Notifications({ onNotificationsRefresh }: Props) {
             }
             <div>
                 <ImageList>
-                    {notifications && notifications.map((o, index) =>
+                    {notifications && notifications.map((o) =>
                         <ImageListItem key={o.id}>
                             <div style={{
                                 width: "100%",
@@ -65,7 +47,7 @@ export default function Notifications({ onNotificationsRefresh }: Props) {
                                 }}></div>
                             </div>
                             <ImageListItemBar
-                                subtitle={`${chrome.i18n.getMessage("notificationsdateAgoPrefix")}${getFormattedDateAgo(o.dateAgo)}`}
+                                subtitle={`${chrome.i18n.getMessage("notificationsdateAgoPrefix")}${o.timeAgoText}`}
                                 actionIcon={
                                     <span>
                                         <Tooltip title={chrome.i18n.getMessage("notificationsBgaLink")}>

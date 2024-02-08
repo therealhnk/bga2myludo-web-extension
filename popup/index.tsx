@@ -5,11 +5,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Badge, CssBaseline, Divider, IconButton, ThemeProvider, Tooltip } from '@mui/material';
-import { Storage } from "@plasmohq/storage";
 import icon from "data-base64:~assets/bga2myludo_icon.png";
 import React, { useCallback, useEffect, useState } from 'react';
 import type { Configuration as ConfigurationModel } from "~core/models/configuration";
 import configurationService from "~core/services/configurationService";
+import notificationsService from '~core/services/notificationsService';
 import Configuration from '~popup/components/Configuration';
 import '~popup/popup.scss';
 import getTheme from '~theme/customTheme';
@@ -29,8 +29,6 @@ export default function PopupIndex() {
     const [activeSection, setActiveSection] = useState('Home');
     const [notificationsCount, setNotificationsCount] = useState(0);
 
-    const storage = new Storage({ area: "local" });
-
     const theme = getTheme(configuration && configuration.darkMode);
 
     useEffect(() => {
@@ -39,11 +37,9 @@ export default function PopupIndex() {
             setShowLoader(false);
         });
 
-        storage.get('notificationsCount').then(result => {
-            if (result) {
-                setNotificationsCount(Number(result));
-            }
-        });
+        notificationsService.getNotificationsCount().then(result => {
+            setNotificationsCount(result);
+        })
     }, []);
 
     const refreshConfiguration = useCallback((configuration: ConfigurationModel) => {
@@ -52,10 +48,9 @@ export default function PopupIndex() {
     }, []);
 
     const refreshBadge = useCallback(() => {
-        storage.set('notificationsCount', 0);
+        notificationsService.setNotificationsCount(0);
         setNotificationsCount(0);
-        chrome.action.setBadgeText({ text: '' });
-    }, [storage]);
+    }, []);
 
     const toggleTheme = useCallback(() => {
         setConfiguration(current => {

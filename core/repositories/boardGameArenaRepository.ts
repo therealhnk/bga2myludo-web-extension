@@ -53,10 +53,10 @@ export default class boardGameArenaRepository {
                             playerNotifications.push({
                                 id: o.id,
                                 type: o.news_type,
-                                dateAgo: Number(o.date_ago),
-                                timestamp: Number(o.timestamp),
+                                timestamp: Number(o.timestamp) * 1000,
                                 gameId: matchGameId[1],
-                                tableId: tableId
+                                tableId: tableId,
+                                timeAgoText: "n/a"
                             });
                         }
                     });
