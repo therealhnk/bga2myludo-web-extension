@@ -1,6 +1,7 @@
 export default class timeHelper {
     static getTextualTimeAgo = (time: number) => {
-        const minutes = (new Date().getTime() - time) / (1000 * 60);
+        const millisecondsDifference = new Date().getTime() - time;
+        const minutes = Math.floor(millisecondsDifference / (1000 * 60));
 
         const minutesParHeure = 60;
         const secondesParJour = 1440;
