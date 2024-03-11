@@ -17,10 +17,12 @@ type Props = {
     onConfigurationUpdated: (configuration: Configuration) => void;
 }
 
+// TODO : ajouter l'autocomplete : 
+// https://www.myludo.fr/autocomplete/player?words=j
+
 export default function UserMatching({ configuration, onConfigurationUpdated }: Props) {
     const [users, setUsers] = useState(configuration.users);
     const [isLoading, setIsLoading] = useState(false);
-
 
     useEffect(() => {
         if (!configuration.autoUpdateUsers) return;
@@ -107,7 +109,8 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
                     required: true,
                     error: !!validationErrors?.myludoUser,
                     helperText: validationErrors?.myludoUser,
-                    onFocus: () => setValidationErrors({ ...validationErrors, myludoUser: undefined, })
+                    onFocus: () => setValidationErrors({ ...validationErrors, myludoUser: undefined, }),
+
                 },
             }
         ],
