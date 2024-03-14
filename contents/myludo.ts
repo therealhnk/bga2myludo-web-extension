@@ -211,7 +211,7 @@ function getDataFromBGA() {
 async function loadPlays(callback) {
     const tables: Table[] = [];
 
-    const playsTab = document.querySelector<HTMLElement>('a[href="#plays"]');
+    const playsTab = document.querySelector<HTMLElement>('a[data-target="plays"]');
 
     if (playsTab) {
         playsTab.click();
