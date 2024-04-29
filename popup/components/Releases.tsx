@@ -9,8 +9,14 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
-                            primary='version 3.4.12 (27/04/2024)'
-                            secondary='Update game list'
+                            primary='version 3.4.12 (29/04/2024)'
+                            secondary={
+                                <span>
+                                    Update framework version
+                                    <br />
+                                    Update game list
+                                </span>
+                            }
                         />
                     </ListItem>
                     <ListItem>
