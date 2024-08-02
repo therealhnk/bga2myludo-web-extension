@@ -53,7 +53,7 @@ jobs:
           mv build/edge-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_edge-mv3.zip
           mv build/opera-mv3-prod.zip build/${{ steps.get-version.outputs.version }}_opera-mv3.zip
       - name: Browser Platform Publish
-        uses: PlasmoHQ/bpp@v3.5.0
+        uses: PlasmoHQ/bpp@v3.6.1
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
           chrome-file: build/${{ steps.get-version.outputs.version }}_chrome-mv3.zip
