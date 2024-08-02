@@ -1,7 +1,7 @@
 {
   "name": "BGA2Myludo",
   "displayName": "BGA2Myludo",
-  "version": "3.4.16",
+  "version": "3.4.17",
   "description": "Facilitez vous la saisie des parties de Board Game Arena sur Myludo !",
   "author": "Benjamin Bigot",
   "scripts": {
@@ -18,7 +18,7 @@
     "@plasmohq/messaging": "^0.6.1",
     "@plasmohq/storage": "^1.9.0",
     "material-react-table": "^2.1.0",
-    "plasmo": "0.86.1",
+    "plasmo": "0.88.0",
     "react": "18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
