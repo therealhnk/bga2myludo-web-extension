@@ -111,11 +111,17 @@ async function patch() {
                     if (data.isSolo) {
                         document.getElementById('solo').click();
 
+                        const score = data.players[0].score;
+
+                        if (score !== -1) {
+                            documentHelper.getFirstHtmlElementByQuery('.btn-winner-player').click();
+                        }
+
                         documentHelper.getFirstHtmlElementByQuery(`label[for="name-0"]`).click();
                         documentHelper.getInputById(`name-0`).value = data.players[0].name;
 
                         documentHelper.getFirstHtmlElementByQuery(`label[for="score-0"]`).click();
-                        documentHelper.getInputById(`score-0`).value = data.players[0].score.toString();
+                        documentHelper.getInputById(`score-0`).value = score.toString();
                     } else if (data.isCooperative) {
                         document.getElementById('coop').click();
 
@@ -124,7 +130,7 @@ async function patch() {
                         documentHelper.getFirstHtmlElementByQuery(`label[for="coopscore"]`).click();
                         documentHelper.getInputById(`coopscore`).value = scoreCoop.toString();
 
-                        if (scoreCoop !== 0) {
+                        if (scoreCoop !== -1) {
                             documentHelper.getFirstHtmlElementByQuery('.btn-icon-switch').click();
                         }
 
