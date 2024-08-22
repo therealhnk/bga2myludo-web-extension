@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.5.1 (21/08/2024)'
+                            secondary='Update supported games (+16)'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.5.0 (16/08/2024)'
                             secondary='fix win condition for solo and coop games'
                         />
@@ -34,25 +40,25 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.16 (17/06/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+2, ~2)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.15 (10/06/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+7)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.14 (29/05/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (~8)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.13 (27/05/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+29)'
                         />
                     </ListItem>
                     <ListItem>
@@ -62,7 +68,7 @@ export default function Releases() {
                                 <span>
                                     Update framework version
                                     <br />
-                                    Update supported games
+                                    Update supported games (+13, ~8)
                                 </span>
                             }
                         />
@@ -70,7 +76,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.11 (02/04/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+13, ~1)'
                         />
                     </ListItem>
                     <ListItem>
@@ -80,7 +86,7 @@ export default function Releases() {
                                 <span>
                                     Update framework version
                                     <br />
-                                    Update supported games
+                                    Update supported games (+3)
                                     <br />
                                     Fix new plays tab design
                                 </span>
@@ -90,25 +96,25 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.9 (11/03/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+11)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.8 (29/02/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+8)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.7 (19/02/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+2)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.6 (17/02/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+10)'
                         />
                     </ListItem>
                     <ListItem>
@@ -120,7 +126,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.4.4 (09/02/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+11)'
                         />
                     </ListItem>
                     <ListItem>
@@ -148,7 +154,7 @@ export default function Releases() {
                                 <span>
                                     Add Notifications from BGA for ended tables
                                     <br />
-                                    Update supported games
+                                    Update supported games (+11, ~1)
                                     <br />
                                     Fix quota issue
                                 </span>
@@ -158,7 +164,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.3.2 (22/01/2024)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+1)'
                         />
                     </ListItem>
                     <ListItem>
@@ -168,7 +174,7 @@ export default function Releases() {
                                 <span>
                                     Fix configuration upload on Firefox
                                     <br />
-                                    Update supported games
+                                    Update supported games (~3)
                                 </span>
                             }
                         />
@@ -184,7 +190,7 @@ export default function Releases() {
                                     <br />
                                     No more difference between informations from BGA history and BGA end game page
                                     <br />
-                                    Update supported games
+                                    Update supported games (+10)
                                 </span>
                             }
                         />
@@ -222,13 +228,13 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.1.7 (20/12/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+5)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 3.1.6 (12/12/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+4)'
                         />
                     </ListItem>
                     <ListItem>
@@ -246,7 +252,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.1.3 (06/12/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+9)'
                         />
                     </ListItem>
                     <ListItem>
@@ -270,7 +276,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.0.6 (27/11/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+11)'
                         />
                     </ListItem>
                     <ListItem>
@@ -300,7 +306,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.0.1 (24/11/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+2)'
                         />
                     </ListItem>
                     <ListItem>
@@ -338,19 +344,19 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 2.2.6 (06/11/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+1)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 2.2.5 (06/11/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+1)'
                         />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 2.2.4 (06/11/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (~1)'
                         />
                     </ListItem>
                     <ListItem>
@@ -362,7 +368,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 2.2.2 (26/10/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+6)'
                         />
                     </ListItem>
                     <ListItem>
@@ -380,7 +386,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 2.1.1 (20/10/2023)'
-                            secondary='Update supported games'
+                            secondary='Update supported games (+9)'
                         />
                     </ListItem>
                     <ListItem>
@@ -402,7 +408,7 @@ export default function Releases() {
                             primary='version 2.0.9 (13/10/2023)'
                             secondary={
                                 <span>
-                                    Update supported games
+                                    Update supported games (~1)
                                     <br />
                                     Fix scroll on myludo popup
                                 </span>
@@ -465,14 +471,14 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 1.1.0.3 (25/09/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+13)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.1.0.2 (25/09/2023)'
                             secondary={
                                 <span>
-                                    Update supported games
+                                    Update supported games (~2)
                                     <br />
                                     Fix duplicate table comparison
                                 </span>
@@ -482,7 +488,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 1.1.0.1 (21/09/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (~1)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
@@ -501,22 +507,22 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.15 (11/09/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (~1)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.14 (09/09/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (~5)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.13 (08/09/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (~13)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.12 (06/09/2023)'
-                            secondary='Add alpha and beta games support' />
+                            secondary='Add alpha and beta games support (+235)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
@@ -526,32 +532,32 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.10 (01/09/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+4)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.9 (30/08/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+1)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.8 (30/08/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+1)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.7 (24/08/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+1)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.6 (16/08/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+1)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.5 (09/08/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+5)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
@@ -576,7 +582,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 1.0.0.0 (06/08/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+10)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
@@ -601,7 +607,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 0.0.0.2 (02/08/2023)'
-                            secondary='Update supported games' />
+                            secondary='Update supported games (+8)' />
                     </ListItem>
                     <ListItem>
                         <ListItemText
