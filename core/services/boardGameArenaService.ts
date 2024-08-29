@@ -30,7 +30,7 @@ export default class boardGameArenaService {
             end: response.data.result.time_end,
             isCooperative: response.data.result.is_coop,
             isSolo: response.data.result.is_solo,
-            isAbandoned: response.data.result.endgame_reason !== 'normal_end',
+            isAbandoned: response.data.result.endgame_reason.includes('abandon'),
             gameId: response.data.game_name,
             duration: realTimeMode.includes(response.data.options[200]?.value) ? Math.floor(Number(response.data.result.time_duration) / 60) : undefined
         };

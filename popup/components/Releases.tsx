@@ -9,6 +9,18 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.6.0 (29/08/2024)'
+                            secondary={
+                                <span>
+                                    Fix rules for considering a table as abandonned
+                                    <br />
+                                    Update supported games (+1)
+                                </span>
+                            }
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.5.1 (21/08/2024)'
                             secondary='Update supported games (+16)'
                         />
@@ -16,7 +28,7 @@ export default function Releases() {
                     <ListItem>
                         <ListItemText
                             primary='version 3.5.0 (16/08/2024)'
-                            secondary='fix win condition for solo and coop games'
+                            secondary='Fix win condition for solo and coop games'
                         />
                     </ListItem>
                     <ListItem>
