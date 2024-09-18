@@ -113,7 +113,7 @@ async function patch() {
 
                         const score = data.players[0].score;
 
-                        if (score !== -1) {
+                        if (score > 0) {
                             documentHelper.getFirstHtmlElementByQuery('.btn-winner-player').click();
                         }
 
