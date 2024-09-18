@@ -130,7 +130,7 @@ async function patch() {
                         documentHelper.getFirstHtmlElementByQuery(`label[for="coopscore"]`).click();
                         documentHelper.getInputById(`coopscore`).value = scoreCoop.toString();
 
-                        if (scoreCoop !== -1) {
+                        if (scoreCoop <= 0) {
                             documentHelper.getFirstHtmlElementByQuery('.btn-icon-switch').click();
                         }
 
