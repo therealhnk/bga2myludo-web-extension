@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.6.5 (20/09/2024)'
+                            secondary='Update supported games (+32), Merci Firebird !'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.6.4 (17/09/2024)'
                             secondary='Update win condition for solo games'
                         />
