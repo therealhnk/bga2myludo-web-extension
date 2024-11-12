@@ -1,6 +1,10 @@
 export interface BoardResponse {
     status: number
-    data: News[]
+    data: BoardResponseData
+}
+
+export interface BoardResponseData {
+    news: News[]
 }
 
 export interface News {

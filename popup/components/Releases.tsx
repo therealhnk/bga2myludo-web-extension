@@ -9,6 +9,20 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.7.0 (12/11/2024)'
+                            secondary={
+                                <span>
+                                    Fix bga notifications api
+                                    <br />
+                                    Update supported games (+38)
+                                    <br />
+                                    Update framework version
+                                </span>
+                            }
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.6.5 (20/09/2024)'
                             secondary='Update supported games (+32), Merci Firebird !'
                         />

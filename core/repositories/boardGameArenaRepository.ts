@@ -42,7 +42,7 @@ export default class boardGameArenaRepository {
 
                     const playerNotifications: PlayerNotification[] = [];
 
-                    response.data.forEach(o => {
+                    response.data.news.forEach(o => {
                         const match = o.html.match(regex);
                         const matchGameId = o.img.match(regexGameId);
 
