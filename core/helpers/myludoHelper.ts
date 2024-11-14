@@ -33,7 +33,7 @@ export default class myludoHelper {
 
         const currentPlayersFootPrint = JSON.stringify(
             players
-                .map(o => { return { name: o.name, score: o.score }; })
+                .map(o => { return { name: o.name.replace(/[A-Z][0-9][\s-]/g, ''), score: o.score }; })
                 .sort(function (a, b) {// on effectue d'abord un tri par score descendant puis un tri alpha des pseudos
                     if (Number(a.score) < Number(b.score)) return 1;
                     if (Number(a.score) > Number(b.score)) return -1;
@@ -45,7 +45,6 @@ export default class myludoHelper {
 
         return plays.some(o =>
             myludoHelper.trunkDateToDay(o.end).getTime() === myludoHelper.trunkDateToDay(currentPlay.end).getTime() &&
-            (!currentPlay.duration || o.duration === currentPlay.duration) &&
             JSON.stringify(o.players).toLowerCase() === currentPlayersFootPrint
         );
     }
