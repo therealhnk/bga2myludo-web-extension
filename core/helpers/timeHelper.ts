@@ -7,7 +7,7 @@ export default class timeHelper {
         const secondesParJour = 1440;
 
         if (minutes >= secondesParJour) {
-            const jours = Math.ceil(minutes / secondesParJour);
+            const jours = Math.floor(minutes / secondesParJour);
             return `${jours} ${chrome.i18n.getMessage("notificationsdateAgoSuffixDay")}${jours > 1 ? 's' : ''}`;
         } else if (minutes >= minutesParHeure) {
             const heures = Math.floor(minutes / minutesParHeure);
