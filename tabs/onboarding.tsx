@@ -46,6 +46,48 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 3.7
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Nettoyage d'automne
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        Grosse maj des jeux supportés (+49)
+                                        <br />Correction de vieux bugs latents :
+                                        <br />- Calcul du delai de partie dans les notifications
+                                        <br />- Détection des parties en doublon KO avec des pseudos avec caractères spéciaux
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        Version 3.6
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Remise à plat sur les conditions de victoires
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        Version 3.5
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Corrections sur les conditions de victoires
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 3.4
                                     </Typography>
                                     <Typography variant="body1">
