@@ -46,6 +46,18 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 3.8
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Ajout du lien myLudo sur la <a href="https://boardgamearena.com/player?section=lastresults" target="_blank">page des derniers resultats</a>
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 3.7
                                     </Typography>
                                     <Typography variant="body1">

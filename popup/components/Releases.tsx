@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.8.0 (18/11/2024)'
+                            secondary='Add link on last results page'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.7.1 (13/11/2024)'
                             secondary={
                                 <span>
