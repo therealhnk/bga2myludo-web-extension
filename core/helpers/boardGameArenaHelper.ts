@@ -2,7 +2,7 @@
 export default class boardGameArenaHelper {
     static getMyLudoLink(tableId: string) {
         const link = document.createElement("a");
-        link.href = `https://www.myludo.fr/#!/?bgatableid=${tableId}`;
+        link.href = `https://www.myludo.fr/#!/home?bgatableid=${tableId}`;
         link.target = "_blank"
         link.textContent = chrome.i18n.getMessage("myLudoLinkText");
         link.classList.add("action-button");

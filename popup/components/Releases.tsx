@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 3.8.2 (18/02/2025)'
+                            secondary='Fix Myludo switching urls'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 3.8.1 (11/01/2025)'
                             secondary='Update supported games (+44)'
                         />

@@ -106,7 +106,7 @@ function fetchAndFeedLastResultsPage(page: number) {
                     span.textContent = " • ";
 
                     const link = document.createElement("a");
-                    link.href = `https://www.myludo.fr/#!/?bgatableid=${tableId}`;
+                    link.href = `https://www.myludo.fr/#!/home?bgatableid=${tableId}`;
                     link.target = "_blank";
                     link.textContent = "Enregistrer sur myLudo";
 

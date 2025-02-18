@@ -59,7 +59,7 @@ export default function Notifications({ onNotificationsRefresh }: Props) {
                                         </Tooltip>
                                         <Tooltip title={chrome.i18n.getMessage("notificationMyludoLink")}>
                                             <span>
-                                                <IconButton target='_blank' href={`https://www.myludo.fr/#!/?bgatableid=${o.tableId}`}>
+                                                <IconButton target='_blank' href={`https://www.myludo.fr/#!/home?bgatableid=${o.tableId}`}>
                                                     <SaveIcon sx={{ color: "white" }} />
                                                 </IconButton>
                                             </span>
