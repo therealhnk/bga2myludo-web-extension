@@ -80,27 +80,28 @@ jobs:
           echo "changes=true" >> $GITHUB_ENV
         fi
 
-    - name: Increment version in package.json
-      if: env.changes == 'true'
-      run: |
-        jq '.version |= split(".") | .[2] = (. [2] | tonumber + 1 | tostring) | join(".")' package.json > package_tmp.json
-        mv package_tmp.json package.json
-
+        - name: Increment version in package.json
+        if: env.changes == 'true'
+        run: |
+          jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
+          mv package_tmp.json package.json
+  
     - name: Commit changes
       if: env.changes == 'true'
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git checkout -b update-json
-        git add assets/games.json package.json
-        git commit -m 'Update JSON with new data and increment version'
-        git push --set-upstream origin update-json
-
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b update-json
+          mv deduplicated.json assets/games.json
+          git add assets/games.json package.json
+          git commit -m 'Update JSON with new data and increment version'
+          git push --set-upstream origin update-json
+  
     - name: Create Pull Request
       if: env.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        branch: update-json
-        title: 'Daily JSON Update'
-        body: 'This PR updates the JSON file with the latest data and increments the version.'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-json
+          title: 'Daily JSON Update'
+          body: 'This PR updates the JSON file with the latest data and increments the version.'
