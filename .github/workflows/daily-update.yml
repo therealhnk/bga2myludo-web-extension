@@ -25,7 +25,7 @@ jobs:
       run: curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
 
     - name: Perform HTTP GET request for boardgamearena.com
-      run: curl -o data.html https://boardgamearena.com/gamelist?allGames=
+      run: curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
 
     - name: Debug HTML content (fr)
       run: cat data_fr.html
