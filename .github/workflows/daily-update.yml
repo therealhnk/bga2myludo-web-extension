@@ -38,6 +38,12 @@ jobs:
       run: |
         sed -n 's/.*"game_list":\(\[.*\]\).*/\1/p' data.html > game_list.json || echo "No match found in data.html"
 
+    - name: Debug game_list.json (fr)
+      run: cat game_list_fr.json
+
+    - name: Debug game_list.json (en)
+      run: cat game_list.json
+
     - name: Merge game lists
       run: |
         jq -s '.[0] + .[1]' game_list_fr.json game_list.json > merged_game_list.json
