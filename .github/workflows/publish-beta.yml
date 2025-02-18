@@ -1,4 +1,4 @@
-name: "release-beta"
+name: "Publish beta"
 
 on: [workflow_dispatch]
 
