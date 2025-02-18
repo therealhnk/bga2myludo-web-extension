@@ -32,11 +32,11 @@ jobs:
 
     - name: Extract names from HTML (fr)
       run: |
-        grep -oP '"name":"[^"]+"' data_fr.html | sed 's/"name":"\([^"]*\)"/\1/' > names_fr.txt || echo "No match found in data_fr.html"
+        grep -oP ',"name":"[^"]+"' data_fr.html | sed 's/,"name":"\([^"]*\)"/\1/' > names_fr.txt || echo "No match found in data_fr.html"
 
     - name: Extract names from HTML (en)
       run: |
-        grep -oP '"name":"[^"]+"' data.html | sed 's/"name":"\([^"]*\)"/\1/' > names_en.txt || echo "No match found in data.html"
+        grep -oP ',"name":"[^"]+"' data.html | sed 's/,"name":"\([^"]*\)"/\1/' > names_en.txt || echo "No match found in data.html"
 
     - name: Debug names (fr)
       run: cat names_fr.txt
