@@ -24,13 +24,19 @@ jobs:
     - name: Perform HTTP GET request for boardgamearena.com
       run: curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
 
+    - name: Debug HTML content (fr)
+      run: cat data_fr.html
+
+    - name: Debug HTML content (en)
+      run: cat data.html
+
     - name: Extract game_list from HTML (fr)
       run: |
-        grep -oP 'game_list\s*=\s*\[\K[^\]]+' data_fr.html > game_list_fr.json
+        grep -oP 'game_list\s*=\s*\[\K[^\]]+' data_fr.html > game_list_fr.json || echo "No match found in data_fr.html"
 
     - name: Extract game_list from HTML (en)
       run: |
-        grep -oP 'game_list\s*=\s*\[\K[^\]]+' data.html > game_list.json
+        grep -oP 'game_list\s*=\s*\[\K[^\]]+' data.html > game_list.json || echo "No match found in data.html"
 
     - name: Merge game lists
       run: |
