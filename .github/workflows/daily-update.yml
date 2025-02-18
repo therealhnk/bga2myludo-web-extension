@@ -13,13 +13,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install htmlq and jq
+    - name: Install jq
       run: |
         sudo apt-get update
         sudo apt-get install -y jq
-        curl -LO https://github.com/mgdm/htmlq/releases/download/v0.4.0/htmlq-x86_64-linux.tar.gz
-        tar -xvf htmlq-x86_64-linux.tar.gz
-        sudo mv htmlq /usr/local/bin/
 
     - name: Perform HTTP GET request for fr.boardgamearena.com
       run: curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
@@ -27,19 +24,13 @@ jobs:
     - name: Perform HTTP GET request for boardgamearena.com
       run: curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
 
-    - name: Debug HTML content (fr)
-      run: cat data_fr.html
-
-    - name: Debug HTML content (en)
-      run: cat data.html
-
     - name: Extract game_list from HTML (fr)
       run: |
-        cat data_fr.html | htmlq -t 'script:contains("game_list")' | grep -oP 'game_list\s*=\s*\[\K[^\]]+' > game_list_fr.json
+        grep -oP 'game_list\s*=\s*\[\K[^\]]+' data_fr.html > game_list_fr.json
 
     - name: Extract game_list from HTML (en)
       run: |
-        cat data.html | htmlq -t 'script:contains("game_list")' | grep -oP 'game_list\s*=\s*\[\K[^\]]+' > game_list.json
+        grep -oP 'game_list\s*=\s*\[\K[^\]]+' data.html > game_list.json
 
     - name: Merge game lists
       run: |
