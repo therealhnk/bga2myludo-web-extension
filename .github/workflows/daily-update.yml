@@ -30,27 +30,27 @@ jobs:
     - name: Debug HTML content (en)
       run: cat data.html
 
-    - name: Extract game_list from HTML (fr)
+    - name: Extract names from HTML (fr)
       run: |
-        sed -n 's/.*"game_list":\(\[.*\]\).*/\1/p' data_fr.html > game_list_fr.json || echo "No match found in data_fr.html"
+        sed -n 's/.*"name":"\([^"]*\)".*/\1/p' data_fr.html > names_fr.txt || echo "No match found in data_fr.html"
 
-    - name: Extract game_list from HTML (en)
+    - name: Extract names from HTML (en)
       run: |
-        sed -n 's/.*"game_list":\(\[.*\]\).*/\1/p' data.html > game_list.json || echo "No match found in data.html"
+        sed -n 's/.*"name":"\([^"]*\)".*/\1/p' data.html > names_en.txt || echo "No match found in data.html"
 
-    - name: Debug game_list.json (fr)
-      run: cat game_list_fr.json
+    - name: Debug names (fr)
+      run: cat names_fr.txt
 
-    - name: Debug game_list.json (en)
-      run: cat game_list.json
+    - name: Debug names (en)
+      run: cat names_en.txt
 
-    - name: Merge game lists
+    - name: Merge names
       run: |
-        jq -s '.[0] + .[1]' game_list_fr.json game_list.json > merged_game_list.json
+        cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
 
     - name: Transform content
       run: |
-        jq '[.[] | {(.name): ""}] | add' merged_game_list.json > transformed.json
+        jq -n '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
 
     - name: Merge content into existing JSON
       run: |
