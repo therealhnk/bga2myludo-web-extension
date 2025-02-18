@@ -50,7 +50,7 @@ jobs:
 
     - name: Transform content
       run: |
-        jq -n '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
+        jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
 
     - name: Merge content into existing JSON
       run: |
