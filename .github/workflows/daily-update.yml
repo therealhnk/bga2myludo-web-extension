@@ -52,9 +52,15 @@ jobs:
       run: |
         jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
 
+    - name: DebugTransform
+      run: cat transformed.json
+
     - name: Merge content into existing JSON
       run: |
         jq -s '.[0] * .[1]' assets/games.json transformed.json > merged.json
+
+    - name: Debug Merge
+      run: cat merged.json
 
     - name: Deduplicate JSON
       run: |
