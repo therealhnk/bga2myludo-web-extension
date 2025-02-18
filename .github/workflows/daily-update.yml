@@ -1,0 +1,86 @@
+name: Daily Update
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Déclenchement quotidien à minuit
+  workflow_dispatch:  # Permet le déclenchement manuel
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install htmlq and jq
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y htmlq jq
+
+    - name: Perform HTTP GET request for fr.boardgamearena.com
+      run: curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
+
+    - name: Perform HTTP GET request for boardgamearena.com
+      run: curl -o data.html https://boardgamearena.com/gamelist?allGames=
+
+    - name: Extract game_list from HTML (fr)
+      run: |
+        cat data_fr.html | htmlq -t 'script:contains("game_list")' | grep -oP 'game_list\s*=\s*\[\K[^\]]+' > game_list_fr.json
+
+    - name: Extract game_list from HTML (en)
+      run: |
+        cat data.html | htmlq -t 'script:contains("game_list")' | grep -oP 'game_list\s*=\s*\[\K[^\]]+' > game_list.json
+
+    - name: Merge game lists
+      run: |
+        jq -s '.[0] + .[1]' game_list_fr.json game_list.json > merged_game_list.json
+
+    - name: Transform content
+      run: |
+        jq '[.[] | {(.name): ""}] | add' merged_game_list.json > transformed.json
+
+    - name: Merge content into existing JSON
+      run: |
+        jq -s '.[0] * .[1]' assets/games.json transformed.json > merged.json
+
+    - name: Deduplicate JSON
+      run: |
+        jq 'reduce to_entries[] as $item ({}; .[$item.key] = if $item.value == "" then .[$item.key] else $item.value end)' merged.json > deduplicated.json
+
+    - name: Check for changes
+      id: check_changes
+      run: |
+        if git diff --exit-code deduplicated.json; then
+          echo "No changes detected"
+          echo "changes=false" >> $GITHUB_ENV
+        else
+          echo "Changes detected"
+          echo "changes=true" >> $GITHUB_ENV
+        fi
+
+    - name: Increment version in package.json
+      if: env.changes == 'true'
+      run: |
+        jq '.version |= split(".") | .[2] = (. [2] | tonumber + 1 | tostring) | join(".")' package.json > package_tmp.json
+        mv package_tmp.json package.json
+
+    - name: Commit changes
+      if: env.changes == 'true'
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git checkout -b update-json
+        mv deduplicated.json assets/games.json
+        git add assets/games.json package.json
+        git commit -m 'Update JSON with new data and increment version'
+        git push --set-upstream origin update-json
+
+    - name: Create Pull Request
+      if: env.changes == 'true'
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: update-json
+        title: 'Daily JSON Update'
+        body: 'This PR updates the JSON file with the latest data and increments the version.'
