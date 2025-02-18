@@ -16,7 +16,10 @@ jobs:
     - name: Install htmlq and jq
       run: |
         sudo apt-get update
-        sudo apt-get install -y htmlq jq
+        sudo apt-get install -y jq
+        curl -LO https://github.com/mgdm/htmlq/releases/download/v0.4.0/htmlq-x86_64-linux.tar.gz
+        tar -xvf htmlq-x86_64-linux.tar.gz
+        sudo mv htmlq /usr/local/bin/
 
     - name: Perform HTTP GET request for fr.boardgamearena.com
       run: curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
