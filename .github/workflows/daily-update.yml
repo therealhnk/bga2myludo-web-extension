@@ -66,6 +66,9 @@ jobs:
       run: |
         jq 'reduce to_entries[] as $item ({}; .[$item.key] = if $item.value == "" then .[$item.key] else $item.value end)' merged.json > deduplicated.json
 
+    - name: Debug deduplicated
+      run: cat deduplicated.json
+
     - name: Check for changes
       id: check_changes
       run: |
