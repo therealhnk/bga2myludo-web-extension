@@ -80,9 +80,9 @@ jobs:
           echo "changes=true" >> $GITHUB_ENV
         fi
 
-        - name: Increment version in package.json
-        if: env.changes == 'true'
-        run: |
+    - name: Increment version in package.json
+      if: env.changes == 'true'
+      run: |
           jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
           mv package_tmp.json package.json
   
