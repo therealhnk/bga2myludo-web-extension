@@ -24,11 +24,14 @@ jobs:
     - name: Perform HTTP GET request for fr.boardgamearena.com
       run: curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
 
-    - name: Wait for 10 seconds
-      run: sleep 10
-
     - name: Perform HTTP GET request for boardgamearena.com
       run: curl -o data.html https://boardgamearena.com/gamelist?allGames=
+
+    - name: Debug HTML content (fr)
+      run: cat data_fr.html
+
+    - name: Debug HTML content (en)
+      run: cat data.html
 
     - name: Extract game_list from HTML (fr)
       run: |
