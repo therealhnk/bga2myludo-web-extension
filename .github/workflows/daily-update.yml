@@ -57,14 +57,14 @@ jobs:
 
     - name: Merge content into existing JSON
       run: |
-        jq -s '.[0] * .[1]' assets/games.json transformed.json > merged.json
+        jq -s '.[0] * .[1]' transformed.json assets/games.json > merged.json
 
     - name: Debug Merge
       run: cat merged.json
 
     - name: Deduplicate JSON
       run: |
-        jq 'reduce to_entries[] as $item ({}; .[$item.key] = if $item.value == "" then .[$item.key] else $item.value end)' merged.json > deduplicated.json
+        jq 'reduce to_entries[] as $item ({}; .[$item.key] = if $item.value == null then "" else $item.value end)' merged.json > deduplicated.json
 
     - name: Debug deduplicated
       run: cat deduplicated.json
