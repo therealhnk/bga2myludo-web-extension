@@ -32,11 +32,11 @@ jobs:
 
     - name: Extract game list content (fr)
       run: |
-        sed -n '/"game_list":\[/,/\]/p' data_fr.html > game_list_fr.txt
+        sed -n '/"game_list":\[/,/\]/p' data_fr.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_fr.txt
 
     - name: Extract game list content (en)
       run: |
-        sed -n '/"game_list":\[/,/\]/p' data.html > game_list_en.txt
+        sed -n '/"game_list":\[/,/\]/p' data.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_en.txt
 
     - name: Debug game list content (fr)
       run: cat game_list_fr.txt
