@@ -32,12 +32,6 @@ jobs:
     - name: Perform HTTP GET request for boardgamearena.com
       run: curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
 
-    - name: Debug HTML content (fr)
-      run: cat data_fr.html
-
-    - name: Debug HTML content (en)
-      run: cat data.html
-
     - name: Extract game list content (fr)
       run: |
         sed -n '/"game_list":\[/,/\]/p' data_fr.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_fr.txt
@@ -45,12 +39,6 @@ jobs:
     - name: Extract game list content (en)
       run: |
         sed -n '/"game_list":\[/,/\]/p' data.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_en.txt
-
-    - name: Debug game list content (fr)
-      run: cat game_list_fr.txt
-
-    - name: Debug game list content (en)
-      run: cat game_list_en.txt
 
     - name: Extract names from HTML (fr)
       run: |
@@ -60,12 +48,6 @@ jobs:
       run: |
         grep -oP ',"name":"[^"]+","display_name_en":' game_list_en.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_en.txt || echo "No match found in game_list_en.txt"
 
-    - name: Debug names (fr)
-      run: cat names_fr.txt
-
-    - name: Debug names (en)
-      run: cat names_en.txt
-
     - name: Merge names
       run: |
         cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
@@ -74,15 +56,9 @@ jobs:
       run: |
         jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
 
-    - name: DebugTransform
-      run: cat transformed.json
-
     - name: Merge content into existing JSON
       run: |
         jq -s '.[0] * .[1]' transformed.json assets/games.json > merged.json
-
-    - name: Debug Merge
-      run: cat merged.json
 
     - name: Deduplicate JSON
       run: |
@@ -108,25 +84,27 @@ jobs:
           jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
           mv package_tmp.json package.json
 
+    - name: Clean up intermediate files
+      run: |
+        rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
+
     - name: Commit changes
       if: env.changes == 'true'
       run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add assets/games.json package.json
-          git commit -m 'Update JSON with new data and increment version'
-          git push --set-upstream origin update-json
+          # git commit -m 'Update JSON with new data and increment version'
+          # git push --set-upstream origin update-json
 
-    - name: Create Pull Request
-      if: env.changes == 'true'
-      uses: peter-evans/create-pull-request@v3
-      with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          branch: update-json
-          title: 'Daily JSON Update'
-          body: 'This PR updates the JSON file with the latest data and increments the version.'
+    # - name: Create Pull Request
+    #   if: env.changes == 'true'
+    #   uses: peter-evans/create-pull-request@v3
+    #   with:
+    #       token: ${{ secrets.GITHUB_TOKEN }}
+    #       base: main
+    #       branch: update-json
+    #       title: 'Daily JSON Update'
+    #       body: 'This PR updates the JSON file with the latest data and increments the version.'
 
-    - name: Clean up intermediate files
-      run: |
-        rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
+    
