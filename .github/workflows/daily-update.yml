@@ -12,6 +12,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create new branch
+      run: |
+        git checkout main
+        git checkout -b update-json
 
     - name: Install jq
       run: |
@@ -105,7 +112,6 @@ jobs:
       run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b update-json
           git add assets/games.json package.json
           git commit -m 'Update JSON with new data and increment version'
           git push --set-upstream origin update-json
@@ -115,6 +121,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
           branch: update-json
           title: 'Daily JSON Update'
           body: 'This PR updates the JSON file with the latest data and increments the version.'
