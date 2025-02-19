@@ -107,6 +107,10 @@ jobs:
           jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
           mv package_tmp.json package.json
   
+    - name: Pull latest changes
+      run: |
+          git pull origin main
+
     - name: Commit changes
       if: env.changes == 'true'
       run: |
