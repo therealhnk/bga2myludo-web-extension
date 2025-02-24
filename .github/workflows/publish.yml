@@ -33,10 +33,10 @@ jobs:
           version: latest
       - name: Install dependencies
         run: pnpm install
-      - name: Use Node.js 18.x
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v3.4.1
         with:
-          node-version: 18.x
+          node-version: 20.x
           cache: "pnpm"
       - name: Build the Chrome extension
         run: pnpm build --zip --target=chrome-mv3
@@ -58,7 +58,7 @@ jobs:
           tag_name: ${{ steps.get-version.outputs.version }}
           files: build/*.zip
       - name: Browser Platform Publish
-        uses: PlasmoHQ/bpp@v3.6.1
+        uses: PlasmoHQ/bpp@v3.8.0
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
           chrome-file: build/${{ steps.get-version.outputs.version }}_chrome-mv3.zip

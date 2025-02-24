@@ -28,10 +28,10 @@ jobs:
           version: latest
       - name: Install dependencies
         run: pnpm install
-      - name: Use Node.js 18.x
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v3.4.1
         with:
-          node-version: 18.x
+          node-version: 20.x
           cache: "pnpm"
       - name: Build the Chrome extension
         run: pnpm build --zip --target=chrome-mv3
