@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^6.20.2",
     "@plasmohq/messaging": "^0.6.2",
     "@plasmohq/storage": "^1.12.0",
+    "@swc/core": "1.5.7",
     "material-react-table": "^2.13.3",
     "plasmo": "0.90.3",
     "react": "18.2.0",
@@ -49,5 +50,10 @@
       "alarms",
       "unlimitedStorage"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@swc/core": "1.5.7"
+    }
   }
 }
