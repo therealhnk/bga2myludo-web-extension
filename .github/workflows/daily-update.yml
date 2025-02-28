@@ -2,8 +2,8 @@ name: Daily Update
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Déclenchement quotidien à minuit
-  workflow_dispatch:  # Permet le déclenchement manuel
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update-json:
@@ -20,55 +20,31 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y jq
 
-    - name: Perform HTTP GET request for fr.boardgamearena.com
-      run: curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
+    - name: Download data
+      run: |
+        curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
+        curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
 
-    - name: Perform HTTP GET request for boardgamearena.com
-      run: curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
-
-    - name: Extract game list content (fr)
+    - name: Process data
       run: |
         sed -n '/"game_list":\[/,/\]/p' data_fr.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_fr.txt
-
-    - name: Extract game list content (en)
-      run: |
         sed -n '/"game_list":\[/,/\]/p' data.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_en.txt
 
-    - name: Extract names from HTML (fr)
-      run: |
-        grep -oP ',"name":"[^"]+","display_name_en":' game_list_fr.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_fr.txt || echo "No match found in game_list_fr.txt"
+        grep -oP ',"name":"[^"]+","display_name_en":' game_list_fr.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_fr.txt || true
+        grep -oP ',"name":"[^"]+","display_name_en":' game_list_en.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_en.txt || true
 
-    - name: Extract names from HTML (en)
-      run: |
-        grep -oP ',"name":"[^"]+","display_name_en":' game_list_en.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_en.txt || echo "No match found in game_list_en.txt"
-
-    - name: Merge names
-      run: |
         cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
 
-    - name: Transform content
-      run: |
         jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
-
-    - name: Merge content into existing JSON
-      run: |
         jq -s '.[0] * .[1]' transformed.json assets/games.json > merged.json
-
-    - name: Deduplicate JSON
-      run: |
         jq 'reduce to_entries[] as $item ({}; .[$item.key] = if $item.value == null then "" else $item.value end)' merged.json > assets/games.json
-
-    - name: Debug assets/games.json
-      run: cat assets/games.json
 
     - name: Check for changes
       id: check_changes
       run: |
         if git diff --exit-code assets/games.json; then
-          echo "No changes detected"
           echo "changes=false" >> $GITHUB_ENV
         else
-          echo "Changes detected"
           echo "changes=true" >> $GITHUB_ENV
         fi
 
@@ -76,43 +52,38 @@ jobs:
       run: |
         rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
 
+    - name: Stop if no changes
+      if: env.changes == 'false'
+      run: |
+        echo "No changes detected, stopping workflow."
+        exit 0
+
     - name: Increment version in package.json
-      if: env.changes == 'true'
       run: |
         jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
         mv package_tmp.json package.json
 
-    - name: Create new branch if needed
-      if: env.changes == 'true'
+    - name: Create or update branch
       run: |
         git checkout main
         git pull origin main
-        git checkout -b update-json
 
-    - name: Check if remote branch exists
-      if: env.changes == 'true'
-      id: check_branch
-      run: |
         if git ls-remote --exit-code --heads origin update-json; then
-          echo "branch_exists=true" >> $GITHUB_ENV
+          git checkout update-json
+          git pull origin update-json
         else
-          echo "branch_exists=false" >> $GITHUB_ENV
+          git checkout -b update-json
         fi
 
     - name: Commit changes
-      if: env.changes == 'true'
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add assets/games.json package.json
-        git commit -m 'Update JSON with new data and increment version'
-        if [ "$branch_exists" = "true" ]; then
-          git pull origin update-json --rebase
-        fi
-        git push --set-upstream origin update-json
+        git commit -m 'Daily JSON update + version bump'
+        git push origin update-json
 
     - name: Create Pull Request
-      if: env.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
