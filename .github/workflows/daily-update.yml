@@ -50,7 +50,7 @@ jobs:
     - name: Merge content into existing JSON
       run: |
         jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > merged.json
-        mv merged.json assets/games.json
+        # mv merged.json assets/games.json
 
     - name: Validate merged JSON (fail if empty)
       run: |
@@ -68,9 +68,9 @@ jobs:
           echo "changes=true" >> $GITHUB_ENV
         fi
 
-    - name: Clean up intermediate files
-      run: |
-        rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
+    # - name: Clean up intermediate files
+    #   run: |
+    #     rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
 
     - name: Stop if no changes
       if: env.changes == 'false'
@@ -91,7 +91,7 @@ jobs:
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add assets/games.json package.json
+        git add merged.json assets/games.json package.json
         git commit -m 'Daily JSON update + version bump'
         git push origin update-json
 
