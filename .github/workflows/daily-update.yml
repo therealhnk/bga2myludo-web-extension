@@ -72,6 +72,10 @@ jobs:
           echo "changes=true" >> $GITHUB_ENV
         fi
 
+    - name: Clean up intermediate files
+      run: |
+        rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
+
     - name: Increment version in package.json
       if: env.changes == 'true'
       run: |
@@ -116,7 +120,3 @@ jobs:
         branch: update-json
         title: 'Daily JSON Update'
         body: 'This PR updates the JSON file with the latest data and increments the version.'
-
-    - name: Clean up intermediate files
-      run: |
-        rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
