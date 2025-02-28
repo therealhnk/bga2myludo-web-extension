@@ -2,7 +2,7 @@ name: Daily Update
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Déclenchement quotidien à minuit
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 jobs:
@@ -19,6 +19,16 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y jq
+
+    - name: Create or update branch directly
+      run: |
+        git fetch origin main
+        if git ls-remote --exit-code --heads origin update-json; then
+          git checkout update-json
+          git pull origin update-json
+        else
+          git checkout -b update-json
+        fi
 
     - name: Download data
       run: |
@@ -72,16 +82,6 @@ jobs:
       run: |
         jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
         mv package_tmp.json package.json
-
-    - name: Create or update branch
-      run: |
-        git fetch origin main
-        if git ls-remote --exit-code --heads origin update-json; then
-          git checkout update-json
-          git pull origin update-json
-        else
-          git checkout -b update-json
-        fi
 
     - name: Show git diff (debug)
       run: |
