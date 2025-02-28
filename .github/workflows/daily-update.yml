@@ -2,7 +2,7 @@ name: Daily Update
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # Déclenchement quotidien à minuit
   workflow_dispatch:
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
         curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
         curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
 
-    - name: Process data
+    - name: Extract and process data
       run: |
         sed -n '/"game_list":\[/,/\]/p' data_fr.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_fr.txt
         sed -n '/"game_list":\[/,/\]/p' data.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_en.txt
@@ -36,8 +36,18 @@ jobs:
         cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
 
         jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
-        jq -s '.[0] * .[1]' transformed.json assets/games.json > merged.json
-        jq 'reduce to_entries[] as $item ({}; .[$item.key] = if $item.value == null then "" else $item.value end)' merged.json > assets/games.json
+
+    - name: Merge content into existing JSON
+      run: |
+        jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > merged.json
+        mv merged.json assets/games.json
+
+    - name: Validate merged JSON (fail if empty)
+      run: |
+        if jq -e 'keys | length == 0' assets/games.json; then
+          echo "Erreur: le fichier assets/games.json est vide après la fusion !"
+          exit 1
+        fi
 
     - name: Check for changes
       id: check_changes
@@ -65,15 +75,17 @@ jobs:
 
     - name: Create or update branch
       run: |
-        git checkout main
-        git pull origin main
-
+        git fetch origin main
         if git ls-remote --exit-code --heads origin update-json; then
           git checkout update-json
           git pull origin update-json
         else
           git checkout -b update-json
         fi
+
+    - name: Show git diff (debug)
+      run: |
+        git diff --color assets/games.json package.json || true
 
     - name: Commit changes
       run: |
