@@ -70,7 +70,7 @@ jobs:
 
     - name: Clean up intermediate files
       run: |
-        rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged.json merged_names.txt names_en.txt names_fr.txt transformed.json
+        rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged_names.txt names_en.txt names_fr.txt transformed.json
 
     - name: Stop if no changes
       if: env.changes == 'false'
