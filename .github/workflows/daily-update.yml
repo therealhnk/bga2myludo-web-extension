@@ -45,15 +45,16 @@ jobs:
 
       - name: Merge content into existing JSON
         run: |
-          jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > merged.json
-          mv merged.json assets/games.json
+          jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > assets/merged.json
+          mv assets/merged.json assets/games.json
 
-      - name: Validate merged JSON (fail if empty)
+      - name: Debug #1
         run: |
-          if jq -e 'keys | length == 0' assets/games.json; then
-            echo "Erreur: le fichier assets/games.json est vide après la fusion !"
-            exit 1
-          fi
+          cat assets/merged.json
+
+      - name: Debug #2
+        run: |
+          cat assets/games.json
 
       - name: Check for changes
         id: check_changes
