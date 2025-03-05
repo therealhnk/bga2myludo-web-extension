@@ -46,7 +46,7 @@ jobs:
       - name: Merge content into existing JSON
         run: |
           jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > merged.json
-          # mv merged.json assets/games.json
+          mv merged.json assets/games.json
 
       - name: Validate merged JSON (fail if empty)
         run: |
