@@ -75,15 +75,18 @@ jobs:
           exit 0
 
       - name: Increment version in package.json
+        if: env.changes == 'false'
         run: |
           jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
           mv package_tmp.json package.json
 
       - name: Show git diff (debug)
+        if: env.changes == 'false'
         run: |
           git diff --color assets/games.json package.json || true
 
       - name: Commit changes
+        if: env.changes == 'false'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
@@ -92,6 +95,7 @@ jobs:
           git push origin update-json
 
       - name: Create Pull Request
+        if: env.changes == 'false'
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
