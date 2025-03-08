@@ -43,10 +43,18 @@ jobs:
           cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
           jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
 
+      - name: Debug transformed.json
+        run: cat transformed.json
+
       - name: Merge content into existing JSON
         run: |
-          jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > assets/merged.json
-          mv assets/merged.json assets/games.json
+          if [ -f assets/games.json ]; then
+            jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > assets/merged.json
+            mv assets/merged.json assets/games.json
+          else
+            echo "assets/games.json does not exist."
+            exit 1
+          fi
 
       - name: Check if merged.json exists
         run: |
@@ -56,9 +64,6 @@ jobs:
             echo "merged.json does not exist."
             exit 1
           fi
-
-      - name: Debug transformed.json
-        run: cat transformed.json
 
       - name: Debug assets/games.json
         run: cat assets/games.json
@@ -93,7 +98,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add merged.json assets/games.json package.json
+          git add assets/games.json package.json
           git commit -m 'Daily JSON update + version bump'
           git push origin update-json
 
