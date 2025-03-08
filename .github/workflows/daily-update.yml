@@ -34,15 +34,21 @@ jobs:
           cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
           jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
 
+      - name: Debug transformed.json
+        run: cat transformed.json
+
+      - name: Debug assets/games.json
+        run: cat assets/games.json
+
       - name: Merge content into existing JSON
         run: |
           if [ -f assets/games.json ]; then
-            jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > assets/merged.json
-            jq -s '.[0] * .[1]' assets/merged.json assets/games.json > assets/games.json
+            jq -s '.[0] * (.[1] // {})' transformed.json assets/games.json > assets/merged.json
+            mv assets/merged.json assets/games.json
           else
             echo "assets/games.json does not exist. Creating a new one."
             cp transformed.json assets/games.json
           fi
 
-      - name: Debug assets/games.json
+      - name: Debug assets/games.json after merge
         run: cat assets/games.json
