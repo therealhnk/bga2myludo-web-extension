@@ -38,7 +38,7 @@ jobs:
         run: |
           if [ -f assets/games.json ]; then
             jq -s '.[1] * (.[0] | with_entries(select(.key as $k | .[$k] == "")))' transformed.json assets/games.json > assets/merged.json
-            mv assets/merged.json assets/games.json
+            jq -s '.[0] * .[1]' assets/merged.json assets/games.json > assets/games.json
           else
             echo "assets/games.json does not exist. Creating a new one."
             cp transformed.json assets/games.json
