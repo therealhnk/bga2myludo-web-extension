@@ -8,31 +8,19 @@ jobs:
   update-json:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install jq
         run: |
           sudo apt-get update
           sudo apt-get install -y jq
 
-      - name: Create or update branch directly
-        run: |
-          git fetch origin main
-          if git ls-remote --exit-code --heads origin update-json; then
-            git checkout update-json
-            git pull origin update-json
-          else
-            git checkout -b update-json
-            git push origin update-json  # Ajout de cette ligne pour pousser la nouvelle branche vers le dépôt distant
-          fi
-
       - name: Download data
         run: |
           curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
           curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
+
+      - name: Download existing games.json
+        run: |
+          curl -o assets/games.json https://raw.githubusercontent.com/therealhnk/bga2myludo-web-extension/refs/heads/main/assets/games.json
 
       - name: Extract and process data
         run: |
@@ -42,9 +30,6 @@ jobs:
           grep -oP ',"name":"[^"]+","display_name_en":' game_list_en.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_en.txt || true
           cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
           jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
-
-      - name: Debug transformed.json
-        run: cat transformed.json
 
       - name: Merge content into existing JSON
         run: |
@@ -56,58 +41,5 @@ jobs:
             cp transformed.json assets/games.json
           fi
 
-      - name: Check if merged.json exists
-        run: |
-          if [ -f assets/merged.json ]; then
-            echo "merged.json exists."
-          else
-            echo "merged.json does not exist."
-            exit 1
-          fi
-
       - name: Debug assets/games.json
         run: cat assets/games.json
-
-      - name: Check for changes
-        id: check_changes
-        run: |
-          if git diff --exit-code assets/games.json; then
-            echo "changes=false" >> $GITHUB_ENV
-          else
-            echo "changes=true" >> $GITHUB_ENV
-          fi
-
-      - name: Clean up intermediate files
-        if: success()
-        run: |
-          rm -f data.html data_fr.html game_list_en.txt game_list_fr.txt merged_names.txt names_en.txt names_fr.txt transformed.json
-
-      - name: Increment version in package.json
-        if: env.changes == 'true'
-        run: |
-          jq '.version |= (split(".") | .[2] = ((.[2] | tonumber) + 1 | tostring) | join("."))' package.json > package_tmp.json
-          mv package_tmp.json package.json
-
-      - name: Show git diff (debug)
-        if: env.changes == 'true'
-        run: |
-          git diff --color assets/games.json package.json || true
-
-      - name: Commit changes
-        if: env.changes == 'true'
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add assets/games.json package.json
-          git commit -m 'Daily JSON update + version bump'
-          git push origin update-json
-
-      - name: Create Pull Request
-        if: env.changes == 'true'
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          branch: update-json
-          title: 'Daily JSON Update'
-          body: 'This PR updates the JSON file with the latest data and increments the version.'
