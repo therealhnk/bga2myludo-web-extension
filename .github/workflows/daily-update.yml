@@ -44,5 +44,5 @@ jobs:
             cp transformed.json assets/games.json
           fi
 
-      - name: Debug assets/merged.json
-        run: cat assets/merged.json
+      - name: Debug assets/games.json
+        run: cat assets/games.json
