@@ -13,6 +13,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq
 
+      - name: Create assets directory
+        run: mkdir -p assets
+
       - name: Download data
         run: |
           curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
