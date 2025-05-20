@@ -50,3 +50,28 @@ jobs:
 
       - name: Debug assets/games.json after merge
         run: cat assets/games.json
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Create and switch to new branch
+        run: |
+          git checkout -b branch/daily-update
+
+      - name: Copy updated games.json to repo
+        run: |
+          cp assets/games.json ./assets/games.json
+
+      - name: Commit and push changes
+        run: |
+          git add assets/games.json
+          git commit -m "Daily update of games.json"
+          git push origin branch/daily-update
