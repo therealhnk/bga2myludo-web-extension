@@ -66,7 +66,8 @@ jobs:
         run: |
           if [ -f assets/games.json ]; then
             echo "Merging with existing games.json..."
-            # Preserve existing values, add new games
+            # IMPORTANT: Preserve existing values, only add new games
+            # This keeps the IDs that were previously added
             jq -s '.[1] * .[0]' new_games.json assets/games.json > temp.json
             mv temp.json assets/games.json
             
@@ -78,6 +79,9 @@ jobs:
             echo "Creating new games.json..."
             mv new_games.json assets/games.json
           fi
+          
+          # Clean up working files
+          rm -f data.html data_beta.html names.txt names_beta.txt merged_names.txt new_games.json
 
       - name: Check for changes
         id: check_changes
@@ -132,4 +136,5 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          rm -f data_beta.html data.html names_beta.txt names.txt merged_names.txt new_games.json temp.json
+          # Remove all working files to ensure they don't end up in the PR
+          rm -f data.html data_beta.html names.txt names_beta.txt merged_names.txt new_games.json temp.json
