@@ -49,49 +49,68 @@ jobs:
             
             echo "Processing $file..."
             
-            # First, let's see what we're dealing with
-            echo "First 1000 characters of $file:"
-            head -c 1000 "$file"
-            echo ""
+            # Extract the game_list JSON from the HTML
+            # The JSON is embedded in the page, we need to extract it carefully
+            # Using awk to handle multi-line JSON extraction
+            awk '
+              /"game_list":\[/ {
+                # Start capturing from game_list
+                capture = 1
+                # Remove everything before the [
+                gsub(/.*"game_list":\[/, "[")
+              }
+              capture {
+                buffer = buffer $0
+                # Count brackets to find the end of the JSON array
+                for (i = 1; i <= length($0); i++) {
+                  char = substr($0, i, 1)
+                  if (char == "[") bracket_count++
+                  else if (char == "]") {
+                    bracket_count--
+                    if (bracket_count == 0) {
+                      # Found the end, extract up to this position
+                      print substr(buffer, 1, length(buffer) - length($0) + i)
+                      exit
+                    }
+                  }
+                }
+              }
+              BEGIN { bracket_count = 0; buffer = "" }
+            ' "$file" > temp_json.txt
             
-            # Try to find and extract the game_list JSON
-            # Look for the pattern more carefully
-            if grep -q '"game_list":\[' "$file"; then
-              echo "Found game_list in $file"
+            # Check if we extracted something
+            if [ -s temp_json.txt ]; then
+              echo "Extracted JSON size: $(wc -c < temp_json.txt) bytes"
               
-              # Extract everything from game_list:[ to the matching ]
-              perl -0777 -ne 'print $1 if /"game_list":\s*(\[[^\]]*\])/s' "$file" > temp_json.txt
-              
-              # Check if we got something
-              if [ -s temp_json.txt ]; then
-                echo "Extracted JSON size: $(wc -c < temp_json.txt) bytes"
-                
-                # Validate JSON
-                if jq empty temp_json.txt 2>/dev/null; then
-                  # Extract game names
-                  jq -r '.[] | .name // empty' temp_json.txt > "$output"
-                  echo "Found $(wc -l < "$output") games in $file"
-                else
-                  echo "Invalid JSON in temp_json.txt"
-                  echo "Content:"
-                  cat temp_json.txt
-                  return 1
-                fi
+              # Validate and parse JSON
+              if jq empty temp_json.txt 2>/dev/null; then
+                # Extract game names
+                jq -r '.[] | .name // empty' temp_json.txt > "$output"
+                echo "Found $(wc -l < "$output") games in $file"
               else
-                echo "No JSON data extracted from $file"
-                # Try alternative extraction method
-                grep -oP '"name":"[^"]+","display_name' "$file" | sed 's/"name":"\([^"]*\)","display_name/\1/' > "$output" || true
+                echo "JSON validation failed, trying alternative method..."
+                # Alternative: extract game names using grep
+                grep -oP '"name":"[^"]+","display_name' "$file" | 
+                  sed 's/"name":"\([^"]*\)","display_name/\1/' > "$output" || true
               fi
-              
-              rm -f temp_json.txt
             else
-              echo "No game_list found in $file"
-              # Try alternative extraction
-              grep -oP '"name":"[^"]+","display_name' "$file" | sed 's/"name":"\([^"]*\)","display_name/\1/' > "$output" || true
+              echo "No JSON extracted, trying alternative method..."
+              # Alternative: extract game names using grep
+              grep -oP '"name":"[^"]+","display_name' "$file" | 
+                sed 's/"name":"\([^"]*\)","display_name/\1/' > "$output" || true
             fi
             
-            # Make sure we have an output file even if empty
+            rm -f temp_json.txt
+            
+            # Make sure we have an output file
             touch "$output"
+            
+            # Show what we found
+            if [ -s "$output" ]; then
+              echo "Successfully extracted $(wc -l < "$output") games"
+            else
+              echo "Warning: No games found in $file"
+            fi
           }
           
           # Extract games from both sources
@@ -102,19 +121,27 @@ jobs:
           extract_games data.html names.txt
           
           # Merge beta and released games (remove duplicates)
-          cat names_beta.txt names.txt | sort | uniq > merged_names.txt
+          cat names_beta.txt names.txt 2>/dev/null | sort | uniq > merged_names.txt
           
           # Verify we have games
           if [ ! -s merged_names.txt ]; then
             echo "Error: No games found in downloaded data"
-            echo "Debug - data_beta.html size: $(wc -c < data_beta.html) bytes"
-            echo "Debug - data.html size: $(wc -c < data.html) bytes"
-            exit 1
+            echo "Trying direct extraction with simpler pattern..."
+            
+            # Last resort: try even simpler extraction
+            grep -oP '"name":"[^"]+"' data_beta.html data.html | 
+              sed 's/.*"name":"\([^"]*\)".*/\1/' | 
+              sort | uniq > merged_names.txt || true
+            
+            if [ ! -s merged_names.txt ]; then
+              echo "Failed to extract any games"
+              exit 1
+            fi
           fi
           
           # Show statistics
-          BETA_COUNT=$(wc -l < names_beta.txt || echo 0)
-          RELEASED_COUNT=$(wc -l < names.txt || echo 0)
+          BETA_COUNT=$(wc -l < names_beta.txt 2>/dev/null || echo 0)
+          RELEASED_COUNT=$(wc -l < names.txt 2>/dev/null || echo 0)
           TOTAL_UNIQUE=$(wc -l < merged_names.txt)
           
           echo "Statistics:"
