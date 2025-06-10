@@ -13,6 +13,8 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          # Important: create-pull-request needs push access
+          persist-credentials: true
 
       - name: Configure Git
         run: |
@@ -89,27 +91,22 @@ jobs:
             git diff --stat assets/games.json
           fi
 
-      - name: Create branch and commit
+      - name: Commit changes
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
-          BRANCH_NAME="update/games-json-$(date +%Y%m%d-%H%M%S)"
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          
-          git checkout -b $BRANCH_NAME
           git add assets/games.json
           git commit -m "chore: update games.json with latest BGA games
           
           - Updated from BoardGameArena (beta + final released games)
           - Automated daily update"
-          
-          git push origin $BRANCH_NAME
 
       - name: Create Pull Request
         if: steps.check_changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ env.BRANCH_NAME }}
+          branch: update/games-json-${{ github.run_id }}
+          base: main
           title: "🎲 Daily update of games.json"
           body: |
             ## Automated BGA Games Update
