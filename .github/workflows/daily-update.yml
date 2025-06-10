@@ -97,13 +97,34 @@ jobs:
             git diff --stat assets/games.json
           fi
 
+      - name: Update version in package.json
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          # Extract current version
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Split version into parts
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+          
+          # Increment patch version
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          
+          echo "New version: $NEW_VERSION"
+          
+          # Update package.json
+          jq --arg v "$NEW_VERSION" '.version = $v' package.json > temp.json
+          mv temp.json package.json
+
       - name: Commit changes
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
-          git add assets/games.json
+          git add assets/games.json package.json
           git commit -m "chore: update games.json with latest BGA games
           
           - Updated from BoardGameArena (beta + final released games)
+          - Bumped version to $(jq -r '.version' package.json)
           - Automated daily update"
 
       - name: Create Pull Request
@@ -123,6 +144,11 @@ jobs:
             - Updated game list from BGA (beta games + final released games)
             - Preserved existing game mappings
             - Added any new games found
+            - Bumped version patch number
+            
+            ### Modified files
+            - `assets/games.json` - Updated game list
+            - `package.json` - Version bump
             
             ### Source URLs
             - [Beta games](https://fr.boardgamearena.com/gamelist?isBetaStatus=) - Games currently in beta testing
