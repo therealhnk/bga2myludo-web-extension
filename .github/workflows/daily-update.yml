@@ -66,9 +66,11 @@ jobs:
         run: |
           if [ -f assets/games.json ]; then
             echo "Merging with existing games.json..."
-            # IMPORTANT: Preserve existing values, only add new games
-            # This keeps the IDs that were previously added
-            jq -s '.[1] * .[0]' new_games.json assets/games.json > temp.json
+            # IMPORTANT: L'ordre est crucial pour préserver les valeurs existantes
+            # .[0] = new_games.json (nouveaux jeux)
+            # .[1] = assets/games.json (existant avec IDs)
+            # Le * fait que les valeurs de droite (.[1]) écrasent celles de gauche
+            jq -s '.[0] * (.[1] // {})' new_games.json assets/games.json > temp.json
             mv temp.json assets/games.json
             
             # Count changes
