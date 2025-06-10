@@ -1,77 +1,159 @@
 name: Daily Update
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *'  # Tous les jours à 2h du matin
 
 jobs:
   update-json:
     runs-on: ubuntu-latest
     steps:
-      - name: Install jq
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
-
-      - name: Create assets directory
-        run: mkdir -p assets
-
-      - name: Download data
-        run: |
-          curl -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus=
-          curl -o data.html https://fr.boardgamearena.com/gamelist?allGames=
-
-      - name: Download existing games.json
-        run: |
-          curl -o assets/games.json https://raw.githubusercontent.com/therealhnk/bga2myludo-web-extension/refs/heads/main/assets/games.json
-
-      - name: Extract and process data
-        run: |
-          sed -n '/"game_list":\[/,/\]/p' data_fr.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_fr.txt
-          sed -n '/"game_list":\[/,/\]/p' data.html | sed '1s/.*"game_list":\[//' | sed '$s/\].*//' > game_list_en.txt
-          grep -oP ',"name":"[^"]+","display_name_en":' game_list_fr.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_fr.txt || true
-          grep -oP ',"name":"[^"]+","display_name_en":' game_list_en.txt | sed 's/,"name":"\([^"]*\)","display_name_en":/\1/' > names_en.txt || true
-          cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
-          jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > transformed.json
-
-      - name: Debug transformed.json
-        run: cat transformed.json
-
-      - name: Debug assets/games.json
-        run: cat assets/games.json
-
-      - name: Merge content into existing JSON
-        run: |
-          if [ -f assets/games.json ]; then
-            jq -s '.[0] * (.[1] // {})' transformed.json assets/games.json > assets/merged.json
-            mv assets/merged.json assets/games.json
-          else
-            echo "assets/games.json does not exist. Creating a new one."
-            cp transformed.json assets/games.json
-          fi
-
-      - name: Debug assets/games.json after merge
-        run: cat assets/games.json
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
-      - name: Create and switch to new branch
+      - name: Configure Git
         run: |
-          git checkout -b branch/daily-update
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Copy updated games.json to repo
+      - name: Install dependencies
         run: |
-          cp assets/games.json ./assets/games.json
+          sudo apt-get update
+          sudo apt-get install -y jq
 
-      - name: Commit and push changes
+      - name: Download BGA data
         run: |
+          echo "Downloading French game list..."
+          curl -s -o data_fr.html https://fr.boardgamearena.com/gamelist?isBetaStatus= || {
+            echo "Failed to download French data"
+            exit 1
+          }
+          
+          echo "Downloading English game list..."
+          curl -s -o data_en.html https://fr.boardgamearena.com/gamelist?allGames= || {
+            echo "Failed to download English data"
+            exit 1
+          }
+
+      - name: Extract and process game data
+        run: |
+          set -e  # Exit on error
+          
+          # Function to extract game list from HTML
+          extract_games() {
+            local file=$1
+            local output=$2
+            
+            # Extract JSON data more robustly
+            sed -n '/"game_list":\[/,/\]/p' "$file" | \
+            sed '1s/.*"game_list":\[/[/' | \
+            sed '$s/\].*/]/' > temp_json.txt
+            
+            # Validate JSON
+            if ! jq empty temp_json.txt 2>/dev/null; then
+              echo "Invalid JSON extracted from $file"
+              return 1
+            fi
+            
+            # Extract game names
+            jq -r '.[] | .name' temp_json.txt > "$output" || true
+            rm temp_json.txt
+          }
+          
+          # Extract games from both sources
+          extract_games data_fr.html names_fr.txt
+          extract_games data_en.html names_en.txt
+          
+          # Merge and deduplicate
+          cat names_fr.txt names_en.txt | sort | uniq > merged_names.txt
+          
+          # Verify we have games
+          if [ ! -s merged_names.txt ]; then
+            echo "Error: No games found in downloaded data"
+            exit 1
+          fi
+          
+          echo "Found $(wc -l < merged_names.txt) unique games"
+          
+          # Create new games structure
+          jq -Rn '[inputs | {(.): ""}] | add' merged_names.txt > new_games.json
+
+      - name: Merge with existing games.json
+        run: |
+          if [ -f assets/games.json ]; then
+            echo "Merging with existing games.json..."
+            # Preserve existing values, add new games
+            jq -s '.[1] * .[0]' new_games.json assets/games.json > temp.json
+            mv temp.json assets/games.json
+            
+            # Count changes
+            NEW_COUNT=$(jq -r 'keys | length' new_games.json)
+            TOTAL_COUNT=$(jq -r 'keys | length' assets/games.json)
+            echo "Total games: $TOTAL_COUNT (including $NEW_COUNT from BGA)"
+          else
+            echo "Creating new games.json..."
+            mv new_games.json assets/games.json
+          fi
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet assets/games.json; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff --stat assets/games.json
+          fi
+
+      - name: Create branch and commit
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          BRANCH_NAME="update/games-json-$(date +%Y%m%d-%H%M%S)"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          
+          git checkout -b $BRANCH_NAME
           git add assets/games.json
-          git commit -m "Daily update of games.json"
-          git push origin branch/daily-update
+          git commit -m "chore: update games.json with latest BGA games
+          
+          - Updated from fr.boardgamearena.com
+          - Automated daily update"
+          
+          git push origin $BRANCH_NAME
+
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ env.BRANCH_NAME }}
+          title: "🎲 Daily update of games.json"
+          body: |
+            ## Automated BGA Games Update
+            
+            This PR updates the `games.json` file with the latest games from BoardGameArena.
+            
+            ### Changes
+            - Updated game list from French and English BGA pages
+            - Preserved existing game mappings
+            - Added any new games found
+            
+            ### Source URLs
+            - [French games list](https://fr.boardgamearena.com/gamelist?isBetaStatus=)
+            - [All games list](https://fr.boardgamearena.com/gamelist?allGames=)
+            
+            ---
+            *This is an automated pull request generated by the daily update workflow.*
+          labels: |
+            automated
+            data-update
+          assignees: therealhnk
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f data_fr.html data_en.html names_fr.txt names_en.txt merged_names.txt new_games.json temp.json
