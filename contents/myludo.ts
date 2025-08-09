@@ -9,7 +9,11 @@ export const config: PlasmoCSConfig = {
     matches: ["https://www.myludo.fr/*"]
 }
 
-let intervalID = setInterval(check, 125);
+// Constants
+const CHECK_INTERVAL_MS = 125;
+const LOAD_PLAYS_INTERVAL_MS = 250;
+
+let intervalID: NodeJS.Timeout | null = setInterval(check, CHECK_INTERVAL_MS);
 
 async function check() {
     const url = window.location.href;
@@ -22,62 +26,88 @@ async function check() {
 }
 
 async function init() {
-    clearInterval(intervalID);
-
-    const urlParams = new URL(`https://fake.com?${window.location.href.split("?")[1]}`).searchParams;
-    const bgaTableId = urlParams.get("bgatableid");
-
-    const table = await boardGameArenaService.getTableInformations(bgaTableId);
-    if (!table) {
-        window.location.href = "https://www.myludo.fr";
-        return;
+    if (intervalID) {
+        clearInterval(intervalID);
+        intervalID = null;
     }
 
-    const gameInfo = await configurationService.getGame(table.gameId);
+    try {
+        const queryString = window.location.href.split("?")[1];
+        if (!queryString) {
+            console.error("No query string found in URL");
+            return;
+        }
+        
+        const urlParams = new URLSearchParams(queryString);
+        const bgaTableId = urlParams.get("bgatableid");
 
-    if (!gameInfo) {
-        window.location.href = `https://www.myludo.fr/#!/search/${table.gameId}`;
-        return;
+        if (!bgaTableId) {
+            console.error("No bgatableid found in URL parameters");
+            return;
+        }
+
+        const table = await boardGameArenaService.getTableInformations(bgaTableId);
+        if (!table) {
+            window.location.href = "https://www.myludo.fr";
+            return;
+        }
+
+        const gameInfo = await configurationService.getGame(table.gameId);
+
+        if (!gameInfo) {
+            window.location.href = `https://www.myludo.fr/#!/search/${table.gameId}`;
+            return;
+        }
+
+        const json = JSON.stringify(table);
+        const data = Buffer.from(json).toString('base64');
+
+        window.location.href = `https://www.myludo.fr/#!/game/${gameInfo.currentMyludoId}?bga2myludo_data=${data}`;
+
+        intervalID = setInterval(check, CHECK_INTERVAL_MS);
+    } catch (error) {
+        console.error("Error in init function:", error);
+        // Restart checking in case of error
+        intervalID = setInterval(check, CHECK_INTERVAL_MS);
     }
-
-    const json = JSON.stringify(table);
-    const data = Buffer.from(json).toString('base64');
-
-    window.location.href = `https://www.myludo.fr/#!/game/${gameInfo.currentMyludoId}?bga2myludo_data=${data}`;
-
-    intervalID = setInterval(check, 125);
-
-    return;
 }
 
 async function patch() {
-    // si l'onglet n'est pas actif, on ne présaisie pas les données
-    if (document.visibilityState === "hidden") return;
+    try {
+        // si l'onglet n'est pas actif, on ne présaisie pas les données
+        if (document.visibilityState === "hidden") return;
 
-    if (!window.location.href.includes("bga2myludo_data")) {
-        clearInterval(intervalID);
-        return;
-    }
-
-    const addPlayButton = document.getElementsByClassName('btn-play-open') as HTMLCollectionOf<HTMLElement>;
-
-    if (addPlayButton.length === 0) {
-        // si la personne n'est pas authentifié, on ouvre la modal d'authentification
-        const loginButton = documentHelper.getFirstHtmlElementByQuery('button[href="#loginaccount"]');
-
-        if (loginButton) {
-            const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
-
-            loginButton.click();
-
-            cancelLink.removeEventListener("click", cancelLogin, false);
-            cancelLink.addEventListener("click", cancelLogin, false);
+        if (!window.location.href.includes("bga2myludo_data")) {
+            if (intervalID) {
+                clearInterval(intervalID);
+                intervalID = null;
+            }
+            return;
         }
-    }
-    else {
-        clearInterval(intervalID);
-        const configuration = await configurationService.get();
-        const data = getDataFromBGA();
+
+        const addPlayButton = document.getElementsByClassName('btn-play-open') as HTMLCollectionOf<HTMLElement>;
+
+        if (addPlayButton.length === 0) {
+            // si la personne n'est pas authentifié, on ouvre la modal d'authentification
+            const loginButton = documentHelper.getFirstHtmlElementByQuery('button[href="#loginaccount"]');
+
+            if (loginButton) {
+                loginButton.click();
+                
+                const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
+                if (cancelLink) {
+                    cancelLink.removeEventListener("click", cancelLogin, false);
+                    cancelLink.addEventListener("click", cancelLogin, false);
+                }
+            }
+        }
+        else {
+            if (intervalID) {
+                clearInterval(intervalID);
+                intervalID = null;
+            }
+            const configuration = await configurationService.get();
+            const data = getDataFromBGA();
 
         // override bga user with configuration
         data.players.forEach(current => {
@@ -98,18 +128,25 @@ async function patch() {
 
                     if (hasBeenPlayed) addWarning();
 
-                    document.getElementById('online').click();
+                    const onlineElement = document.getElementById('online');
+                    if (onlineElement) onlineElement.click();
 
-                    if (data.isAbandoned) document.getElementById('incomplete').click();
+                    if (data.isAbandoned) {
+                        const incompleteElement = document.getElementById('incomplete');
+                        if (incompleteElement) incompleteElement.click();
+                    }
 
                     if (data.duration) {
                         documentHelper.getFirstInputByName(`time`).value = data.duration.toString();
-                        document.getElementsByClassName(`counter-hours`)[0].innerHTML = Math.floor(data.duration / 60).toString().padStart(2, "0");
-                        document.getElementsByClassName(`counter-minutes`)[0].innerHTML = Math.floor(data.duration % 60).toString().padStart(2, "0");
+                        const hoursElement = document.getElementsByClassName(`counter-hours`)[0];
+                        const minutesElement = document.getElementsByClassName(`counter-minutes`)[0];
+                        if (hoursElement) hoursElement.textContent = Math.floor(data.duration / 60).toString().padStart(2, "0");
+                        if (minutesElement) minutesElement.textContent = Math.floor(data.duration % 60).toString().padStart(2, "0");
                     }
 
                     if (data.isSolo) {
-                        document.getElementById('solo').click();
+                        const soloElement = document.getElementById('solo');
+                        if (soloElement) soloElement.click();
 
                         const score = data.players[0].score;
 
@@ -123,7 +160,8 @@ async function patch() {
                         documentHelper.getFirstHtmlElementByQuery(`label[for="score-0"]`).click();
                         documentHelper.getInputById(`score-0`).value = score.toString();
                     } else if (data.isCooperative) {
-                        document.getElementById('coop').click();
+                        const coopElement = document.getElementById('coop');
+                        if (coopElement) coopElement.click();
 
                         const scoreCoop = data.players[0].score;
 
@@ -183,7 +221,8 @@ async function patch() {
                     documentHelper.getInputById(`message`).value = message;
 
                     if (configuration.excludeFromStatistics) {
-                        documentHelper.getInputById(`exclude`).click();
+                        const excludeElement = documentHelper.getInputById(`exclude`);
+                        if (excludeElement) excludeElement.click();
                     }
 
                     if (configuration.autoSubmit && !hasBeenPlayed) {
@@ -191,27 +230,55 @@ async function patch() {
                     }
                     else {
                         const modalContent = document.querySelector("#form-play .modal-content");
-                        setTimeout(function () { modalContent.scrollTop = modalContent.scrollHeight; }, 0);
+                        if (modalContent) {
+                            setTimeout(function () { modalContent.scrollTop = modalContent.scrollHeight; }, 0);
+                        }
                     }
                 }
-            }, 125);
+            }, CHECK_INTERVAL_MS);
         }));
+        }
+    } catch (error) {
+        console.error("Error in patch function:", error);
+        // Restart checking in case of error
+        if (!intervalID) {
+            intervalID = setInterval(check, CHECK_INTERVAL_MS);
+        }
     }
 }
 
 function cancelLogin() {
     const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
     cancelLink.removeEventListener("click", cancelLogin, false);
-    clearInterval(intervalID);
+    if (intervalID) {
+        clearInterval(intervalID);
+        intervalID = null;
+    }
 }
 
 function getDataFromBGA() {
-    const urlParams = new URL(`https://fake.com?${window.location.href.split("?")[1]}`).searchParams;
-    const json = Buffer.from(urlParams.get("bga2myludo_data"), 'base64').toString('utf-8');
+    try {
+        const queryString = window.location.href.split("?")[1];
+        if (!queryString) {
+            throw new Error("No query string found in URL");
+        }
+        
+        const urlParams = new URLSearchParams(queryString);
+        const encodedData = urlParams.get("bga2myludo_data");
+        
+        if (!encodedData) {
+            throw new Error("No bga2myludo_data found in URL parameters");
+        }
+        
+        const json = Buffer.from(encodedData, 'base64').toString('utf-8');
 
-    window.location.href = window.location.href.replace(/[?&][^=]+=[^&]+/g, "");
+        window.location.href = window.location.href.replace(/[?&][^=]+=[^&]+/g, "");
 
-    return JSON.parse(json) as Table;
+        return JSON.parse(json) as Table;
+    } catch (error) {
+        console.error("Error decoding BGA data:", error);
+        throw error;
+    }
 }
 
 async function loadPlays(callback) {
@@ -250,7 +317,7 @@ async function loadPlays(callback) {
 
                 callback(tables);
             }
-        }, 250);
+        }, LOAD_PLAYS_INTERVAL_MS);
     }
     else {
         callback(tables);
