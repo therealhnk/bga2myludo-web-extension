@@ -57,7 +57,10 @@ export default class boardGameArenaService {
     static async getFriends(): Promise<Friend[]> {
         return await sendToBackground({ name: BackgroundMessages.GET_BGA_FRIENDS })
             .then(response => { return response.message; })
-            .catch(() => { return [] });
+            .catch((error) => { 
+                console.error('Failed to fetch BGA friends:', error);
+                return [];
+            });
     }
 
     static async isConnected() {

@@ -29,6 +29,9 @@ export default class myludoRepository {
         return fetch(`https://www.myludo.fr/views/login/datas.php?type=init`, { method: "GET", headers })
             .then(response => { return response.json(); })
             .then(response => { return response.user })
-            .catch(() => { return null; });
+            .catch((error) => { 
+                console.error('Failed to fetch Myludo user:', error);
+                return null;
+            });
     }
 }
