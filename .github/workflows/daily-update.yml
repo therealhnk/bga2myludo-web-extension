@@ -71,13 +71,30 @@ jobs:
           # Le * fait que les valeurs de droite (.[1]) écrasent celles de gauche
           jq -s '.[0] * (.[1] // {})' new_games.json assets/games.json > temp.json
           
-          # Trier le JSON par ordre alphabétique des clés
-          jq -S '.' temp.json > assets/games.json
+          # Tri personnalisé: propriétés avec valeur d'abord, puis sans valeur
+          # Toutes triées alphabétiquement dans leurs groupes respectifs
+          jq '
+            # Séparer les propriétés avec et sans valeur
+            to_entries |
+            map(select(.value != "")) as $with_values |
+            map(select(.value == "")) as $without_values |
+            
+            # Trier chaque groupe alphabétiquement par clé
+            ($with_values | sort_by(.key)) + ($without_values | sort_by(.key)) |
+            
+            # Reconvertir en objet
+            from_entries
+          ' temp.json > assets/games.json
           
           # Count changes
           NEW_COUNT=$(jq -r 'keys | length' new_games.json)
           TOTAL_COUNT=$(jq -r 'keys | length' assets/games.json)
+          MAPPED_COUNT=$(jq -r '[.[] | select(. != "")] | length' assets/games.json)
+          UNMAPPED_COUNT=$((TOTAL_COUNT - MAPPED_COUNT))
+          
           echo "Total games in final JSON: $TOTAL_COUNT"
+          echo "Games with MyLudo ID: $MAPPED_COUNT"
+          echo "Games without MyLudo ID: $UNMAPPED_COUNT"
           
           # Clean up working files
           rm -f data.html data_beta.html names.txt names_beta.txt merged_names.txt new_games.json
@@ -142,7 +159,7 @@ jobs:
             - Updated game list from BGA (beta games + final released games)
             - Preserved existing game mappings
             - Added any new games found
-            - Sorted games alphabetically by name
+            - Sorted games: mapped games first (alphabetical), then unmapped games (alphabetical)
             - Bumped version patch number
             
             ### Modified files
