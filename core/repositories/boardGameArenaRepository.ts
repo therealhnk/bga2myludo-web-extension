@@ -115,8 +115,18 @@ export default class boardGameArenaRepository {
             .then(response => { return response.text() })
             .then(response => {
                 const regex = /requestToken:\s+'([^']+)'/;
-                return new Headers([["x-request-token", response.match(regex)[1]]]);
+                const match = response.match(regex);
+                
+                if (!match || match.length < 2) {
+                    console.error("Failed to extract BGA request token from response");
+                    throw new Error("Failed to extract request token");
+                }
+                
+                return new Headers([["x-request-token", match[1]]]);
             })
-            .catch(() => { return null; })
+            .catch((error) => { 
+                console.error("Error fetching BGA headers:", error);
+                return null; 
+            })
     }
 }
