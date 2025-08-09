@@ -271,10 +271,40 @@ function getDataFromBGA() {
         }
         
         const json = Buffer.from(encodedData, 'base64').toString('utf-8');
-
+        
+        // Validate JSON structure before parsing
+        let parsedData: any;
+        try {
+            parsedData = JSON.parse(json);
+        } catch (parseError) {
+            console.error("Invalid JSON in Base64 data:", parseError);
+            throw new Error("Invalid data format received");
+        }
+        
+        // Validate required fields
+        if (!parsedData || typeof parsedData !== 'object') {
+            throw new Error("Invalid data structure: expected object");
+        }
+        
+        if (!parsedData.tableId || typeof parsedData.tableId !== 'string') {
+            throw new Error("Invalid data: missing or invalid tableId");
+        }
+        
+        if (!Array.isArray(parsedData.players) || parsedData.players.length === 0) {
+            throw new Error("Invalid data: missing or empty players array");
+        }
+        
+        // Validate each player has required fields
+        for (const player of parsedData.players) {
+            if (!player.name || typeof player.name !== 'string') {
+                throw new Error("Invalid player data: missing or invalid name");
+            }
+        }
+        
+        // Clean URL after successful validation
         window.location.href = window.location.href.replace(/[?&][^=]+=[^&]+/g, "");
 
-        return JSON.parse(json) as Table;
+        return parsedData as Table;
     } catch (error) {
         console.error("Error decoding BGA data:", error);
         throw error;
