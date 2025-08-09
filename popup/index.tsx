@@ -13,6 +13,7 @@ import notificationsService from '~core/services/notificationsService';
 import Configuration from '~popup/components/Configuration';
 import '~popup/popup.scss';
 import getTheme from '~theme/customTheme';
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import ExportButton from "./components/ExportButton";
 import Home from "./components/Home";
 import ImportButton from "./components/ImportButton";
@@ -62,14 +63,15 @@ export default function PopupIndex() {
     }, [configuration]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <div className='popup'>
-                <header>
-                    <div className="extension-name" onClick={() => setActiveSection('Home')}>
-                        <img src={icon} alt="bga2myludo" />
-                        <span>{chrome.i18n.getMessage("extensionName")}</span>
-                    </div>
+        <ErrorBoundary>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <div className='popup'>
+                    <header>
+                        <div className="extension-name" onClick={() => setActiveSection('Home')}>
+                            <img src={icon} alt="bga2myludo" />
+                            <span>{chrome.i18n.getMessage("extensionName")}</span>
+                        </div>
 
                     <Tooltip title={chrome.i18n.getMessage("notification")}>
                         <IconButton size="small" onClick={() => setActiveSection('Notification')}>
@@ -134,6 +136,7 @@ export default function PopupIndex() {
                     <Status onReleasesClick={() => setActiveSection('Releases')} />
                 </footer>
             </div >
-        </ThemeProvider >
+        </ThemeProvider>
+        </ErrorBoundary>
     )
 }
