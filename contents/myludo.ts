@@ -15,6 +15,24 @@ const LOAD_PLAYS_INTERVAL_MS = 250;
 
 let intervalID: NodeJS.Timeout | null = setInterval(check, CHECK_INTERVAL_MS);
 
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (intervalID) {
+        clearInterval(intervalID);
+        intervalID = null;
+    }
+});
+
+// Cleanup on visibility change (tab switching)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden && intervalID) {
+        clearInterval(intervalID);
+        intervalID = null;
+    } else if (!document.hidden && !intervalID) {
+        intervalID = setInterval(check, CHECK_INTERVAL_MS);
+    }
+});
+
 async function check() {
     const url = window.location.href;
 
