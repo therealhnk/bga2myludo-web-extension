@@ -137,6 +137,9 @@
     "userMatchingMyludoUserRequired": {
         "message": "champ obligatoire"
     },
+    "userMatchingInvalidFormat": {
+        "message": "Le nom d'utilisateur doit contenir 3-50 caractères (lettres, chiffres, tiret ou underscore)"
+    },
     "userMatchingBGAUserHeader": {
         "message": "Identifiant BGA"
     },
