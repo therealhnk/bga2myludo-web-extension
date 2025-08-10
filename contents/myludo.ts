@@ -36,59 +36,48 @@ document.addEventListener('visibilitychange', () => {
 async function check() {
     const url = window.location.href;
 
-    if (url.includes("bgatableid")) {
-        await init();
+    if (url.includes("bgatableid") && !url.includes("bga2myludo_data")) {
+        // Nouveau format: redirection directe vers page de jeu avec bgatableid
+        await handleDirectRedirect();
     } else if (url.includes("bga2myludo_data")) {
+        // Ancien format: traitement des données encodées (compatibility)
         await patch();
     }
 }
 
-async function init() {
-    if (intervalID) {
-        clearInterval(intervalID);
-        intervalID = null;
+async function handleDirectRedirect() {
+    // Extraire l'ID de table BGA depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const bgaTableId = urlParams.get("bgatableid");
+    
+    if (!bgaTableId) {
+        console.error("No bgatableid found in URL");
+        return;
     }
 
     try {
-        const queryString = window.location.href.split("?")[1];
-        if (!queryString) {
-            console.error("No query string found in URL");
-            return;
-        }
-        
-        const urlParams = new URLSearchParams(queryString);
-        const bgaTableId = urlParams.get("bgatableid");
-
-        if (!bgaTableId) {
-            console.error("No bgatableid found in URL parameters");
-            return;
-        }
-
+        // Récupérer les informations de la table depuis BGA
         const table = await boardGameArenaService.getTableInformations(bgaTableId);
         if (!table) {
-            window.location.href = "https://www.myludo.fr";
+            console.error("Failed to get table information from BGA");
             return;
         }
 
-        const gameInfo = await configurationService.getGame(table.gameId);
-
-        if (!gameInfo) {
-            window.location.href = `https://www.myludo.fr/#!/search/${table.gameId}`;
-            return;
-        }
-
+        // Encoder les données et rediriger vers l'ancien format pour compatibility
         const json = JSON.stringify(table);
         const data = Buffer.from(json).toString('base64');
-
-        window.location.href = `https://www.myludo.fr/#!/game/${gameInfo.currentMyludoId}?bga2myludo_data=${data}`;
-
-        intervalID = setInterval(check, CHECK_INTERVAL_MS);
+        
+        // Nettoyer l'URL actuelle et ajouter les données
+        const currentUrl = window.location.href.replace(/[?&]bgatableid=[^&]+/g, '');
+        const separator = currentUrl.includes('?') ? '&' : '?';
+        
+        window.location.href = `${currentUrl}${separator}bga2myludo_data=${encodeURIComponent(data)}`;
+        
     } catch (error) {
-        console.error("Error in init function:", error);
-        // Restart checking in case of error
-        intervalID = setInterval(check, CHECK_INTERVAL_MS);
+        console.error("Error handling direct redirect:", error);
     }
 }
+
 
 async function patch() {
     try {

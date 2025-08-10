@@ -256,5 +256,17 @@
     },
     "notificationsdateAgoPrefix": {
         "message": "Il y a "
+    },
+    "myludoLinkText": {
+        "message": "Enregistrer sur Myludo"
+    },
+    "gameUnavailableText": {
+        "message": "Indisponible sur Myludo"
+    },
+    "gameUnavailableTooltip": {
+        "message": "Le jeu n'est pas disponible sur Myludo"
+    },
+    "linkErrorText": {
+        "message": "Erreur"
     }
 }
