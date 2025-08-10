@@ -120,10 +120,29 @@ async function patch() {
                 
                 // Attendre un peu que la modal soit complètement chargée
                 setTimeout(() => {
-                    const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
-                    if (cancelLink) {
-                        cancelLink.removeEventListener("click", cancelLogin, false);
-                        cancelLink.addEventListener("click", cancelLogin, false);
+                    // Chercher le bouton annuler dans la modal
+                    const cancelLinks = document.querySelectorAll('#loginaccount .modal-footer a, #loginaccount button.modal-close, #loginaccount [data-dismiss="modal"]');
+                    cancelLinks.forEach(link => {
+                        link.removeEventListener("click", cancelLogin);
+                        link.addEventListener("click", cancelLogin);
+                    });
+                    
+                    // Aussi écouter la fermeture de la modal via ESC ou clic en dehors
+                    const modal = document.querySelector('#loginaccount');
+                    if (modal) {
+                        // Observer les changements de style pour détecter la fermeture
+                        const observer = new MutationObserver((mutations) => {
+                            mutations.forEach((mutation) => {
+                                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                                    const target = mutation.target as HTMLElement;
+                                    if (target.style.display === 'none' || !target.classList.contains('open')) {
+                                        observer.disconnect();
+                                        cancelLogin(null);
+                                    }
+                                }
+                            });
+                        });
+                        observer.observe(modal, { attributes: true });
                     }
                 }, 500);
             }
@@ -282,10 +301,11 @@ function cancelLogin(event) {
         event.preventDefault();
     }
     
-    const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
-    if (cancelLink) {
-        cancelLink.removeEventListener("click", cancelLogin, false);
-    }
+    // Retirer tous les event listeners
+    const cancelLinks = document.querySelectorAll('#loginaccount .modal-footer a, #loginaccount button.modal-close, #loginaccount [data-dismiss="modal"]');
+    cancelLinks.forEach(link => {
+        link.removeEventListener("click", cancelLogin);
+    });
     
     // S'assurer que l'intervalle est bien stoppé
     if (intervalID) {
@@ -300,10 +320,15 @@ function cancelLogin(event) {
     newUrl = newUrl.replace(/\/plays\?bgatableid=[^&#]+/, '');
     newUrl = newUrl.replace(/\/plays$/, '');
     
-    // Faire une vraie redirection
-    if (newUrl !== window.location.href) {
+    // Forcer la redirection même si l'URL semble identique
+    // car Myludo est une SPA et il faut recharger la vue
+    setTimeout(() => {
         window.location.href = newUrl;
-    }
+        // Forcer le reload si nécessaire
+        if (window.location.href === newUrl) {
+            window.location.reload();
+        }
+    }, 100);
 }
 
 
