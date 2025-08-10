@@ -335,6 +335,9 @@ function cancelLogin(event) {
         intervalID = null;
     }
     
+    // Reset le flag pour permettre un nouveau patch plus tard
+    isPatchInProgress = false;
+    
     // Nettoyer l'URL et retirer /plays - avec une vraie redirection
     let newUrl = window.location.href;
     
