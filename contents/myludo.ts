@@ -14,7 +14,6 @@ const CHECK_INTERVAL_MS = 125;
 const LOAD_PLAYS_INTERVAL_MS = 250;
 
 let intervalID: NodeJS.Timeout | null = setInterval(check, CHECK_INTERVAL_MS);
-let patchCallCount = 0; // Compteur pour debug
 let isPatchInProgress = false; // Flag pour éviter les appels multiples
 
 // Cleanup on page unload
@@ -77,7 +76,6 @@ async function check() {
     const bgaTableId = getBgaTableId();
 
     if (bgaTableId && !isPatchInProgress) {
-        console.log(`[BGA2Myludo] check() - bgatableid trouvé: ${bgaTableId}`);
         // Si on a un bgatableid et qu'un patch n'est pas déjà en cours
         await patch();
     }
@@ -86,18 +84,14 @@ async function check() {
 async function patch() {
     // Empêcher les appels multiples
     if (isPatchInProgress) {
-        console.log(`[BGA2Myludo] patch() - Patch déjà en cours, abandon`);
         return;
     }
     
     isPatchInProgress = true;
-    patchCallCount++;
-    console.log(`[BGA2Myludo] patch() appelé - Appel n°${patchCallCount}`);
     
     try {
         // si l'onglet n'est pas actif, on ne présaisie pas les données
         if (document.visibilityState === "hidden") {
-            console.log(`[BGA2Myludo] patch() - Onglet caché, abandon`);
             isPatchInProgress = false;
             return;
         }
@@ -106,7 +100,6 @@ async function patch() {
         const bgaTableId = getBgaTableId();
         
         if (!bgaTableId) {
-            console.log(`[BGA2Myludo] patch() - Pas de bgatableid, arrêt de l'intervalle`);
             if (intervalID) {
                 clearInterval(intervalID);
                 intervalID = null;
@@ -114,24 +107,18 @@ async function patch() {
             isPatchInProgress = false;
             return;
         }
-
-        console.log(`[BGA2Myludo] patch() - Récupération des infos pour table ${bgaTableId}`);
         
         // Récupérer les informations de la table depuis BGA
         const data = await boardGameArenaService.getTableInformations(bgaTableId);
         if (!data) {
-            console.error("[BGA2Myludo] patch() - Échec récupération infos table BGA");
+            console.error("Failed to get table information from BGA");
             isPatchInProgress = false;
             return;
         }
 
-        console.log(`[BGA2Myludo] patch() - Infos table récupérées`);
-
         const addPlayButton = document.getElementsByClassName('btn-play-open') as HTMLCollectionOf<HTMLElement>;
 
         if (addPlayButton.length === 0) {
-            console.log(`[BGA2Myludo] patch() - Utilisateur non connecté, ouverture modal auth`);
-            
             // si la personne n'est pas authentifié, on ouvre la modal d'authentification
             const loginButton = documentHelper.getFirstHtmlElementByQuery('button[href="#loginaccount"]');
 
@@ -140,7 +127,6 @@ async function patch() {
                 if (intervalID) {
                     clearInterval(intervalID);
                     intervalID = null;
-                    console.log(`[BGA2Myludo] patch() - Intervalle stoppé avant ouverture modal`);
                 }
                 
                 loginButton.click();
@@ -175,8 +161,6 @@ async function patch() {
             }
         }
         else {
-            console.log(`[BGA2Myludo] patch() - Utilisateur connecté, arrêt de l'intervalle et préparation du formulaire`);
-            
             if (intervalID) {
                 clearInterval(intervalID);
                 intervalID = null;
