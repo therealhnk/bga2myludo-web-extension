@@ -13,9 +13,11 @@ export const config: PlasmoCSConfig = {
 const CHECK_INTERVAL_MS = 125;
 const LOAD_PLAYS_INTERVAL_MS = 250;
 const SCROLL_DELAY_MS = 100;
+const MAX_RETRY_COUNT = 20; // Max 2.5 seconds (20 * 125ms)
 
 let intervalID: NodeJS.Timeout | null = setInterval(check, CHECK_INTERVAL_MS);
 let isPatchInProgress = false; // Flag pour éviter les appels multiples
+let retryCount = 0;
 
 // Cleanup on page unload
 window.addEventListener('beforeunload', () => {
@@ -39,11 +41,11 @@ function getBgaTableId(): string | null {
     // Chercher dans la query string normale
     const urlParams = new URLSearchParams(window.location.search);
     const tableId = urlParams.get("bgatableid");
-    
+
     if (tableId) {
         return tableId;
     }
-    
+
     // Si pas trouvé, chercher dans le hash (après #!)
     if (window.location.hash) {
         const hashMatch = window.location.hash.match(/[?&]bgatableid=([^&]+)/);
@@ -51,13 +53,13 @@ function getBgaTableId(): string | null {
             return hashMatch[1];
         }
     }
-    
+
     return null;
 }
 
 function cleanUrlFromBgaTableId(): void {
     let newUrl = window.location.href;
-    
+
     if (window.location.hash.includes("bgatableid")) {
         // Nettoyer dans le hash
         newUrl = newUrl.replace(/([?&])bgatableid=[^&]+(&|$)/, (match, p1, p2) => {
@@ -67,7 +69,7 @@ function cleanUrlFromBgaTableId(): void {
         // Nettoyer dans la query string normale
         newUrl = newUrl.replace(/[?&]bgatableid=[^&#]+/g, '');
     }
-    
+
     if (newUrl !== window.location.href) {
         window.history.replaceState({}, document.title, newUrl);
     }
@@ -87,9 +89,9 @@ async function patch() {
     if (isPatchInProgress) {
         return;
     }
-    
+
     isPatchInProgress = true;
-    
+
     try {
         // si l'onglet n'est pas actif, on ne présaisie pas les données
         if (document.visibilityState === "hidden") {
@@ -99,7 +101,7 @@ async function patch() {
 
         // Récupérer le bgatableid depuis l'URL
         const bgaTableId = getBgaTableId();
-        
+
         if (!bgaTableId) {
             if (intervalID) {
                 clearInterval(intervalID);
@@ -108,7 +110,7 @@ async function patch() {
             isPatchInProgress = false;
             return;
         }
-        
+
         // Récupérer les informations de la table depuis BGA
         const data = await boardGameArenaService.getTableInformations(bgaTableId);
         if (!data) {
@@ -120,7 +122,14 @@ async function patch() {
         const addPlayButton = document.getElementsByClassName('btn-play-open') as HTMLCollectionOf<HTMLElement>;
 
         if (addPlayButton.length === 0) {
-            // si la personne n'est pas authentifié, on ouvre la modal d'authentification
+            // Vérifier si on doit réessayer (le DOM peut ne pas être prêt)
+            if (retryCount < MAX_RETRY_COUNT) {
+                retryCount++;
+                isPatchInProgress = false; // Reset pour permettre le retry
+                return; // L'intervalle va réessayer
+            }
+
+            // Après max retries, vérifier l'authentification
             const loginButton = documentHelper.getFirstHtmlElementByQuery('button[href="#loginaccount"]');
 
             if (loginButton) {
@@ -129,9 +138,9 @@ async function patch() {
                     clearInterval(intervalID);
                     intervalID = null;
                 }
-                
+
                 loginButton.click();
-                
+
                 // Attendre un peu que la modal soit complètement chargée
                 setTimeout(() => {
                     // Chercher le bouton annuler dans la modal
@@ -140,7 +149,7 @@ async function patch() {
                         link.removeEventListener("click", cancelLogin);
                         link.addEventListener("click", cancelLogin);
                     });
-                    
+
                     // Aussi écouter la fermeture de la modal via ESC ou clic en dehors
                     const modal = document.querySelector('#loginaccount');
                     if (modal) {
@@ -162,150 +171,152 @@ async function patch() {
             }
         }
         else {
+            retryCount = 0; // Reset retry count for next time
+
             if (intervalID) {
                 clearInterval(intervalID);
                 intervalID = null;
             }
             const configuration = await configurationService.get();
 
-        // override bga user with configuration
-        data.players.forEach(current => {
-            const overridenUser = configuration.users.find(o => o.bgaUser === current.name);
-            current.name = overridenUser && overridenUser.myludoUser && overridenUser.myludoUser.length > 0 ? overridenUser.myludoUser : current.name;
-        });
+            // override bga user with configuration
+            data.players.forEach(current => {
+                const overridenUser = configuration.users.find(o => o.bgaUser === current.name);
+                current.name = overridenUser && overridenUser.myludoUser && overridenUser.myludoUser.length > 0 ? overridenUser.myludoUser : current.name;
+            });
 
-        await loadPlays((plays => {
-            const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(data, plays);
+            await loadPlays((plays => {
+                const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(data, plays);
 
-            addPlayButton.item(0).click();
-            
-            // Nettoyer l'URL maintenant qu'on a ouvert le formulaire
-            cleanUrlFromBgaTableId();
+                addPlayButton.item(0).click();
 
-            const intervalPopupID = setInterval(() => {
-                const addPlayerButton = document.getElementsByClassName('btn-add-player') as HTMLCollectionOf<HTMLElement>;
+                // Nettoyer l'URL maintenant qu'on a ouvert le formulaire
+                cleanUrlFromBgaTableId();
 
-                if (addPlayerButton.length > 0) {
-                    clearInterval(intervalPopupID);
+                const intervalPopupID = setInterval(() => {
+                    const addPlayerButton = document.getElementsByClassName('btn-add-player') as HTMLCollectionOf<HTMLElement>;
 
-                    if (hasBeenPlayed) addWarning();
+                    if (addPlayerButton.length > 0) {
+                        clearInterval(intervalPopupID);
 
-                    const onlineElement = document.getElementById('online');
-                    if (onlineElement) onlineElement.click();
+                        if (hasBeenPlayed) addWarning();
 
-                    if (data.isAbandoned) {
-                        const incompleteElement = document.getElementById('incomplete');
-                        if (incompleteElement) incompleteElement.click();
-                    }
+                        const onlineElement = document.getElementById('online');
+                        if (onlineElement) onlineElement.click();
 
-                    if (data.duration) {
-                        documentHelper.getFirstInputByName(`time`).value = data.duration.toString();
-                        const hoursElement = document.getElementsByClassName(`counter-hours`)[0];
-                        const minutesElement = document.getElementsByClassName(`counter-minutes`)[0];
-                        if (hoursElement) hoursElement.textContent = Math.floor(data.duration / 60).toString().padStart(2, "0");
-                        if (minutesElement) minutesElement.textContent = Math.floor(data.duration % 60).toString().padStart(2, "0");
-                    }
-
-                    if (data.isSolo) {
-                        const soloElement = document.getElementById('solo');
-                        if (soloElement) soloElement.click();
-
-                        const score = data.players[0].score;
-
-                        if (score > 0) {
-                            documentHelper.getFirstHtmlElementByQuery('.btn-winner-player').click();
+                        if (data.isAbandoned) {
+                            const incompleteElement = document.getElementById('incomplete');
+                            if (incompleteElement) incompleteElement.click();
                         }
 
-                        documentHelper.getFirstHtmlElementByQuery(`label[for="name-0"]`).click();
-                        documentHelper.getInputById(`name-0`).value = data.players[0].name;
-
-                        documentHelper.getFirstHtmlElementByQuery(`label[for="score-0"]`).click();
-                        documentHelper.getInputById(`score-0`).value = score.toString();
-                    } else if (data.isCooperative) {
-                        const coopElement = document.getElementById('coop');
-                        if (coopElement) coopElement.click();
-
-                        const scoreCoop = data.players[0].score;
-
-                        documentHelper.getFirstHtmlElementByQuery(`label[for="coopscore"]`).click();
-                        documentHelper.getInputById(`coopscore`).value = scoreCoop.toString();
-
-                        if (scoreCoop > 0) {
-                            documentHelper.getFirstHtmlElementByQuery('.btn-icon-switch').click();
+                        if (data.duration) {
+                            documentHelper.getFirstInputByName(`time`).value = data.duration.toString();
+                            const hoursElement = document.getElementsByClassName(`counter-hours`)[0];
+                            const minutesElement = document.getElementsByClassName(`counter-minutes`)[0];
+                            if (hoursElement) hoursElement.textContent = Math.floor(data.duration / 60).toString().padStart(2, "0");
+                            if (minutesElement) minutesElement.textContent = Math.floor(data.duration % 60).toString().padStart(2, "0");
                         }
 
-                        data.players.forEach((elt, index) => {
-                            if (addPlayerButton.item(0)) {
-                                addPlayerButton.item(0).click();
+                        if (data.isSolo) {
+                            const soloElement = document.getElementById('solo');
+                            if (soloElement) soloElement.click();
+
+                            const score = data.players[0].score;
+
+                            if (score > 0) {
+                                documentHelper.getFirstHtmlElementByQuery('.btn-winner-player').click();
                             }
 
-                            documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="name-0"]`).click();
+                            documentHelper.getInputById(`name-0`).value = data.players[0].name;
 
-                            const currentPlayer = documentHelper.getInputById(`name-${index}`);
-                            currentPlayer.value = elt.name;
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="score-0"]`).click();
+                            documentHelper.getInputById(`score-0`).value = score.toString();
+                        } else if (data.isCooperative) {
+                            const coopElement = document.getElementById('coop');
+                            if (coopElement) coopElement.click();
 
-                            documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
-                            documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
-                        });
+                            const scoreCoop = data.players[0].score;
 
-                    } else {
-                        data.players.forEach((elt, index) => {
-                            if (addPlayerButton.item(0)) {
-                                addPlayerButton.item(0).click();
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="coopscore"]`).click();
+                            documentHelper.getInputById(`coopscore`).value = scoreCoop.toString();
+
+                            if (scoreCoop > 0) {
+                                documentHelper.getFirstHtmlElementByQuery('.btn-icon-switch').click();
                             }
 
-                            documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
+                            data.players.forEach((elt, index) => {
+                                if (addPlayerButton.item(0)) {
+                                    addPlayerButton.item(0).click();
+                                }
 
-                            const currentPlayer = documentHelper.getInputById(`name-${index}`);
-                            currentPlayer.value = elt.name;
+                                documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
 
-                            if (elt.rank === 1) {
-                                (currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0] as HTMLElement).click();
-                            }
+                                const currentPlayer = documentHelper.getInputById(`name-${index}`);
+                                currentPlayer.value = elt.name;
 
-                            documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
-                            documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
-                        });
+                                documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
+                                documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
+                            });
+
+                        } else {
+                            data.players.forEach((elt, index) => {
+                                if (addPlayerButton.item(0)) {
+                                    addPlayerButton.item(0).click();
+                                }
+
+                                documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
+
+                                const currentPlayer = documentHelper.getInputById(`name-${index}`);
+                                currentPlayer.value = elt.name;
+
+                                if (elt.rank === 1) {
+                                    (currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0] as HTMLElement).click();
+                                }
+
+                                documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
+                                documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
+                            });
+                        }
+
+                        documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
+
+                        if (configuration.fillPlace) {
+                            documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
+                            documentHelper.getInputById(`location`).value = configuration.place;
+                        }
+
+                        documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
+                        let message = "";
+
+                        if (configuration.addTableLink) {
+                            message += chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
+                        }
+
+                        message += chrome.i18n.getMessage("createdWithText");
+
+                        documentHelper.getInputById(`message`).value = message;
+
+                        if (configuration.excludeFromStatistics) {
+                            const excludeElement = documentHelper.getInputById(`exclude`);
+                            if (excludeElement) excludeElement.click();
+                        }
+
+                        if (configuration.autoSubmit && !hasBeenPlayed) {
+                            documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
+                        }
+                        else {
+                            // Attendre que le DOM soit mis à jour avant de scroller
+                            setTimeout(() => {
+                                const modalContent = document.querySelector("#form-play .modal-content") as HTMLElement;
+                                if (modalContent) {
+                                    modalContent.scrollTop = modalContent.scrollHeight;
+                                }
+                            }, SCROLL_DELAY_MS);
+                        }
                     }
-
-                    documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
-
-                    if (configuration.fillPlace) {
-                        documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();
-                        documentHelper.getInputById(`location`).value = configuration.place;
-                    }
-
-                    documentHelper.getFirstHtmlElementByQuery(`label[for="message"]`).click();
-                    let message = "";
-
-                    if (configuration.addTableLink) {
-                        message += chrome.i18n.getMessage("tableLinkText").replace('#TABLE_ID#', data.tableId.toString());
-                    }
-
-                    message += chrome.i18n.getMessage("createdWithText");
-
-                    documentHelper.getInputById(`message`).value = message;
-
-                    if (configuration.excludeFromStatistics) {
-                        const excludeElement = documentHelper.getInputById(`exclude`);
-                        if (excludeElement) excludeElement.click();
-                    }
-
-                    if (configuration.autoSubmit && !hasBeenPlayed) {
-                        documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
-                    }
-                    else {
-                        // Attendre que le DOM soit mis à jour avant de scroller
-                        setTimeout(() => {
-                            const modalContent = document.querySelector("#form-play .modal-content") as HTMLElement;
-                            if (modalContent) {
-                                modalContent.scrollTop = modalContent.scrollHeight;
-                            }
-                        }, SCROLL_DELAY_MS);
-                    }
-                }
-            }, CHECK_INTERVAL_MS);
-        }));
+                }, CHECK_INTERVAL_MS);
+            }));
         }
     } catch (error) {
         console.error("Error in patch function:", error);
@@ -322,29 +333,29 @@ function cancelLogin(event) {
     if (event && event.preventDefault) {
         event.preventDefault();
     }
-    
+
     // Retirer tous les event listeners
     const cancelLinks = document.querySelectorAll('#loginaccount .modal-footer a, #loginaccount button.modal-close, #loginaccount [data-dismiss="modal"]');
     cancelLinks.forEach(link => {
         link.removeEventListener("click", cancelLogin);
     });
-    
+
     // S'assurer que l'intervalle est bien stoppé
     if (intervalID) {
         clearInterval(intervalID);
         intervalID = null;
     }
-    
+
     // Reset le flag pour permettre un nouveau patch plus tard
     isPatchInProgress = false;
-    
+
     // Nettoyer l'URL et retirer /plays - avec une vraie redirection
     let newUrl = window.location.href;
-    
+
     // Retirer le paramètre bgatableid et /plays
     newUrl = newUrl.replace(/\/plays\?bgatableid=[^&#]+/, '');
     newUrl = newUrl.replace(/\/plays$/, '');
-    
+
     // Forcer la redirection même si l'URL semble identique
     // car Myludo est une SPA et il faut recharger la vue
     setTimeout(() => {
@@ -433,7 +444,7 @@ function addWarning() {
     if (modalContent) {
         modalContent.appendChild(divider);
         modalContent.appendChild(row);
-        
+
         // Scroller pour montrer le warning
         setTimeout(() => {
             modalContent.scrollTop = modalContent.scrollHeight;
