@@ -33,62 +33,68 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-async function check() {
-    const url = window.location.href;
+function getBgaTableId(): string | null {
+    // Chercher dans la query string normale
+    const urlParams = new URLSearchParams(window.location.search);
+    const tableId = urlParams.get("bgatableid");
+    
+    if (tableId) {
+        return tableId;
+    }
+    
+    // Si pas trouvé, chercher dans le hash (après #!)
+    if (window.location.hash) {
+        const hashMatch = window.location.hash.match(/[?&]bgatableid=([^&]+)/);
+        if (hashMatch) {
+            return hashMatch[1];
+        }
+    }
+    
+    return null;
+}
 
-    if (url.includes("bgatableid") && !url.includes("bga2myludo_data")) {
-        // Nouveau format: redirection directe vers page de jeu avec bgatableid
-        await handleDirectRedirect();
-    } else if (url.includes("bga2myludo_data")) {
-        // Ancien format: traitement des données encodées (compatibility)
+async function check() {
+    const bgaTableId = getBgaTableId();
+
+    if (bgaTableId) {
+        // Si on a un bgatableid, on lance le patch directement
         await patch();
     }
 }
-
-async function handleDirectRedirect() {
-    // Extraire l'ID de table BGA depuis l'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const bgaTableId = urlParams.get("bgatableid");
-    
-    if (!bgaTableId) {
-        console.error("No bgatableid found in URL");
-        return;
-    }
-
-    try {
-        // Récupérer les informations de la table depuis BGA
-        const table = await boardGameArenaService.getTableInformations(bgaTableId);
-        if (!table) {
-            console.error("Failed to get table information from BGA");
-            return;
-        }
-
-        // Encoder les données et rediriger vers l'ancien format pour compatibility
-        const json = JSON.stringify(table);
-        const data = Buffer.from(json).toString('base64');
-        
-        // Nettoyer l'URL actuelle et ajouter les données
-        const currentUrl = window.location.href.replace(/[?&]bgatableid=[^&]+/g, '');
-        const separator = currentUrl.includes('?') ? '&' : '?';
-        
-        window.location.href = `${currentUrl}${separator}bga2myludo_data=${encodeURIComponent(data)}`;
-        
-    } catch (error) {
-        console.error("Error handling direct redirect:", error);
-    }
-}
-
 
 async function patch() {
     try {
         // si l'onglet n'est pas actif, on ne présaisie pas les données
         if (document.visibilityState === "hidden") return;
 
-        if (!window.location.href.includes("bga2myludo_data")) {
+        // Récupérer le bgatableid depuis l'URL
+        const bgaTableId = getBgaTableId();
+        
+        if (!bgaTableId) {
             if (intervalID) {
                 clearInterval(intervalID);
                 intervalID = null;
             }
+            return;
+        }
+
+        // Nettoyer l'URL en retirant le paramètre bgatableid (dans le hash ou la query string)
+        let newUrl = window.location.href;
+        if (window.location.hash.includes("bgatableid")) {
+            // Nettoyer dans le hash
+            newUrl = newUrl.replace(/([?&])bgatableid=[^&]+(&|$)/, (match, p1, p2) => {
+                return p2 === '&' ? p1 : '';
+            });
+        } else {
+            // Nettoyer dans la query string normale
+            newUrl = newUrl.replace(/[?&]bgatableid=[^&#]+/g, '');
+        }
+        window.history.replaceState({}, document.title, newUrl);
+
+        // Récupérer les informations de la table depuis BGA
+        const data = await boardGameArenaService.getTableInformations(bgaTableId);
+        if (!data) {
+            console.error("Failed to get table information from BGA");
             return;
         }
 
@@ -114,7 +120,6 @@ async function patch() {
                 intervalID = null;
             }
             const configuration = await configurationService.get();
-            const data = getDataFromBGA();
 
         // override bga user with configuration
         data.players.forEach(current => {
@@ -263,60 +268,6 @@ function cancelLogin() {
     }
 }
 
-function getDataFromBGA() {
-    try {
-        const queryString = window.location.href.split("?")[1];
-        if (!queryString) {
-            throw new Error("No query string found in URL");
-        }
-        
-        const urlParams = new URLSearchParams(queryString);
-        const encodedData = urlParams.get("bga2myludo_data");
-        
-        if (!encodedData) {
-            throw new Error("No bga2myludo_data found in URL parameters");
-        }
-        
-        const json = Buffer.from(encodedData, 'base64').toString('utf-8');
-        
-        // Validate JSON structure before parsing
-        let parsedData: any;
-        try {
-            parsedData = JSON.parse(json);
-        } catch (parseError) {
-            console.error("Invalid JSON in Base64 data:", parseError);
-            throw new Error("Invalid data format received");
-        }
-        
-        // Validate required fields
-        if (!parsedData || typeof parsedData !== 'object') {
-            throw new Error("Invalid data structure: expected object");
-        }
-        
-        if (!parsedData.tableId || typeof parsedData.tableId !== 'string') {
-            throw new Error("Invalid data: missing or invalid tableId");
-        }
-        
-        if (!Array.isArray(parsedData.players) || parsedData.players.length === 0) {
-            throw new Error("Invalid data: missing or empty players array");
-        }
-        
-        // Validate each player has required fields
-        for (const player of parsedData.players) {
-            if (!player.name || typeof player.name !== 'string') {
-                throw new Error("Invalid player data: missing or invalid name");
-            }
-        }
-        
-        // Clean URL after successful validation
-        window.location.href = window.location.href.replace(/[?&][^=]+=[^&]+/g, "");
-
-        return parsedData as Table;
-    } catch (error) {
-        console.error("Error decoding BGA data:", error);
-        throw error;
-    }
-}
 
 async function loadPlays(callback) {
     const tables: Table[] = [];
