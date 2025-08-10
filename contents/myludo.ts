@@ -53,6 +53,24 @@ function getBgaTableId(): string | null {
     return null;
 }
 
+function cleanUrlFromBgaTableId(): void {
+    let newUrl = window.location.href;
+    
+    if (window.location.hash.includes("bgatableid")) {
+        // Nettoyer dans le hash
+        newUrl = newUrl.replace(/([?&])bgatableid=[^&]+(&|$)/, (match, p1, p2) => {
+            return p2 === '&' ? p1 : '';
+        });
+    } else {
+        // Nettoyer dans la query string normale
+        newUrl = newUrl.replace(/[?&]bgatableid=[^&#]+/g, '');
+    }
+    
+    if (newUrl !== window.location.href) {
+        window.history.replaceState({}, document.title, newUrl);
+    }
+}
+
 async function check() {
     const bgaTableId = getBgaTableId();
 
@@ -78,19 +96,6 @@ async function patch() {
             return;
         }
 
-        // Nettoyer l'URL en retirant le paramètre bgatableid (dans le hash ou la query string)
-        let newUrl = window.location.href;
-        if (window.location.hash.includes("bgatableid")) {
-            // Nettoyer dans le hash
-            newUrl = newUrl.replace(/([?&])bgatableid=[^&]+(&|$)/, (match, p1, p2) => {
-                return p2 === '&' ? p1 : '';
-            });
-        } else {
-            // Nettoyer dans la query string normale
-            newUrl = newUrl.replace(/[?&]bgatableid=[^&#]+/g, '');
-        }
-        window.history.replaceState({}, document.title, newUrl);
-
         // Récupérer les informations de la table depuis BGA
         const data = await boardGameArenaService.getTableInformations(bgaTableId);
         if (!data) {
@@ -105,13 +110,22 @@ async function patch() {
             const loginButton = documentHelper.getFirstHtmlElementByQuery('button[href="#loginaccount"]');
 
             if (loginButton) {
+                // Stopper l'intervalle avant d'ouvrir la modal pour éviter les boucles
+                if (intervalID) {
+                    clearInterval(intervalID);
+                    intervalID = null;
+                }
+                
                 loginButton.click();
                 
-                const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
-                if (cancelLink) {
-                    cancelLink.removeEventListener("click", cancelLogin, false);
-                    cancelLink.addEventListener("click", cancelLogin, false);
-                }
+                // Attendre un peu que la modal soit complètement chargée
+                setTimeout(() => {
+                    const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
+                    if (cancelLink) {
+                        cancelLink.removeEventListener("click", cancelLogin, false);
+                        cancelLink.addEventListener("click", cancelLogin, false);
+                    }
+                }, 500);
             }
         }
         else {
@@ -131,6 +145,9 @@ async function patch() {
             const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(data, plays);
 
             addPlayButton.item(0).click();
+            
+            // Nettoyer l'URL maintenant qu'on a ouvert le formulaire
+            cleanUrlFromBgaTableId();
 
             const intervalPopupID = setInterval(() => {
                 const addPlayerButton = document.getElementsByClassName('btn-add-player') as HTMLCollectionOf<HTMLElement>;
@@ -259,12 +276,33 @@ async function patch() {
     }
 }
 
-function cancelLogin() {
+function cancelLogin(event) {
+    // Empêcher le comportement par défaut si c'est un event
+    if (event && event.preventDefault) {
+        event.preventDefault();
+    }
+    
     const cancelLink = documentHelper.getFirstHtmlElementByQuery('#loginaccount .modal-footer a');
-    cancelLink.removeEventListener("click", cancelLogin, false);
+    if (cancelLink) {
+        cancelLink.removeEventListener("click", cancelLogin, false);
+    }
+    
+    // S'assurer que l'intervalle est bien stoppé
     if (intervalID) {
         clearInterval(intervalID);
         intervalID = null;
+    }
+    
+    // Nettoyer l'URL et retirer /plays - avec une vraie redirection
+    let newUrl = window.location.href;
+    
+    // Retirer le paramètre bgatableid et /plays
+    newUrl = newUrl.replace(/\/plays\?bgatableid=[^&#]+/, '');
+    newUrl = newUrl.replace(/\/plays$/, '');
+    
+    // Faire une vraie redirection
+    if (newUrl !== window.location.href) {
+        window.location.href = newUrl;
     }
 }
 
