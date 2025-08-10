@@ -12,6 +12,7 @@ export const config: PlasmoCSConfig = {
 // Constants
 const CHECK_INTERVAL_MS = 125;
 const LOAD_PLAYS_INTERVAL_MS = 250;
+const SCROLL_DELAY_MS = 100;
 
 let intervalID: NodeJS.Timeout | null = setInterval(check, CHECK_INTERVAL_MS);
 let isPatchInProgress = false; // Flag pour éviter les appels multiples
@@ -294,10 +295,13 @@ async function patch() {
                         documentHelper.getFirstHtmlElementByQuery(`#form-play button[type=submit]`).click();
                     }
                     else {
-                        const modalContent = document.querySelector("#form-play .modal-content");
-                        if (modalContent) {
-                            setTimeout(function () { modalContent.scrollTop = modalContent.scrollHeight; }, 0);
-                        }
+                        // Attendre que le DOM soit mis à jour avant de scroller
+                        setTimeout(() => {
+                            const modalContent = document.querySelector("#form-play .modal-content") as HTMLElement;
+                            if (modalContent) {
+                                modalContent.scrollTop = modalContent.scrollHeight;
+                            }
+                        }, SCROLL_DELAY_MS);
                     }
                 }
             }, CHECK_INTERVAL_MS);
@@ -422,7 +426,14 @@ function addWarning() {
     row.appendChild(label);
     row.appendChild(warning);
 
-    const modalContent = document.querySelector("#form-play .modal-content");
-    modalContent.appendChild(divider);
-    modalContent.appendChild(row);
+    const modalContent = document.querySelector("#form-play .modal-content") as HTMLElement;
+    if (modalContent) {
+        modalContent.appendChild(divider);
+        modalContent.appendChild(row);
+        
+        // Scroller pour montrer le warning
+        setTimeout(() => {
+            modalContent.scrollTop = modalContent.scrollHeight;
+        }, SCROLL_DELAY_MS);
+    }
 }
