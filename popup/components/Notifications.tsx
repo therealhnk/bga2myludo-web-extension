@@ -35,13 +35,13 @@ export default function Notifications({ onNotificationsRefresh }: Props) {
                             <div style={{
                                 width: "100%",
                                 height: "125px",
-                                backgroundImage: `url(https://x.boardgamearena.net/data/gamemedia/${o.gameId}/banner/default_500.jpg)`,
+                                backgroundImage: `url(https://x.boardgamearena.net/data/gamemedia/${o.bgaGameId}/banner/default_500.jpg)`,
                                 backgroundPosition: 'center'
                             }}>
                                 <div style={{
                                     width: "100%",
                                     height: "125px",
-                                    backgroundImage: `url(https://x.boardgamearena.net/data/gamemedia/${o.gameId}/title/en_500.png)`,
+                                    backgroundImage: `url(https://x.boardgamearena.net/data/gamemedia/${o.bgaGameId}/title/en_500.png)`,
                                     backgroundPosition: 'center center',
                                     backgroundSize: "cover"
                                 }}></div>
@@ -57,13 +57,15 @@ export default function Notifications({ onNotificationsRefresh }: Props) {
                                                 </IconButton>
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title={chrome.i18n.getMessage("notificationMyludoLink")}>
-                                            <span>
-                                                <IconButton target='_blank' href={`https://www.myludo.fr/#!/home?bgatableid=${o.tableId}`}>
-                                                    <SaveIcon sx={{ color: "white" }} />
-                                                </IconButton>
-                                            </span>
-                                        </Tooltip>
+                                        {o.myLudoGameId && (
+                                            <Tooltip title={chrome.i18n.getMessage("notificationMyludoLink")}>
+                                                <span>
+                                                    <IconButton target='_blank' href={`https://www.myludo.fr/#!/game/${o.myLudoGameId}/plays?bgatableid=${o.tableId}`}>
+                                                        <SaveIcon sx={{ color: "white" }} />
+                                                    </IconButton>
+                                                </span>
+                                            </Tooltip>
+                                        )}
                                     </span>
                                 }
                             />

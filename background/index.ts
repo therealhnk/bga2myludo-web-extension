@@ -9,12 +9,21 @@ chrome.runtime.onInstalled.addListener(async ({ reason, previousVersion }) => {
         showBoarding = true;
     }
 
-    if (reason === "update") {
-        const currentMajorVersion = manifestData.version.substring(0, 3);
-        const previousMajorVersion = previousVersion.substring(0, 3);
+    if (reason === "update" && previousVersion) {
+        const currentMinorVersion = manifestData.version.substring(0, 3);
+        const previousMinorVersion = previousVersion.substring(0, 3);
 
-        if (currentMajorVersion !== previousMajorVersion) {
+        if (currentMinorVersion !== previousMinorVersion) {
             showBoarding = true;
+        }
+
+        // Migration v3.x.x vers v4.x.x : nettoyer le storage des notifications
+        const currentMajor = parseInt(manifestData.version.split('.')[0]);
+        const previousMajor = parseInt(previousVersion.split('.')[0]);
+
+        if (previousMajor < 4 && currentMajor >= 4) {
+            // Breaking change : structure PlayerNotification modifiée
+            await notificationsService.clearStorage();
         }
     }
 

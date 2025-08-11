@@ -1,6 +1,7 @@
 import { Storage } from "@plasmohq/storage";
 import timeHelper from "~core/helpers/timeHelper";
 import type { PlayerNotification } from "~core/models/playerNotification";
+import configurationService from "~core/services/configurationService";
 
 export default class notificationsService {
     static async updateNotifications(notifications: PlayerNotification[]) {
@@ -8,18 +9,21 @@ export default class notificationsService {
         let notificationsCount = await notificationsService.getNotificationsCount();
 
         if (notifications && notifications.length > 0) {
-            notifications.forEach(notification => {
+            for (const notification of notifications) {
                 const alreadyExist = lastNotifications.find(o => o.id === notification.id);
                 if (!alreadyExist) {
+                    // Récupérer l'ID MyLudo avant d'ajouter dans le storage
+                    const gameInfo = await configurationService.getGame(notification.bgaGameId);
+                    notification.myLudoGameId = gameInfo?.currentMyludoId;
+                    
                     lastNotifications.push(notification);
                     notificationsCount++;
                 }
-            });
+            }
 
-            notificationsService.setLastNotifications(
-                lastNotifications
-                    .sort((x, y) => y.timestamp - x.timestamp)
-                    .slice(0, 99));
+            const storage = new Storage({ area: "local" });
+
+            storage.set('lastNotifications', JSON.stringify(lastNotifications.sort((x, y) => y.timestamp - x.timestamp).slice(0, 99)));
 
             notificationsService.setNotificationsCount(notificationsCount);
         }
@@ -43,12 +47,6 @@ export default class notificationsService {
                     return [] as PlayerNotification[];
                 }
             })
-    }
-
-    static async setLastNotifications(notifications: PlayerNotification[]) {
-        const storage = new Storage({ area: "local" });
-
-        storage.set('lastNotifications', JSON.stringify(notifications));
     }
 
     static async setNotificationsCount(count: number) {
@@ -77,5 +75,16 @@ export default class notificationsService {
                 return 0;
             }
         });
+    }
+
+    static async clearStorage() {
+        const storage = new Storage({ area: "local" });
+        
+        // Supprimer les notifications et le compteur
+        await storage.remove('lastNotifications');
+        await storage.remove('notificationsCount');
+        
+        // Réinitialiser le badge
+        chrome.action.setBadgeText({ text: '' });
     }
 }

@@ -3,7 +3,8 @@ export class PlayerNotification {
     id: string;
     type: string;
     timestamp: number;
-    gameId: string;
+    bgaGameId: string;
+    myLudoGameId?: string;
     tableId: string;
     timeAgoText: string;
 }
