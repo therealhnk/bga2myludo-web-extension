@@ -144,13 +144,38 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         table.setEditingRow(null); //exit editing mode
     };
 
-    const validateRequired = (value: string) => !!value.length;
+    const validateRequired = (value: string) => {
+        // Check for non-empty string after trimming whitespace
+        return value && value.trim().length > 0;
+    };
+
+    const validateUsername = (value: string) => {
+        // Username validation: alphanumeric, underscore, dash, 3-50 chars
+        const usernameRegex = /^[a-zA-Z0-9_-]{3,50}$/;
+        return validateRequired(value) && usernameRegex.test(value.trim());
+    };
 
     function validateUser(user: MappedUser) {
-        return {
-            bgaUser: !validateRequired(user.bgaUser) ? chrome.i18n.getMessage("userMatchingBGAUserRequired") : '',
-            myludoUser: !validateRequired(user.myludoUser) ? chrome.i18n.getMessage("userMatchingMyludoUserRequired") : ''
+        const errors = {
+            bgaUser: '',
+            myludoUser: ''
         };
+
+        // Validate BGA user
+        if (!validateRequired(user.bgaUser)) {
+            errors.bgaUser = chrome.i18n.getMessage("userMatchingBGAUserRequired");
+        } else if (!validateUsername(user.bgaUser)) {
+            errors.bgaUser = chrome.i18n.getMessage("userMatchingInvalidFormat");
+        }
+
+        // Validate Myludo user
+        if (!validateRequired(user.myludoUser)) {
+            errors.myludoUser = chrome.i18n.getMessage("userMatchingMyludoUserRequired");
+        } else if (!validateUsername(user.myludoUser)) {
+            errors.myludoUser = chrome.i18n.getMessage("userMatchingInvalidFormat");
+        }
+
+        return errors;
     }
 
     const table = useMaterialReactTable({

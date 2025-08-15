@@ -44,10 +44,17 @@ async function patchTablePage() {
                 const urlParams = new URLSearchParams(queryString);
                 const tableId = urlParams.get("table");
 
-                const link = boardGameArenaHelper.getMyLudoLink(tableId);
-                Array.from(bgaButtonBar).forEach((element) => {
-                    element.appendChild(link);
-                });
+                if (tableId) {
+                    try {
+                        const gameId = boardGameArenaHelper.extractGameIdFromTablePage();
+                        const link = await boardGameArenaHelper.getMyLudoButton(tableId, gameId);
+                        Array.from(bgaButtonBar).forEach((element) => {
+                            element.appendChild(link.cloneNode(true));
+                        });
+                    } catch (error) {
+                        console.error("Error creating Myludo link:", error);
+                    }
+                }
             }
         }
     }
@@ -67,8 +74,15 @@ async function patchEndGamePage() {
                 const urlParams = new URLSearchParams(queryString);
                 const tableId = urlParams.get("table");
 
-                const link = boardGameArenaHelper.getMyLudoLink(tableId);
-                bgaButtonBar.appendChild(link);
+                if (tableId) {
+                    try {
+                        const gameId = boardGameArenaHelper.extractGameIdFromEndGamePage();
+                        const link = await boardGameArenaHelper.getMyLudoButton(tableId, gameId);
+                        bgaButtonBar.appendChild(link);
+                    } catch (error) {
+                        console.error("Error creating Myludo link:", error);
+                    }
+                }
             }
         }
     }
@@ -79,42 +93,52 @@ async function patchLastResultsPage() {
 
     fetchAndFeedLastResultsPage(page);
 
-    document.querySelector("#board_seemore_r").addEventListener("click", () => {
-        fetchAndFeedLastResultsPage(++page);
-    });
+    const seeMoreButton = document.querySelector("#board_seemore_r");
+    if (seeMoreButton && !seeMoreButton.hasAttribute('data-myludo-listener')) {
+        seeMoreButton.setAttribute('data-myludo-listener', 'true');
+        seeMoreButton.addEventListener("click", () => {
+            fetchAndFeedLastResultsPage(++page);
+        });
+    }
 }
 
 function fetchAndFeedLastResultsPage(page: number) {
-    const timeout = setTimeout(() => {
+    const timeout = setTimeout(async () => {
         // on vérifie si toutes les tables sont chargés et rendues
         const rows = document.querySelectorAll('#boardposts_r .post .postcontent .postfooter:not(:has(a[href*="www.myludo.fr"]))');
 
         if (!rows.length) return; // Vérifie si des lignes existent
 
-        rows.forEach((row) => {
-            const linkElement = row.closest('.post').querySelector('a[href*="/table?table="]');
+        for (const row of rows) {
+            const post = row.closest('.post');
+            if (!post) continue;
 
-            if (linkElement) {
+            const linkElement = post.querySelector('a[href*="/table?table="]');
+            const gameIcon = post.querySelector('.game_icon');
+
+            if (linkElement && gameIcon) {
                 const tableUrl = linkElement.getAttribute('href');
-
-                // Extraire le paramètre table
-                const tableIdMatch = tableUrl.match(/table=(\d+)/);
+                const tableIdMatch = tableUrl?.match(/table=(\d+)/);
+                
                 if (tableIdMatch) {
                     const tableId = tableIdMatch[1];
+                    
+                    // Extraire l'ID du jeu depuis l'icône
+                    const gameId = boardGameArenaHelper.extractGameIdFromIcon(gameIcon);
 
                     const span = document.createElement("span");
                     span.textContent = " • ";
 
-                    const link = document.createElement("a");
-                    link.href = `https://www.myludo.fr/#!/home?bgatableid=${tableId}`;
-                    link.target = "_blank";
-                    link.textContent = "Enregistrer sur myLudo";
-
-                    span.appendChild(link);
-                    row.appendChild(span);
+                    try {
+                        const link = await boardGameArenaHelper.getMyLudoLink(tableId, gameId);
+                        span.appendChild(link);
+                        row.appendChild(span);
+                    } catch (error) {
+                        console.error("Error creating Myludo link:", error);
+                    }
                 }
             }
-        });
+        }
 
         clearTimeout(timeout);
     }, 125);
@@ -133,29 +157,51 @@ async function patchGameStatsPage() {
 
     fetchAndFeedStatsPage(page);
 
-    document.querySelector("#see_more_tables").addEventListener("click", () => {
-        fetchAndFeedStatsPage(++page);
-    });
+    const seeMoreTablesButton = document.querySelector("#see_more_tables");
+    if (seeMoreTablesButton && !seeMoreTablesButton.hasAttribute('data-myludo-listener')) {
+        seeMoreTablesButton.setAttribute('data-myludo-listener', 'true');
+        seeMoreTablesButton.addEventListener("click", () => {
+            fetchAndFeedStatsPage(++page);
+        });
+    }
 }
 
 function fetchAndFeedStatsPage(page: number) {
-    const timeout = setTimeout(() => {
+    const timeout = setTimeout(async () => {
         // on vérifie si toutes les tables sont chargés et rendues
         const rows = document.querySelectorAll('#gamelist_inner tr:not(:has(a[href*="www.myludo.fr"]))');
         if (!rows) return;
 
-        rows.forEach((row) => {
-            const tableText = row.querySelector('a.table_name.bga-link').textContent;
+        for (const row of rows) {
+            const tableText = row.querySelector('a.table_name.bga-link')?.textContent;
+            if (!tableText) continue;
 
             const tableId = tableText.slice(1); // on vire le # en début de ligne
 
-            const link = boardGameArenaHelper.getMyLudoLink(tableId);
+            // Extraire l'ID du jeu depuis l'img
+            const gameIcon = row.querySelector('img.game_icon');
+            let gameId = null;
+            if (gameIcon) {
+                const src = gameIcon.getAttribute('src');
+                if (src) {
+                    const match = src.match(/gamemedia\/([^\/]+)\/icon/);
+                    gameId = match?.[1] || null;
+                }
+            }
 
-            const cell = document.createElement("td");
-            cell.appendChild(link);
+            try {
+                const link = await boardGameArenaHelper.getMyLudoButton(tableId, gameId);
+                const cell = document.createElement("td");
+                cell.appendChild(link);
 
-            document.querySelector(`#gamelist_inner a[href="/table?table=${tableId}"]`).closest("tr").appendChild(cell);
-        });
+                const targetRow = document.querySelector(`#gamelist_inner a[href="/table?table=${tableId}"]`)?.closest("tr");
+                if (targetRow) {
+                    targetRow.appendChild(cell);
+                }
+            } catch (error) {
+                console.error("Error creating Myludo link:", error);
+            }
+        }
 
         clearTimeout(timeout);
     }, 125);

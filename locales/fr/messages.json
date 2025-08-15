@@ -137,6 +137,9 @@
     "userMatchingMyludoUserRequired": {
         "message": "champ obligatoire"
     },
+    "userMatchingInvalidFormat": {
+        "message": "Le nom d'utilisateur doit contenir 3-50 caractères (lettres, chiffres, tiret ou underscore)"
+    },
     "userMatchingBGAUserHeader": {
         "message": "Identifiant BGA"
     },
@@ -253,5 +256,17 @@
     },
     "notificationsdateAgoPrefix": {
         "message": "Il y a "
+    },
+    "myludoLinkText": {
+        "message": "Enregistrer sur Myludo"
+    },
+    "gameUnavailableText": {
+        "message": "Indisponible sur Myludo"
+    },
+    "gameUnavailableTooltip": {
+        "message": "Le jeu n'est pas disponible sur Myludo"
+    },
+    "linkErrorText": {
+        "message": "Erreur"
     }
 }

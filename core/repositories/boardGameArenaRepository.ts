@@ -54,7 +54,7 @@ export default class boardGameArenaRepository {
                                 id: o.id,
                                 type: o.news_type,
                                 timestamp: Number(o.timestamp) * 1000,
-                                gameId: matchGameId[1],
+                                bgaGameId: matchGameId[1],
                                 tableId: tableId,
                                 timeAgoText: "n/a"
                             });
@@ -64,7 +64,10 @@ export default class boardGameArenaRepository {
                     return playerNotifications.sort((x, y) => y.timestamp - x.timestamp);
                 }
             })
-            .catch(() => { return []; });
+            .catch((error) => {
+                console.error('Failed to fetch BGA games:', error);
+                return [];
+            });
     }
 
     static async getTable(tableId: string) {
@@ -75,7 +78,10 @@ export default class boardGameArenaRepository {
         return fetch(`https://boardgamearena.com/table/table/tableinfos.html?id=${tableId}`, { headers })
             .then(response => { return response.json() })
             .then(response => { return response as TableInfos })
-            .catch(() => { return null; });
+            .catch((error) => {
+                console.error('Failed to fetch table information:', error);
+                return null;
+            });
     }
 
     static async getUser(): Promise<User> {
@@ -88,7 +94,10 @@ export default class boardGameArenaRepository {
                     nickname: response.n,
                     token: response.s
                 } as User;
-            }).catch(() => { return null; });
+            }).catch((error) => {
+                console.error('Failed to fetch BGA user:', error);
+                return null;
+            });
     }
 
     static async getFriends() {
@@ -106,7 +115,10 @@ export default class boardGameArenaRepository {
                     return response.data.friends;
                 }
             })
-            .catch(() => { return []; });
+            .catch((error) => {
+                console.error('Failed to fetch BGA friends list:', error);
+                return [];
+            });
     }
 
     static async getHeaders() {
@@ -115,8 +127,18 @@ export default class boardGameArenaRepository {
             .then(response => { return response.text() })
             .then(response => {
                 const regex = /requestToken:\s+'([^']+)'/;
-                return new Headers([["x-request-token", response.match(regex)[1]]]);
+                const match = response.match(regex);
+
+                if (!match || match.length < 2) {
+                    console.error("Failed to extract BGA request token from response");
+                    throw new Error("Failed to extract request token");
+                }
+
+                return new Headers([["x-request-token", match[1]]]);
             })
-            .catch(() => { return null; })
+            .catch((error) => {
+                console.error("Error fetching BGA headers:", error);
+                return null;
+            })
     }
 }

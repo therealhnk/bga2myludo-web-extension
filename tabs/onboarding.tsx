@@ -46,6 +46,18 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 4.0
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Réécriture du workflow permettant de basculer de BGA vers myLudo.
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 3.8
                                     </Typography>
                                     <Typography variant="body1">
