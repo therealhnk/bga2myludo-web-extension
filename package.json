@@ -1,7 +1,7 @@
 {
   "name": "BGA2Myludo",
   "displayName": "BGA2Myludo",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "Facilitez vous la saisie des parties de Board Game Arena sur Myludo !",
   "author": "Benjamin Bigot",
   "scripts": {
