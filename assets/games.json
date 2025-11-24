@@ -162,6 +162,7 @@
   "canvas": "51089",
   "capereurope": "47651",
   "captainflip": "71438",
+  "captainflipexpansiona": "71438",
   "capybarancapybara": "75395",
   "caravan": "33358",
   "carcassonne": "35740",
@@ -1031,6 +1032,7 @@
   "sevens": "69015",
   "sevenwonders": "41062",
   "sevenwondersarchitects": "51868",
+  "sevenwondersdice": "87440",
   "sevenwondersduel": "1005",
   "sevenwondersexpansion": "41062",
   "sfynx": "77712",
@@ -1345,7 +1347,5 @@
   "guibole": "",
   "mollyhouse": "",
   "olenon": "",
-  "popcorn": "",
-  "captainflipexpansiona": "71438",
-  "sevenwondersdice": "87440"
+  "popcorn": ""
 }
