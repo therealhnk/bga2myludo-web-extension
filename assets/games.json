@@ -473,6 +473,7 @@
   "getonboardparisrome": "64303",
   "getthemacguffin": "24195",
   "ghostathome": "87145",
+  "ghostsgalore": "ghosts-galore-94901",
   "giftoftulips": "47563",
   "ginkgopolis": "46037",
   "ginrummy": "16630",
@@ -1096,6 +1097,7 @@
   "spacebase": "32602",
   "spaceempires": "5311",
   "spaceempires:4x": "5311",
+  "spacelab": "space-lab-89084",
   "spacestationphoenix": "57442",
   "spades": "69012",
   "sparts": "69198",
@@ -1361,8 +1363,6 @@
   "zookeepers": "61681",
   "zooloretto": "10968",
   "zuuli": "69785",
-  "ghostsgalore": "ghosts-galore-94901",
   "grabthegalaxy": "",
-  "guibole": "",
-  "spacelab": "space-lab-89084"
+  "guibole": ""
 }
