@@ -185,6 +185,7 @@
   "catan": "19279",
   "catanck": "26250",
   "catannewenergies": "catan-energies-80715",
+  "catatac": "catatac-93074",
   "catcafe": "34704",
   "cathood": "cathood-82392",
   "catinthebox": "66478",
@@ -515,6 +516,7 @@
   "guildes": "21993",
   "guile": "52053",
   "gyges": "4706",
+  "habitats": "habitats-59068",
   "hacktrick": "1147",
   "hadara": "34754",
   "hadestrap": "37060",
@@ -908,6 +910,7 @@
   "pixies": "74105",
   "planetunknown": "38682",
   "plantingevidence": "92149",
+  "pleasedontburnmyvillage": "please-don-t-burn-my-village-95289",
   "pocketcats": "72307",
   "pointsalad": "36568",
   "pokerdice": "19680",
@@ -1031,6 +1034,7 @@
   "schroedingerscats": "49138",
   "scopa": "18409",
   "scratchandcatch": "86316",
+  "screampark": "scream-park-95079",
   "scriptoria": "55406",
   "scythe": "147",
   "seasaltpaper": "59020",
@@ -1367,10 +1371,6 @@
   "zookeepers": "61681",
   "zooloretto": "10968",
   "zuuli": "69785",
-  "catatac": "catatac-93074",
   "grabthegalaxy": "",
-  "guibole": "",
-  "habitats": "habitats-59068",
-  "pleasedontburnmyvillage": "please-don-t-burn-my-village-95289",
-  "screampark": "scream-park-95079"
+  "guibole": ""
 }
