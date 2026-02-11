@@ -102,14 +102,23 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet assets/games.json; then
-            echo "No changes detected"
+          # Semantic comparison: jq object equality ignores key ordering
+          # This avoids false positives when only the sort order changed
+          git show HEAD:assets/games.json > original_games.json
+
+          if jq --exit-status -n \
+            --slurpfile original original_games.json \
+            --slurpfile updated assets/games.json \
+            '$original[0] == $updated[0]' > /dev/null 2>&1; then
+            echo "No semantic changes detected (order-only differences)"
             echo "has_changes=false" >> $GITHUB_OUTPUT
+            git checkout -- assets/games.json
           else
-            echo "Changes detected"
+            echo "Semantic changes detected"
             echo "has_changes=true" >> $GITHUB_OUTPUT
             git diff --stat assets/games.json
           fi
+          rm -f original_games.json
 
       - name: Update version in package.json
         if: steps.check_changes.outputs.has_changes == 'true'
@@ -181,4 +190,4 @@ jobs:
         if: always()
         run: |
           # Remove all working files to ensure they don't end up in the PR
-          rm -f data.html data_beta.html names.txt names_beta.txt merged_names.txt new_games.json temp.json
+          rm -f data.html data_beta.html names.txt names_beta.txt merged_names.txt new_games.json temp.json original_games.json
