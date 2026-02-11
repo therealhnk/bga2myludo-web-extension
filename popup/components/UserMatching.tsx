@@ -150,8 +150,8 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
     };
 
     const validateUsername = (value: string) => {
-        // Username validation: alphanumeric, underscore, dash, spaces, 3-50 chars
-        const usernameRegex = /^[a-zA-Z0-9_\- ]{3,50}$/;
+        // Username validation: letters (including accented), digits, underscore, dash, spaces, 3-50 chars
+        const usernameRegex = /^[\p{L}0-9_\- ]{3,50}$/u;
         return validateRequired(value) && usernameRegex.test(value.trim());
     };
 
