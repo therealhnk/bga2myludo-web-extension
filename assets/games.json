@@ -518,6 +518,7 @@
   "guildes": "21993",
   "guile": "52053",
   "gyges": "4706",
+  "gygesdeluxe": "gyges-89733",
   "habitats": "habitats-59068",
   "hacktrick": "1147",
   "hadara": "34754",
@@ -1251,6 +1252,7 @@
   "tinyfarms": "69005",
   "tinytowns": "35706",
   "tinyturbocars": "47145",
+  "tipperary": "tipperary-79794",
   "tiwanaku": "63568",
   "tobago": "7154",
   "toc": "54211",
@@ -1324,6 +1326,7 @@
   "viamagica": "37539",
   "vidrasso": "68996",
   "villagers": "25101",
+  "visions": "visions-95147",
   "viticulture": "954",
   "vivacatrina": "87374",
   "viveleroi": "84151",
@@ -1376,9 +1379,8 @@
   "zookeepers": "61681",
   "zooloretto": "10968",
   "zuuli": "69785",
+  "dragonarium": "",
   "grabthegalaxy": "",
   "guibole": "",
-  "gygesdeluxe": "gyges-89733",
-  "tipperary": "tipperary-79794",
-  "visions": "visions-95147"
+  "trok": ""
 }
