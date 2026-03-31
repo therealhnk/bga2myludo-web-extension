@@ -117,6 +117,7 @@
   "blooms": "63650",
   "blot": "75520",
   "blueskies": "42815",
+  "bluffking": "bluff-king-96624",
   "bobail": "41716",
   "bohemians": "la-boheme-90768",
   "bohnanza": "28996",
@@ -1109,6 +1110,7 @@
   "sobek": "6168",
   "sobektwoplayers": "46597",
   "sobektwoplayerstreasurespharaoh": "57032",
+  "solarsentinels": "20-strong-74461",
   "solarstorm": "54918",
   "solo": "17956",
   "solowhist": "69013",
@@ -1267,6 +1269,7 @@
   "tinytowns": "35706",
   "tinyturbocars": "47145",
   "tipperary": "tipperary-79794",
+  "tirnanog": "tir-na-nog-84582",
   "tiwanaku": "63568",
   "tobago": "7154",
   "toc": "54211",
@@ -1396,8 +1399,6 @@
   "zookeepers": "61681",
   "zooloretto": "10968",
   "zuuli": "69785",
-  "bluffking": "bluff-king-96624",
-  "group": "",
-  "solarsentinels": "20-strong-74461",
-  "tirnanog": "tir-na-nog-84582"
+  "flockers": "",
+  "group": ""
 }
