@@ -50,10 +50,5 @@
       "alarms",
       "unlimitedStorage"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "@swc/core": "1.5.7"
-    }
   }
 }
