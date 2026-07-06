@@ -2,7 +2,8 @@ import type { PlasmoCSConfig } from "plasmo";
 import boardGameArenaHelper from "~core/helpers/boardGameArenaHelper";
 
 export const config: PlasmoCSConfig = {
-    matches: ["https://boardgamearena.com/*"]
+    matches: ["https://boardgamearena.com/*"],
+    all_frames: true
 }
 
 const myLudoEltId = "myludo-browser-extension-button";
