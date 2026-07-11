@@ -14,7 +14,7 @@ async function patch() {
     const regexTablePage = /^https:\/\/boardgamearena\.com\/table\?table=\d+#?$/;
     const regexpEndGamePage = /^https:\/\/boardgamearena\.com\/.*\btable=\d+.*$/;
     const regexpGameStatsPage = /^https:\/\/boardgamearena\.com\/gamestats/;
-    const regexpLastResultsPage = /^https:\/\/boardgamearena\.com\/player\?section=lastresults$/;
+    const regexpLastResultsPage = /^https:\/\/boardgamearena\.com\/player\?(?=.*[?&]section=lastresults(&|$))/;
 
     if (document.getElementsByClassName(myLudoEltId).length === 0) {
         if (regexTablePage.test(window.location.href)) {
