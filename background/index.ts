@@ -33,7 +33,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason, previousVersion }) => {
 
     await chrome.alarms.create('check-notifications', {
         when: Date.now() + 10000,
-        periodInMinutes: 10
+        periodInMinutes: 30
     });
 });
 
