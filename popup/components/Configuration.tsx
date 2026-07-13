@@ -129,6 +129,19 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
 
                 <Divider />
 
+                <ListItemButton onClick={() => onClick("keepOnlyTopOpponent")}>
+                    <ListItemIcon>
+                        <Switch checked={configuration.keepOnlyTopOpponent} size='small' />
+                    </ListItemIcon>
+                    <ListItemText
+                        className='configuration-item'
+                        primary={<span className='configuration-item-primary'>{chrome.i18n.getMessage("configurationKeepOnlyTopOpponentLabel")}</span>}
+                        secondary={<span className='configuration-item-secondary'>{chrome.i18n.getMessage("configurationKeepOnlyTopOpponentTitle")}</span>}
+                    />
+                </ListItemButton>
+
+                <Divider />
+
                 <ListItemButton onClick={() => onClick("renameAllOpponents")}>
                     <ListItemIcon>
                         <Switch checked={configuration.renameAllOpponents} size='small' />

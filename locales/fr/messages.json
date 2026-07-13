@@ -125,6 +125,12 @@
     "configurationCustomOpponentsBaseNameLabel": {
         "message": "Nom"
     },
+    "configurationKeepOnlyTopOpponentLabel": {
+        "message": "Ne garder que le meilleur adversaire"
+    },
+    "configurationKeepOnlyTopOpponentTitle": {
+        "message": "Ce paramètre ne conserve que vous et le joueur ayant obtenu le meilleur score lors de la saisie de la partie sur Myludo"
+    },
     "dayMode": {
         "message": "Basculer en mode jour"
     },

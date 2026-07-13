@@ -27,6 +27,8 @@ export default class configurationService {
         configuration.renameAllOpponents = configuration.renameAllOpponents !== undefined ? configuration.renameAllOpponents : false;
         configuration.customOpponentsBaseName = configuration.customOpponentsBaseName && configuration.customOpponentsBaseName.length > 0 ? configuration.customOpponentsBaseName : DEFAULT_OPPONENTS_BASE_NAME;
 
+        configuration.keepOnlyTopOpponent = configuration.keepOnlyTopOpponent !== undefined ? configuration.keepOnlyTopOpponent : false;
+
         configuration.users = configuration.users ? configuration.users.sort((a, b) => (a.bgaUser < b.bgaUser ? -1 : 1)) : [];
         configuration.users.forEach((element) => { element.id = uuidv4() });
 
