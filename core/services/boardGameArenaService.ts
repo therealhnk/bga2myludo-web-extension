@@ -1,4 +1,5 @@
 import { sendToBackground } from "@plasmohq/messaging";
+import { DEFAULT_OPPONENTS_BASE_NAME } from "~core/constants";
 import { BackgroundMessages } from "~core/models/backgroundMessages";
 import type { Friend } from "~core/models/boardGameArena/friendsResponse";
 import type { Table } from "~core/models/table";
@@ -35,14 +36,19 @@ export default class boardGameArenaService {
             duration: realTimeMode.includes(response.data.options[200]?.value) ? Math.floor(Number(response.data.result.time_duration) / 60) : undefined
         };
 
+        let currentPlayerIndex = -1;
+
         response.data.result.player.forEach((item) => {
             let playerName = item.name;
+            const isCurrentPlayer = playerName === connectedUser.nickname;
 
-            if (playerName === connectedUser.nickname &&
+            if (isCurrentPlayer &&
                 configuration.customizeCurrentPlayer &&
                 configuration.customCurrentPlayerName) {
                 playerName = configuration.customCurrentPlayerName;
             }
+
+            if (isCurrentPlayer) currentPlayerIndex = table.players.length;
 
             table.players.push({
                 name: playerName,
@@ -50,6 +56,22 @@ export default class boardGameArenaService {
                 rank: item.gamerank ? Number(item.gamerank) : null
             });
         });
+
+        // snapshot avant renommage, pour que la détection de doublon Myludo reste fiable
+        table.originalPlayers = table.players.map(p => ({ ...p }));
+
+        if (configuration.renameAllOpponents &&
+            !table.isSolo &&
+            currentPlayerIndex !== -1) {
+            const baseName = configuration.customOpponentsBaseName && configuration.customOpponentsBaseName.length > 0 ? configuration.customOpponentsBaseName : DEFAULT_OPPONENTS_BASE_NAME;
+
+            table.players
+                .filter((_, index) => index !== currentPlayerIndex)
+                .sort((a, b) => (b.score ?? Number.MIN_SAFE_INTEGER) - (a.score ?? Number.MIN_SAFE_INTEGER))
+                .forEach((opponent, rank) => {
+                    opponent.name = rank === 0 ? baseName : `${baseName}_${rank}`;
+                });
+        }
 
         return table;
     }

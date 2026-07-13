@@ -1,6 +1,7 @@
 import { Storage } from "@plasmohq/storage";
 import games from "data-env:assets/games.json";
 import { v4 as uuidv4 } from 'uuid';
+import { DEFAULT_OPPONENTS_BASE_NAME } from "~core/constants";
 import { Configuration } from "~core/models/configuration";
 import type { MappedGame } from "~core/models/mappedGame";
 
@@ -22,6 +23,9 @@ export default class configurationService {
 
         configuration.autoUpdateUsers = configuration.autoUpdateUsers !== undefined ? configuration.autoUpdateUsers : true;
         configuration.addTableLink = configuration.addTableLink !== undefined ? configuration.addTableLink : true;
+
+        configuration.renameAllOpponents = configuration.renameAllOpponents !== undefined ? configuration.renameAllOpponents : false;
+        configuration.customOpponentsBaseName = configuration.customOpponentsBaseName && configuration.customOpponentsBaseName.length > 0 ? configuration.customOpponentsBaseName : DEFAULT_OPPONENTS_BASE_NAME;
 
         configuration.users = configuration.users ? configuration.users.sort((a, b) => (a.bgaUser < b.bgaUser ? -1 : 1)) : [];
         configuration.users.forEach((element) => { element.id = uuidv4() });

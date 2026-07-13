@@ -127,6 +127,33 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                     </div>
                 }
 
+                <Divider />
+
+                <ListItemButton onClick={() => onClick("renameAllOpponents")}>
+                    <ListItemIcon>
+                        <Switch checked={configuration.renameAllOpponents} size='small' />
+                    </ListItemIcon>
+                    <ListItemText
+                        className='configuration-item'
+                        primary={<span className='configuration-item-primary'>{chrome.i18n.getMessage("configurationRenameAllOpponentsLabel")}</span>}
+                        secondary={<span className='configuration-item-secondary'>{chrome.i18n.getMessage("configurationRenameAllOpponentsTitle")}</span>}
+                    />
+                </ListItemButton>
+                {configuration.renameAllOpponents &&
+                    <div>
+                        <TextField
+                            className='configuration-textfield'
+                            value={configuration.customOpponentsBaseName}
+                            name='customOpponentsBaseName'
+                            onChange={onChange}
+                            size="small"
+                            label={chrome.i18n.getMessage("configurationCustomOpponentsBaseNameLabel")}
+                            variant='standard'
+                            inputProps={{ style: { fontSize: 14 } }}
+                        />
+                    </div>
+                }
+
             </List>
         </div>
     )
