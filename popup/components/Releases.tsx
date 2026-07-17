@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 4.1.0 (17/07/2026)'
+                            secondary="Add option to anonymize opponents"
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 4.0.0 (15/08/2025)'
                             secondary='Refactor BGA to myLudo workflow'
                         />

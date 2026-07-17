@@ -46,6 +46,22 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 4.1
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Anonymisation des adversaires
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        Une nouvelle option permet de renommer tous vos adversaires occasionnels pour éviter de polluer votre liste de joueurs Myludo, tout en gardant l'ensemble des participants dans vos parties.
+                                        <br />Merci à St3ffyCode pour le développement de cette fonctionnalité !
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 4.0
                                     </Typography>
                                     <Typography variant="body1">
