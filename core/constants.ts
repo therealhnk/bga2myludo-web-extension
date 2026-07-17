@@ -1,0 +1,1 @@
+export const DEFAULT_OPPONENTS_BASE_NAME = "BGA";

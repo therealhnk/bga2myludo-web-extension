@@ -185,8 +185,20 @@ async function patch() {
                 current.name = overridenUser && overridenUser.myludoUser && overridenUser.myludoUser.length > 0 ? overridenUser.myludoUser : current.name;
             });
 
+            // même correspondance appliquée au snapshot d'origine, pour que la détection de doublon reste cohérente
+            // avec l'historique Myludo même si renameAllOpponents est aussi actif
+            data.originalPlayers?.forEach(current => {
+                const overridenUser = configuration.users.find(o => o.bgaUser === current.name);
+                current.name = overridenUser && overridenUser.myludoUser && overridenUser.myludoUser.length > 0 ? overridenUser.myludoUser : current.name;
+            });
+
             await loadPlays((plays => {
-                const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(data, plays);
+                // la détection de doublon doit se baser sur les noms d'origine (avant renameAllOpponents),
+                // sinon elle ne reconnaît plus les parties déjà saisies sur Myludo avec les vrais pseudos
+                const hasBeenPlayed = myludoHelper.hasBeenAlreadyPlayed(
+                    { ...data, players: data.originalPlayers ?? data.players },
+                    plays
+                );
 
                 addPlayButton.item(0).click();
 

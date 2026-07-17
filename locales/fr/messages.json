@@ -116,6 +116,15 @@
     "configurationCustomCurrentNamePlayerLabel": {
         "message": "Nom"
     },
+    "configurationRenameAllOpponentsLabel": {
+        "message": "Renommer tous les adversaires"
+    },
+    "configurationRenameAllOpponentsTitle": {
+        "message": "Ce paramètre conserve tous les joueurs mais renomme chaque adversaire (le meilleur score prend ce nom, les suivants un suffixe _1, _2...) lors de la saisie de la partie sur Myludo"
+    },
+    "configurationCustomOpponentsBaseNameLabel": {
+        "message": "Nom"
+    },
     "dayMode": {
         "message": "Basculer en mode jour"
     },

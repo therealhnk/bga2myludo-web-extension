@@ -4,6 +4,8 @@ import type { MappedUser } from "./mappedUser";
 export class Configuration {
     customizeCurrentPlayer?: boolean;
     customCurrentPlayerName: string;
+    renameAllOpponents?: boolean;
+    customOpponentsBaseName: string;
     fillPlace?: boolean;
     place: string;
     autoSubmit: boolean;
