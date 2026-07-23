@@ -6,6 +6,7 @@ export class Configuration {
     customCurrentPlayerName: string;
     renameAllOpponents?: boolean;
     customOpponentsBaseName: string;
+    keepOnlyTopOpponent?: boolean;
     fillPlace?: boolean;
     place: string;
     autoSubmit: boolean;

@@ -2,6 +2,7 @@ import { sendToBackground } from "@plasmohq/messaging";
 import { DEFAULT_OPPONENTS_BASE_NAME } from "~core/constants";
 import { BackgroundMessages } from "~core/models/backgroundMessages";
 import type { Friend } from "~core/models/boardGameArena/friendsResponse";
+import type { Player } from "~core/models/player";
 import type { Table } from "~core/models/table";
 import configurationService from "./configurationService";
 
@@ -57,9 +58,35 @@ export default class boardGameArenaService {
             });
         });
 
-        // snapshot avant renommage, pour que la détection de doublon Myludo reste fiable
+        // snapshot avant renommage/filtrage, pour que la détection de doublon Myludo reste fiable
         table.originalPlayers = table.players.map(p => ({ ...p }));
 
+        if (configuration.keepOnlyTopOpponent &&
+            !table.isSolo &&
+            !table.isCooperative &&
+            currentPlayerIndex !== -1 &&
+            table.players.length >= 2) {
+            const me = table.players[currentPlayerIndex];
+
+            const topOpponent = table.players.reduce((best, current, index) => {
+                if (index === currentPlayerIndex) return best;
+                return best === null || (current.score ?? Number.MIN_SAFE_INTEGER) > (best.score ?? Number.MIN_SAFE_INTEGER) ? current : best;
+            }, null as Player | null);
+
+            if (topOpponent) {
+                // le rang BGA d'origine peut ne plus désigner le vainqueur une fois les autres joueurs retirés
+                const meIsWinner = (me.rank ?? Infinity) <= (topOpponent.rank ?? Infinity);
+                me.rank = meIsWinner ? 1 : 2;
+                topOpponent.rank = meIsWinner ? 2 : 1;
+
+                table.players = [me, topOpponent];
+                // "moi" est toujours en première position dans le tableau réduit ci-dessus
+                currentPlayerIndex = 0;
+            }
+        }
+
+        // pas d'exclusivité volontaire entre les deux options : si les deux sont actives,
+        // celle-ci s'applique après keepOnlyTopOpponent (sur les joueurs restants)
         if (configuration.renameAllOpponents &&
             !table.isSolo &&
             currentPlayerIndex !== -1) {
