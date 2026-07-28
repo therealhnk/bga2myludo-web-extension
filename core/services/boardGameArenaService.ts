@@ -65,9 +65,10 @@ export default class boardGameArenaService {
             currentPlayerIndex !== -1) {
             const baseName = configuration.customOpponentsBaseName && configuration.customOpponentsBaseName.length > 0 ? configuration.customOpponentsBaseName : DEFAULT_OPPONENTS_BASE_NAME;
 
+            // tri par rang BGA (pas le score) : certains jeux récompensent le score le plus bas (ex. No Mercy)
             table.players
                 .filter((_, index) => index !== currentPlayerIndex)
-                .sort((a, b) => (b.score ?? Number.MIN_SAFE_INTEGER) - (a.score ?? Number.MIN_SAFE_INTEGER))
+                .sort((a, b) => (a.rank ?? Infinity) - (b.rank ?? Infinity))
                 .forEach((opponent, rank) => {
                     opponent.name = rank === 0 ? baseName : `${baseName}_${rank}`;
                 });
