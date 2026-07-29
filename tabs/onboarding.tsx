@@ -46,6 +46,22 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 4.2
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Ne gardez que votre meilleur adversaire !
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        Nouvelle option "Ne garder que le meilleur adversaire" : sur les parties compétitives, seuls vous et l'adversaire au meilleur score sont conservés !
+                                        <br />Merci à St3ffyCode pour le développement de cette fonctionnalité !
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 4.1
                                     </Typography>
                                     <Typography variant="body1">

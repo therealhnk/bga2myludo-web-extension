@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 4.2.0 (29/07/2026)'
+                            secondary="Add option to keep best opponent"
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 4.1.0 (17/07/2026)'
                             secondary="Add option to anonymize opponents"
                         />
