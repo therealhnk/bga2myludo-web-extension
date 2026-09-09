@@ -1502,11 +1502,11 @@
   "zookeepers": "61681",
   "zooloretto": "10968",
   "zuuli": "69785",
-  "chicken": "",
-  "invector": "",
+  "chicken": "chicken-62092",
+  "invector": "invector-101056",
   "pioneerrails": "pioneer-rails-60234",
-  "skybirds": "",
-  "skytotems": "",
+  "skybirds": "skybirds-101055",
+  "skytotems": "skytotems-101054",
   "vivo": "vivo-100259",
-  "widgetsndigits": ""
+  "widgetsndigits": "widgets-n-digit-101053"
 }
