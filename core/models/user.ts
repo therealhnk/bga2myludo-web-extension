@@ -1,5 +1,5 @@
 export class User {
-    id: string;
-    nickname: string;
-    token: string;
+    id!: string;
+    nickname!: string;
+    token!: string;
 }

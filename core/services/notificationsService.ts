@@ -1,7 +1,7 @@
-import { Storage } from "@plasmohq/storage";
-import timeHelper from "~core/helpers/timeHelper";
-import type { PlayerNotification } from "~core/models/playerNotification";
-import configurationService from "~core/services/configurationService";
+import { storage } from "wxt/utils/storage";
+import timeHelper from "~/core/helpers/timeHelper";
+import type { PlayerNotification } from "~/core/models/playerNotification";
+import configurationService from "~/core/services/configurationService";
 
 export default class notificationsService {
     static async updateNotifications(notifications: PlayerNotification[]) {
@@ -21,18 +21,14 @@ export default class notificationsService {
                 }
             }
 
-            const storage = new Storage({ area: "local" });
-
-            storage.set('lastNotifications', JSON.stringify(lastNotifications.sort((x, y) => y.timestamp - x.timestamp).slice(0, 99)));
+            storage.setItem('local:lastNotifications', JSON.stringify(lastNotifications.sort((x, y) => y.timestamp - x.timestamp).slice(0, 99)));
 
             notificationsService.setNotificationsCount(notificationsCount);
         }
     }
 
     static async getLastNotifications() {
-        const storage = new Storage({ area: "local" });
-
-        return storage.get('lastNotifications')
+        return storage.getItem<string>('local:lastNotifications')
             .then(result => {
                 if (result) {
                     const notifications = JSON.parse(result) as PlayerNotification[];
@@ -50,9 +46,7 @@ export default class notificationsService {
     }
 
     static async setNotificationsCount(count: number) {
-        const storage = new Storage({ area: "local" });
-
-        storage.set('notificationsCount', count);
+        storage.setItem('local:notificationsCount', count);
 
         if (count > 0) {
             chrome.action.setBadgeTextColor({ color: "white" });
@@ -65,9 +59,7 @@ export default class notificationsService {
     }
 
     static async getNotificationsCount() {
-        const storage = new Storage({ area: "local" });
-
-        return storage.get('notificationsCount').then(result => {
+        return storage.getItem<number>('local:notificationsCount').then(result => {
             if (result) {
                 return Number(result);
             }
@@ -78,11 +70,9 @@ export default class notificationsService {
     }
 
     static async clearStorage() {
-        const storage = new Storage({ area: "local" });
-        
         // Supprimer les notifications et le compteur
-        await storage.remove('lastNotifications');
-        await storage.remove('notificationsCount');
+        await storage.removeItem('local:lastNotifications');
+        await storage.removeItem('local:notificationsCount');
         
         // Réinitialiser le badge
         chrome.action.setBadgeText({ text: '' });

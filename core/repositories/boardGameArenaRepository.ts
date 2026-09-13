@@ -1,16 +1,18 @@
-import type { BoardResponse } from "~core/models/boardGameArena/BoardResponse";
-import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse";
-import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
-import { PlayerNotification } from "~core/models/playerNotification";
-import type { User } from "~core/models/user";
+import type { BoardResponse } from "~/core/models/boardGameArena/BoardResponse";
+import type { TableInfos } from "~/core/models/boardGameArena/tableInfosResponse";
+import type { WhoResponse } from "~/core/models/boardGameArena/whoResponse";
+import { PlayerNotification } from "~/core/models/playerNotification";
+import type { User } from "~/core/models/user";
 
 export default class boardGameArenaRepository {
     static async getPlayerNotifications(): Promise<PlayerNotification[]> {
         const user = await boardGameArenaRepository.getUser();
 
+        if (!user) return [];
+
         const headers = await boardGameArenaRepository.getHeaders();
 
-        if (!headers) return null;
+        if (!headers) return [];
 
         let url = `https://boardgamearena.com/message/board`;
 
@@ -46,9 +48,8 @@ export default class boardGameArenaRepository {
                         const match = o.html.match(regex);
                         const matchGameId = o.img.match(regexGameId);
 
-                        if (match && match.length > 2) {
+                        if (match && match.length > 2 && matchGameId && matchGameId.length > 1) {
                             const tableId = match[1];
-                            const gameName = match[2];
 
                             playerNotifications.push({
                                 id: o.id,
@@ -84,7 +85,7 @@ export default class boardGameArenaRepository {
             });
     }
 
-    static async getUser(): Promise<User> {
+    static async getUser(): Promise<User | null> {
         return fetch(`https://boardgamearena.com/my?who`, {})
             .then(response => { return response.json() })
             .then(response => { return response as WhoResponse })

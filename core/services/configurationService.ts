@@ -1,16 +1,15 @@
-import { Storage } from "@plasmohq/storage";
-import games from "data-env:assets/games.json";
+import { storage } from "wxt/utils/storage";
+import games from "~/assets/games.json";
 import { v4 as uuidv4 } from 'uuid';
-import { DEFAULT_OPPONENTS_BASE_NAME } from "~core/constants";
-import { Configuration } from "~core/models/configuration";
-import type { MappedGame } from "~core/models/mappedGame";
+import { DEFAULT_OPPONENTS_BASE_NAME } from "~/core/constants";
+import { Configuration } from "~/core/models/configuration";
+import type { MappedGame } from "~/core/models/mappedGame";
 
 export default class configurationService {
     static async get(): Promise<Configuration> {
-        const storage = new Storage({ area: "local" });
         let configuration = new Configuration();
 
-        const configurationSerialized = await storage.get('configuration')
+        const configurationSerialized = await storage.getItem<string>('local:configuration');
         if (configurationSerialized) {
             configuration = JSON.parse(configurationSerialized) as Configuration;
         }
@@ -38,26 +37,26 @@ export default class configurationService {
     }
 
     static async set(configuration: Configuration) {
-        const storage = new Storage({ area: "local" });
-
-        storage.set("configuration", JSON.stringify(configuration));
+        storage.setItem("local:configuration", JSON.stringify(configuration));
     }
 
     static async getGames(): Promise<MappedGame[]> {
+        const gamesMap = games as Record<string, string>;
+
         return configurationService.get().then(configuration => {
-            return Object.keys(games).reduce((acc, key) => {
+            return Object.keys(gamesMap).reduce((acc, key) => {
                 acc.push({
                     bgaId: key,
-                    defaultMyludoId: games[key],
-                    overridenMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId,
-                    currentMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId || games[key]
+                    defaultMyludoId: gamesMap[key],
+                    overridenMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId ?? '',
+                    currentMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId || gamesMap[key]
                 });
                 return acc;
             }, [] as MappedGame[]);
         })
     }
 
-    static async getGame(bgaGameId: string): Promise<MappedGame> {
+    static async getGame(bgaGameId: string): Promise<MappedGame | undefined> {
         return configurationService.getGames().then(games => {
             return games.find(o => o.bgaId === bgaGameId);
         })

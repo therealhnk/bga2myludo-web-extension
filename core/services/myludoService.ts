@@ -1,5 +1,5 @@
-import { sendToBackground } from "@plasmohq/messaging";
-import { BackgroundMessages } from "~core/models/backgroundMessages";
+import { sendToBackground } from "~/core/messaging/sendToBackground";
+import { BackgroundMessages } from "~/core/models/backgroundMessages";
 
 export default class myludoService {
     static async isConnected() {

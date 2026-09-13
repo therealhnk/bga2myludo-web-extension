@@ -1,21 +1,19 @@
-import type { Table } from "~core/models/table";
+import type { Table } from "~/core/models/table";
 
 export default class myludoHelper {
-    static convertToDate(text) {
+    static convertToDate(text: string) {
         const monthText = ["janv", "févr", "mars", "avr", "mai", "juin", "juill", "août", "sept", "oct", "nov", "déc"];
         let result = new Date(1900, 0, 1);
 
-        text.replace(/(\d+) ([\p{L}\s]+) (\d+)/u, (match, day, month, year) => {
+        const match = text.match(/(\d+) ([\p{L}\s]+) (\d+)/u);
+        if (match) {
+            const [, day, month, year] = match;
             const monthIndex = monthText.indexOf(month);
 
             if (monthIndex >= 0) {
-                result = new Date(
-                    year,
-                    monthIndex,
-                    day
-                );
+                result = new Date(Number(year), monthIndex, Number(day));
             }
-        });
+        }
 
         return result;
     }
@@ -28,7 +26,7 @@ export default class myludoHelper {
             players = [];
             // on clone les joueurs pour que les modifications restent locales
             currentPlay.players.forEach(val => players.push(Object.assign({}, val)));
-            players.forEach(o => o.score = null);
+            players.forEach(o => o.score = undefined);
         }
 
         const currentPlayersFootPrint = JSON.stringify(

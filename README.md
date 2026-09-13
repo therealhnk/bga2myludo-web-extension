@@ -31,7 +31,7 @@ Il faut donner les droits au plugin d'accéder aux données du site www.myludo.f
 
 # Considérations techniques
 
-Ce projet a été initié avec le framework Plasmo (https://docs.plasmo.com/)
+Ce projet a été initié avec le framework Plasmo (https://docs.plasmo.com/), puis migré vers WXT (https://wxt.dev/) à partir de la version 5.0.
 
 ## Démarrage
 
@@ -39,6 +39,14 @@ Pour lancer le serveur de developement :
 
 ```bash
 pnpm dev
-# or
-npm run dev
+# ou pour Firefox
+pnpm dev:firefox
+```
+
+## Build
+
+```bash
+pnpm build
+# ou pour Firefox
+pnpm build:firefox
 ```
