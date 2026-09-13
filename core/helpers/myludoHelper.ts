@@ -1,4 +1,4 @@
-import type { Table } from "~core/models/table";
+import type { Table } from "~/core/models/table";
 
 export default class myludoHelper {
     static convertToDate(text) {

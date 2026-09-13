@@ -1,9 +1,9 @@
-import { sendToBackground } from "@plasmohq/messaging";
-import { DEFAULT_OPPONENTS_BASE_NAME } from "~core/constants";
-import { BackgroundMessages } from "~core/models/backgroundMessages";
-import type { Friend } from "~core/models/boardGameArena/friendsResponse";
-import type { Player } from "~core/models/player";
-import type { Table } from "~core/models/table";
+import { sendToBackground } from "~/core/messaging/sendToBackground";
+import { DEFAULT_OPPONENTS_BASE_NAME } from "~/core/constants";
+import { BackgroundMessages } from "~/core/models/backgroundMessages";
+import type { Friend } from "~/core/models/boardGameArena/friendsResponse";
+import type { Player } from "~/core/models/player";
+import type { Table } from "~/core/models/table";
 import configurationService from "./configurationService";
 
 export default class boardGameArenaService {

@@ -1,4 +1,4 @@
-import configurationService from "~core/services/configurationService";
+import configurationService from "~/core/services/configurationService";
 
 const MYLUDO_CONTACT_URL = "https://www.myludo.fr/#!/contact/technique";
 

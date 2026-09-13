@@ -1,8 +1,8 @@
-import type { BoardResponse } from "~core/models/boardGameArena/BoardResponse";
-import type { TableInfos } from "~core/models/boardGameArena/tableInfosResponse";
-import type { WhoResponse } from "~core/models/boardGameArena/whoResponse";
-import { PlayerNotification } from "~core/models/playerNotification";
-import type { User } from "~core/models/user";
+import type { BoardResponse } from "~/core/models/boardGameArena/BoardResponse";
+import type { TableInfos } from "~/core/models/boardGameArena/tableInfosResponse";
+import type { WhoResponse } from "~/core/models/boardGameArena/whoResponse";
+import { PlayerNotification } from "~/core/models/playerNotification";
+import type { User } from "~/core/models/user";
 
 export default class boardGameArenaRepository {
     static async getPlayerNotifications(): Promise<PlayerNotification[]> {
