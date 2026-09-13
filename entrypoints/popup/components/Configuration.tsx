@@ -23,7 +23,7 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
         onConfigurationUpdated({ ...configuration, [event.currentTarget.name]: value });
     }, [configuration, onConfigurationUpdated]);
 
-    const onClick = useCallback((name: string): void => {
+    const onClick = useCallback((name: keyof ConfigurationModel): void => {
         onConfigurationUpdated({ ...configuration, [name]: !configuration[name] });
     }, [configuration, onConfigurationUpdated]);
 

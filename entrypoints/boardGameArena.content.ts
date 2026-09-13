@@ -101,7 +101,7 @@ export default defineContentScript({
             }
         }
 
-        function fetchAndFeedLastResultsPage(page: number) {
+        function fetchAndFeedLastResultsPage(_page: number) {
             const timeout = setTimeout(async () => {
                 // on vérifie si toutes les tables sont chargés et rendues
                 const rows = document.querySelectorAll('#boardposts_r .post .postcontent .postfooter:not(:has(a[href*="www.myludo.fr"]))');
@@ -165,7 +165,7 @@ export default defineContentScript({
             }
         }
 
-        function fetchAndFeedStatsPage(page: number) {
+        function fetchAndFeedStatsPage(_page: number) {
             const timeout = setTimeout(async () => {
                 // on vérifie si toutes les tables sont chargés et rendues
                 const rows = document.querySelectorAll('#gamelist_inner tr:not(:has(a[href*="www.myludo.fr"]))');

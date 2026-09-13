@@ -8,9 +8,9 @@ import './uploadConfiguration.scss';
 import getTheme from "~/theme/customTheme";
 
 function UploadConfigurationPage() {
-    const fileInputRef = useRef(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [configuration, setConfiguration] = useState<ConfigurationModel>();
-    const theme = getTheme(configuration && configuration.darkMode);
+    const theme = getTheme(!!configuration?.darkMode);
 
     useEffect(() => {
         configurationService.get().then((result) => {
@@ -59,7 +59,7 @@ function UploadConfigurationPage() {
                             component="label"
                             variant="contained"
                             startIcon={<CloudUploadIcon />}
-                            onClick={() => fileInputRef.current.click()}
+                            onClick={() => fileInputRef.current?.click()}
                         >
                             Upload file
                             <input

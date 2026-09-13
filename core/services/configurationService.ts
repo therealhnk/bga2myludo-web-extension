@@ -41,20 +41,22 @@ export default class configurationService {
     }
 
     static async getGames(): Promise<MappedGame[]> {
+        const gamesMap = games as Record<string, string>;
+
         return configurationService.get().then(configuration => {
-            return Object.keys(games).reduce((acc, key) => {
+            return Object.keys(gamesMap).reduce((acc, key) => {
                 acc.push({
                     bgaId: key,
-                    defaultMyludoId: games[key],
-                    overridenMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId,
-                    currentMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId || games[key]
+                    defaultMyludoId: gamesMap[key],
+                    overridenMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId ?? '',
+                    currentMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId || gamesMap[key]
                 });
                 return acc;
             }, [] as MappedGame[]);
         })
     }
 
-    static async getGame(bgaGameId: string): Promise<MappedGame> {
+    static async getGame(bgaGameId: string): Promise<MappedGame | undefined> {
         return configurationService.getGames().then(games => {
             return games.find(o => o.bgaId === bgaGameId);
         })

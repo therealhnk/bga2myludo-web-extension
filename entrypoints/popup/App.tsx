@@ -30,7 +30,7 @@ export default function PopupIndex() {
     const [activeSection, setActiveSection] = useState('Home');
     const [notificationsCount, setNotificationsCount] = useState(0);
 
-    const theme = getTheme(configuration && configuration.darkMode);
+    const theme = getTheme(!!configuration?.darkMode);
 
     useEffect(() => {
         configurationService.get().then((result) => {
@@ -55,11 +55,12 @@ export default function PopupIndex() {
 
     const toggleTheme = useCallback(() => {
         setConfiguration(current => {
+            if (!current) return current;
+
             const updatedConfiguration = { ...current, darkMode: !current.darkMode };
             configurationService.set(updatedConfiguration)
             return updatedConfiguration;
         });
-        ;
     }, [configuration]);
 
     return (
@@ -101,7 +102,7 @@ export default function PopupIndex() {
                     </Tooltip>
                     <Tooltip title={chrome.i18n.getMessage("importConfiguration")}>
                         <span>
-                            <ImportButton configuration={configuration} onConfigurationUpdated={refreshConfiguration} />
+                            <ImportButton onConfigurationUpdated={refreshConfiguration} />
                         </span>
                     </Tooltip>
                     <Tooltip title={chrome.i18n.getMessage("exportConfiguration")}>
@@ -123,9 +124,9 @@ export default function PopupIndex() {
                     <div className="popup-body">
                         {activeSection === 'Home' && <Home />}
                         {activeSection === 'Notification' && <Notifications onNotificationsRefresh={refreshBadge} />}
-                        {activeSection === 'Configuration' && <Configuration configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
-                        {activeSection === 'UserMatching' && <UserMatching configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
-                        {activeSection === 'OverridenGames' && <OverridenGames configuration={configuration} onConfigurationUpdated={refreshConfiguration} />}
+                        {activeSection === 'Configuration' && <Configuration configuration={configuration!} onConfigurationUpdated={refreshConfiguration} />}
+                        {activeSection === 'UserMatching' && <UserMatching configuration={configuration!} onConfigurationUpdated={refreshConfiguration} />}
+                        {activeSection === 'OverridenGames' && <OverridenGames configuration={configuration!} onConfigurationUpdated={refreshConfiguration} />}
                         {activeSection === 'Releases' && <Releases />}
                     </div>
                 }

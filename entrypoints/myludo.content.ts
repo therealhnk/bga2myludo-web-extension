@@ -60,7 +60,7 @@ export default defineContentScript({
 
             if (window.location.hash.includes("bgatableid")) {
                 // Nettoyer dans le hash
-                newUrl = newUrl.replace(/([?&])bgatableid=[^&]+(&|$)/, (match, p1, p2) => {
+                newUrl = newUrl.replace(/([?&])bgatableid=[^&]+(&|$)/, (_match, p1, p2) => {
                     return p2 === '&' ? p1 : '';
                 });
             } else {
@@ -198,7 +198,7 @@ export default defineContentScript({
                             plays
                         );
 
-                        addPlayButton.item(0).click();
+                        addPlayButton.item(0)!.click();
 
                         // Nettoyer l'URL maintenant qu'on a ouvert le formulaire
                         cleanUrlFromBgaTableId();
@@ -231,7 +231,7 @@ export default defineContentScript({
                                     const soloElement = document.getElementById('solo');
                                     if (soloElement) soloElement.click();
 
-                                    const score = data.players[0].score;
+                                    const score = data.players[0].score ?? 0;
 
                                     if (score > 0) {
                                         documentHelper.getFirstHtmlElementByQuery('.btn-winner-player').click();
@@ -246,7 +246,7 @@ export default defineContentScript({
                                     const coopElement = document.getElementById('coop');
                                     if (coopElement) coopElement.click();
 
-                                    const scoreCoop = data.players[0].score;
+                                    const scoreCoop = data.players[0].score ?? 0;
 
                                     documentHelper.getFirstHtmlElementByQuery(`label[for="coopscore"]`).click();
                                     documentHelper.getInputById(`coopscore`).value = scoreCoop.toString();
@@ -256,8 +256,9 @@ export default defineContentScript({
                                     }
 
                                     data.players.forEach((elt, index) => {
-                                        if (addPlayerButton.item(0)) {
-                                            addPlayerButton.item(0).click();
+                                        const addPlayerBtn = addPlayerButton.item(0);
+                                        if (addPlayerBtn) {
+                                            addPlayerBtn.click();
                                         }
 
                                         documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
@@ -266,13 +267,14 @@ export default defineContentScript({
                                         currentPlayer.value = elt.name;
 
                                         documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
-                                        documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
+                                        documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : '';
                                     });
 
                                 } else {
                                     data.players.forEach((elt, index) => {
-                                        if (addPlayerButton.item(0)) {
-                                            addPlayerButton.item(0).click();
+                                        const addPlayerBtn = addPlayerButton.item(0);
+                                        if (addPlayerBtn) {
+                                            addPlayerBtn.click();
                                         }
 
                                         documentHelper.getFirstHtmlElementByQuery(`label[for="name-${index}"]`).click();
@@ -281,11 +283,11 @@ export default defineContentScript({
                                         currentPlayer.value = elt.name;
 
                                         if (elt.rank === 1) {
-                                            (currentPlayer.closest('.card-content').getElementsByClassName('btn-winner-player')[0] as HTMLElement).click();
+                                            (currentPlayer.closest('.card-content')?.getElementsByClassName('btn-winner-player')[0] as HTMLElement)?.click();
                                         }
 
                                         documentHelper.getFirstHtmlElementByQuery(`label[for="score-${index}"]`).click();
-                                        documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : null;
+                                        documentHelper.getInputById(`score-${index}`).value = elt.score ? elt.score.toString() : '';
                                     });
                                 }
 
@@ -338,7 +340,7 @@ export default defineContentScript({
             }
         }
 
-        function cancelLogin(event) {
+        function cancelLogin(event: Event | null) {
             // Empêcher le comportement par défaut si c'est un event
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -378,7 +380,7 @@ export default defineContentScript({
         }
 
 
-        async function loadPlays(callback) {
+        async function loadPlays(callback: (tables: Table[]) => void) {
             const tables: Table[] = [];
 
             const playsTab = document.querySelector<HTMLElement>('a[data-target="plays"]');
@@ -396,16 +398,16 @@ export default defineContentScript({
 
                         playsContent.forEach((currentPlay) => {
                             const table = {
-                                end: myludoHelper.convertToDate(currentPlay.querySelector('h4').textContent),
+                                end: myludoHelper.convertToDate(currentPlay.querySelector('h4')?.textContent ?? ''),
                                 duration: Number(currentPlay.querySelector('h5 strong')?.textContent),
                                 players: []
-                            } as Table;
+                            } as unknown as Table;
 
                             currentPlay.querySelectorAll('.play-player').forEach((elt) => {
                                 const counter = elt.querySelector('.counter');
                                 table.players.push({
-                                    name: elt.getAttribute('title'),
-                                    score: counter ? Number(counter.textContent) : null
+                                    name: elt.getAttribute('title') ?? '',
+                                    score: counter ? Number(counter.textContent) : undefined
                                 })
                             });
 

@@ -34,7 +34,7 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             .then((data) => {
                 const newUsers = data
                     .filter(o => !configuration.users.some(p => p.bgaUser === o.name))
-                    .map(o => { return { id: uuidv4(), bgaUser: o.name, myludoUser: undefined } as MappedUser; })
+                    .map(o => { return { id: uuidv4(), bgaUser: o.name, myludoUser: '' } as MappedUser; })
                 const updatedUsers = [...configuration.users, ...newUsers];
 
                 if (updatedUsers.length > 0) {
@@ -304,8 +304,8 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
             sortedByColumnDesc: chrome.i18n.getMessage("reactTableSortedByColumnDesc")
         },
         icons: {
-            SaveIcon: (props) => <SaveIcon fontSize='small' color="primary" {...props} />,
-            CancelIcon: (props) => <CancelIcon fontSize='small' color="primary"{...props} />
+            SaveIcon: (props: any) => <SaveIcon fontSize='small' color="primary" {...props} />,
+            CancelIcon: (props: any) => <CancelIcon fontSize='small' color="primary"{...props} />
         }
     });
 

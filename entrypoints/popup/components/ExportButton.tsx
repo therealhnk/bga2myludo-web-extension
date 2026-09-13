@@ -5,10 +5,18 @@ import type { Configuration } from '~/core/models/configuration';
 import '../popup.scss';
 
 type Props = {
-    configuration: Configuration;
+    configuration?: Configuration;
 }
 
 export default function ExportButton({ configuration }: Props) {
+    if (!configuration) {
+        return (
+            <IconButton size="small" disabled>
+                <FileDownloadIcon color="primary" />
+            </IconButton>
+        );
+    }
+
     const blob = new Blob([JSON.stringify(configuration)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 

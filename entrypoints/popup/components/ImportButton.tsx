@@ -6,7 +6,6 @@ import type { Configuration } from '~/core/models/configuration';
 import '../popup.scss';
 
 type Props = {
-    configuration: Configuration;
     onConfigurationUpdated: (configuration: Configuration) => void;
 }
 

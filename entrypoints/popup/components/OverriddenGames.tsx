@@ -200,8 +200,8 @@ export default function OverriddenGames({ configuration, onConfigurationUpdated 
             sortedByColumnDesc: chrome.i18n.getMessage("reactTableSortedByColumnDesc")
         },
         icons: {
-            SaveIcon: (props) => <SaveIcon fontSize='small' color="primary" {...props} />,
-            CancelIcon: (props) => <CancelIcon fontSize='small' color="primary"{...props} />
+            SaveIcon: (props: any) => <SaveIcon fontSize='small' color="primary" {...props} />,
+            CancelIcon: (props: any) => <CancelIcon fontSize='small' color="primary"{...props} />
         }
     });
 

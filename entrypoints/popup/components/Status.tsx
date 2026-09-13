@@ -11,7 +11,7 @@ import myludoService from '~/core/services/myludoService';
 import { ConnectionStatus } from '../models/StatusModel';
 import '../popup.scss';
 
-function getStatusIcon(host: string, status: ConnectionStatus) {
+function getStatusIcon(_host: string, status: ConnectionStatus) {
     switch (status) {
         case ConnectionStatus.Connected:
             return <CheckIcon fontSize='small' sx={{ color: green[500] }} />
@@ -33,7 +33,7 @@ function getLoginPageUrl(host: string) {
         case 'myludo':
             return 'https://www.myludo.fr/#!/presentation?bga2myludo=login';
     }
-    return null;
+    return undefined;
 }
 
 function requestPermission(host: string) {

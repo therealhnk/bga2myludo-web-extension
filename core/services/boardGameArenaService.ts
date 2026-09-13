@@ -4,6 +4,7 @@ import { BackgroundMessages } from "~/core/models/backgroundMessages";
 import type { Friend } from "~/core/models/boardGameArena/friendsResponse";
 import type { Player } from "~/core/models/player";
 import type { Table } from "~/core/models/table";
+import type { PlayerElement } from "~/core/models/boardGameArena/tableInfosResponse";
 import configurationService from "./configurationService";
 
 export default class boardGameArenaService {
@@ -39,7 +40,7 @@ export default class boardGameArenaService {
 
         let currentPlayerIndex = -1;
 
-        response.data.result.player.forEach((item) => {
+        response.data.result.player.forEach((item: PlayerElement) => {
             let playerName = item.name;
             const isCurrentPlayer = playerName === connectedUser.nickname;
 
@@ -53,8 +54,8 @@ export default class boardGameArenaService {
 
             table.players.push({
                 name: playerName,
-                score: item.score ? Number(item.score) : null,
-                rank: item.gamerank ? Number(item.gamerank) : null
+                score: item.score ? Number(item.score) : undefined,
+                rank: item.gamerank ? Number(item.gamerank) : undefined
             });
         });
 
