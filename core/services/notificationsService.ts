@@ -1,4 +1,5 @@
 import { storage } from "wxt/utils/storage";
+import storageHelper from "~/core/helpers/storageHelper";
 import timeHelper from "~/core/helpers/timeHelper";
 import type { PlayerNotification } from "~/core/models/playerNotification";
 import configurationService from "~/core/services/configurationService";
@@ -30,9 +31,9 @@ export default class notificationsService {
     static async getLastNotifications() {
         return storage.getItem<string>('local:lastNotifications')
             .then(result => {
-                if (result) {
-                    const notifications = JSON.parse(result) as PlayerNotification[];
+                const notifications = storageHelper.parseJson<PlayerNotification[]>(result);
 
+                if (notifications) {
                     notifications.forEach(o => {
                         o.timeAgoText = timeHelper.getTextualTimeAgo(o.timestamp);
                     });

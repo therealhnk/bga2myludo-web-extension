@@ -2,6 +2,7 @@ import { storage } from "wxt/utils/storage";
 import games from "~/assets/games.json";
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_OPPONENTS_BASE_NAME } from "~/core/constants";
+import storageHelper from "~/core/helpers/storageHelper";
 import { Configuration } from "~/core/models/configuration";
 import type { MappedGame } from "~/core/models/mappedGame";
 
@@ -10,8 +11,9 @@ export default class configurationService {
         let configuration = new Configuration();
 
         const configurationSerialized = await storage.getItem<string>('local:configuration');
-        if (configurationSerialized) {
-            configuration = JSON.parse(configurationSerialized) as Configuration;
+        const parsedConfiguration = storageHelper.parseJson<Configuration>(configurationSerialized);
+        if (parsedConfiguration) {
+            configuration = parsedConfiguration;
         }
 
         configuration.fillPlace = configuration.fillPlace !== undefined ? configuration.fillPlace : true;
