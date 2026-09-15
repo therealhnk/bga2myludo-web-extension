@@ -36,9 +36,9 @@ export default defineContentScript({
                 const displayStyle = window.getComputedStyle(reviewgameButton).display;
 
                 if (displayStyle !== 'none' && displayStyle !== 'hide') {
-                    const bgaButtonBar = document.getElementsByClassName("bgabuttonbar");
+                    const bgaButtonBar = document.querySelector(".bgabuttonbar:not(#game_end_links)");
 
-                    if (bgaButtonBar !== null && bgaButtonBar.length > 0) {
+                    if (bgaButtonBar !== null) {
                         const queryString = window.location.search;
                         const urlParams = new URLSearchParams(queryString);
                         const tableId = urlParams.get("table");
@@ -47,9 +47,7 @@ export default defineContentScript({
                             try {
                                 const gameId = boardGameArenaHelper.extractGameIdFromTablePage();
                                 const link = await boardGameArenaHelper.getMyLudoButton(tableId, gameId);
-                                Array.from(bgaButtonBar).forEach((element) => {
-                                    element.appendChild(link.cloneNode(true));
-                                });
+                                bgaButtonBar.appendChild(link);
                             } catch (error) {
                                 console.error("Error creating Myludo link:", error);
                             }
