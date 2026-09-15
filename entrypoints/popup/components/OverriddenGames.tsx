@@ -157,9 +157,9 @@ export default function OverriddenGames({ configuration, onConfigurationUpdated 
         ),
         renderTopToolbar: ({ table }) => (
             <Grid container className='matching-top-toolbar'>
-                <Grid item xs={6}>
+                <Grid size={6}>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                     <MRT_GlobalFilterTextField table={table} />
                 </Grid>
             </Grid>

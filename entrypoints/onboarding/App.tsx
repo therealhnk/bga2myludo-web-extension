@@ -23,8 +23,8 @@ function BoardingPage() {
                     <span>version {currentVersion}</span>
                 </header>
                 <Container className="container">
-                    <Grid container spacing={1} justifyContent="center">
-                        <Grid item sm={12} md={8}>
+                    <Grid container spacing={1} sx={{ justifyContent: "center" }}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h5" component="div">
@@ -42,7 +42,22 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        Version 5.1
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Mise à jour technique
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        Mise à jour des dépendances (React 19, MUI 9, TypeScript 7, ...). Aucun changement visible pour vous, mais une base technique plus moderne pour les prochaines fonctionnalités !
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -57,7 +72,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -73,7 +88,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -89,7 +104,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -101,7 +116,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -113,7 +128,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -131,7 +146,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -143,7 +158,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -155,7 +170,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -170,7 +185,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -189,7 +204,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -201,7 +216,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
@@ -216,7 +231,7 @@ function BoardingPage() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={8}>
+                        <Grid size={{ sm: 12, md: 8 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">

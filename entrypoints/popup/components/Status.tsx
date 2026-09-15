@@ -115,7 +115,7 @@ function Status({ onReleasesClick }: Props) {
 
     return (
         <Grid container>
-            <Grid item xs={4} textAlign='center'>
+            <Grid size={4} sx={{ textAlign: 'center' }}>
                 <Tooltip title={getMessage(bgaStatus)}>
                     <span>
                         <Button
@@ -131,7 +131,7 @@ function Status({ onReleasesClick }: Props) {
                     </span>
                 </Tooltip>
             </Grid>
-            <Grid item xs={4} textAlign='center'>
+            <Grid size={4} sx={{ textAlign: 'center' }}>
                 <Tooltip title={getMessage(myludoStatus)}>
                     <span>
                         <Button
@@ -147,7 +147,7 @@ function Status({ onReleasesClick }: Props) {
                     </span>
                 </Tooltip>
             </Grid>
-            <Grid item xs={4} textAlign='center'>
+            <Grid size={4} sx={{ textAlign: 'center' }}>
                 <Tooltip title={chrome.i18n.getMessage("seeReleases")}>
                     <Button fullWidth onClick={onReleasesClick}>
                         <Typography color='primary' className="version">version {currentVersion}</Typography>

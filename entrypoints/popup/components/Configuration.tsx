@@ -75,7 +75,7 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                             size="small"
                             label={chrome.i18n.getMessage("configurationPlaceLabel")}
                             variant='standard'
-                            inputProps={{ style: { fontSize: 14 } }}
+                            slotProps={{ htmlInput: { style: { fontSize: 14 } } }}
                         />
                     </div>
                 }
@@ -122,7 +122,7 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                             size="small"
                             label={chrome.i18n.getMessage("configurationCustomCurrentNamePlayerLabel")}
                             variant='standard'
-                            inputProps={{ style: { fontSize: 14 } }}
+                            slotProps={{ htmlInput: { style: { fontSize: 14 } } }}
                         />
                     </div>
                 }
@@ -162,7 +162,7 @@ export default function Configuration({ configuration, onConfigurationUpdated }:
                             size="small"
                             label={chrome.i18n.getMessage("configurationCustomOpponentsBaseNameLabel")}
                             variant='standard'
-                            inputProps={{ style: { fontSize: 14 } }}
+                            slotProps={{ htmlInput: { style: { fontSize: 14 } } }}
                         />
                     </div>
                 }

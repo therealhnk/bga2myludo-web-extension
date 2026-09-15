@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 5.1.0 (15/09/2026)'
+                            secondary='Technical update: React 19, MUI 9, TypeScript 7 and other dependencies upgrade'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 5.0.0 (13/09/2026)'
                             secondary='Technical migration to the WXT framework (from Plasmo)'
                         />

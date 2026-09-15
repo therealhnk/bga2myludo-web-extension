@@ -257,14 +257,14 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         ),
         renderTopToolbar: ({ table }) => (
             <Grid container className='top-toolbar'>
-                <Grid item xs={6}>
+                <Grid size={6}>
                     <Tooltip title={chrome.i18n.getMessage("userMatchingAddUser")}>
                         <IconButton size="small" onClick={() => table.setCreatingRow(true)}>
                             <PersonAddIcon color="primary" />
                         </IconButton>
                     </Tooltip>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                     <MRT_GlobalFilterTextField table={table} />
                 </Grid>
             </Grid>

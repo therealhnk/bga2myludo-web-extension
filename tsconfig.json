@@ -4,6 +4,7 @@
     "node_modules"
   ],
   "compilerOptions": {
+    "types": ["chrome"],
     "jsx": "react",
     "strict": true,
     "noImplicitAny": true,
