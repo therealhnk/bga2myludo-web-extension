@@ -880,6 +880,7 @@
   "newton": "27310",
   "newyorkzoo": "41639",
   "nextstation": "55261",
+  "nextstationberlin": "next-station-berlin-95847",
   "nextstationparis": "74727",
   "nextstationtokyo": "56138",
   "niagara": "46322",
@@ -1517,5 +1518,8 @@
   "zookeepers": "61681",
   "zooloretto": "10968",
   "zuuli": "69785",
-  "nextstationberlin": "next-station-berlin-95847"
+  "expeditionsnineteentwenty": "",
+  "pop": "",
+  "speculaas": "",
+  "tamagodorobou": ""
 }
