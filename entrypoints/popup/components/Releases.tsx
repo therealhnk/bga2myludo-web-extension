@@ -9,6 +9,12 @@ export default function Releases() {
                 <List dense>
                     <ListItem>
                         <ListItemText
+                            primary='version 5.2.1 (20/10/2026)'
+                            secondary='Firefox mobile support: responsive onboarding page'
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText
                             primary='version 5.2.0 (20/10/2026)'
                             secondary='Firefox mobile support: responsive popup and configuration import'
                         />

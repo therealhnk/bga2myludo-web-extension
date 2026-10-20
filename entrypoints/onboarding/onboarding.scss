@@ -1,5 +1,8 @@
 #onboarding {
     font-family: "Segoe UI", Tahoma, sans-serif;
+    // Keep the oversized background from causing horizontal scroll on narrow screens
+    position: relative;
+    overflow-x: clip;
 }
 
 #background {
