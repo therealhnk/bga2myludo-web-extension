@@ -1,7 +1,7 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { IconButton } from '@mui/material';
 import React, { forwardRef, useCallback, useRef } from 'react';
-import { isFirefox } from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 import type { Configuration } from '~/core/models/configuration';
 import '../popup.scss';
 
@@ -18,9 +18,14 @@ const ImportButton = forwardRef<HTMLInputElement, Props>((props, ref) => {
             const reader = new FileReader();
             reader.onload = (event) => {
                 if (event.target) {
-                    const content = event.target.result as string;
-                    const data = JSON.parse(content) as Configuration;
-                    props.onConfigurationUpdated(data);
+                    try {
+                        const content = event.target.result as string;
+                        const data = JSON.parse(content) as Configuration;
+                        props.onConfigurationUpdated(data);
+                    }
+                    catch (error) {
+                        console.error('Invalid configuration file', error);
+                    }
                 }
             };
             reader.readAsText(file);
@@ -29,26 +34,7 @@ const ImportButton = forwardRef<HTMLInputElement, Props>((props, ref) => {
     }, [props.onConfigurationUpdated]);
 
     const handleClick = useCallback(() => {
-        if (isFirefox) {
-            const windowWidth = 400;
-            const windowHeight = 100;
-
-            const left = Math.round((screen.width - windowWidth) / 2);
-            const top = Math.round((screen.height - windowHeight) / 2);
-
-            chrome.windows.create({
-                url: 'upload-configuration.html',
-                type: 'popup',
-                width: windowWidth,
-                height: windowHeight,
-                left,
-                top
-            });
-        }
-        else {
-            hiddenFileInput.current?.click();
-        }
-
+        hiddenFileInput.current?.click();
     }, [hiddenFileInput]);
 
     return (
@@ -61,7 +47,8 @@ const ImportButton = forwardRef<HTMLInputElement, Props>((props, ref) => {
                 onChange={importConfiguration}
                 ref={(hiddenFileInput as React.RefObject<HTMLInputElement>) || ref}
                 style={{ display: 'none' }}
-                accept=".json"
+                // Android file pickers often grey out .json files (not typed as application/json)
+                accept={isMobile ? undefined : '.json'}
             />
         </>
     );

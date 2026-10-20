@@ -46,6 +46,21 @@ function BoardingPage() {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" component="div">
+                                        Version 5.2
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        L'extension s'adapte à Firefox mobile
+                                    </Typography>
+                                    <Typography variant="body2" className="onboarding-paragraph">
+                                        L'interface s'affiche désormais correctement sur Firefox pour Android, sans avoir besoin de zoomer. L'import de configuration fonctionne aussi sur mobile, et il est plus simple sur Firefox desktop : plus besoin de passer par une fenêtre dédiée !
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ sm: 12, md: 8 }}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
                                         Version 5.1
                                     </Typography>
                                     <Typography variant="body1">
