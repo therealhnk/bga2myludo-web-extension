@@ -21,7 +21,7 @@ jobs:
         run: |
           $json = Get-Content package.json | ConvertFrom-Json
           "version=$($json.version)" >> $env:GITHUB_OUTPUT
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
