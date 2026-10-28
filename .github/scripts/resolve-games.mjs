@@ -12,8 +12,20 @@ const REPORT_PATH = process.argv[3] ?? 'resolve-report.md';
 const USER_AGENT = 'Mozilla/5.0 (compatible; bga2myludo-bot; +https://github.com/therealhnk/bga2myludo-web-extension)';
 const ACCEPTED_TYPES = new Set(['basegame', 'standalone']);
 const DELAY_MS = 1000;
+// Délai minimal entre deux appels MyLudo, pour ne pas se faire bannir
+const MYLUDO_DELAY_MS = 10000;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+let lastMyludoCall = 0;
+async function myludoFetch(url, options) {
+    await sleep(lastMyludoCall + MYLUDO_DELAY_MS - Date.now());
+    try {
+        return await fetch(url, options);
+    } finally {
+        lastMyludoCall = Date.now();
+    }
+}
 
 const decodeHtml = (text) =>
     text
@@ -48,7 +60,7 @@ async function getBgaGame(bgaId) {
 }
 
 async function createMyludoSession() {
-    const response = await fetch('https://www.myludo.fr/', { headers: { 'User-Agent': USER_AGENT } });
+    const response = await myludoFetch('https://www.myludo.fr/', { headers: { 'User-Agent': USER_AGENT } });
     const html = await response.text();
     const token = html.match(/name="csrf-token" content="([^"]+)"/)?.[1];
     if (!token) throw new Error('MyLudo CSRF token not found');
@@ -60,7 +72,7 @@ async function createMyludoSession() {
 }
 
 async function myludoRequest(session, path, params) {
-    const response = await fetch(`https://www.myludo.fr/${path}?${new URLSearchParams(params)}`, {
+    const response = await myludoFetch(`https://www.myludo.fr/${path}?${new URLSearchParams(params)}`, {
         headers: {
             'User-Agent': USER_AGENT,
             'X-Requested-With': 'XMLHttpRequest',
