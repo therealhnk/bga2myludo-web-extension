@@ -44,7 +44,7 @@ jobs:
           Copy-Item $chromeZip.FullName build/${{ steps.get-version.outputs.version }}_opera-mv3.zip
           Copy-Item $firefoxZip.FullName build/${{ steps.get-version.outputs.version }}_firefox-mv3.zip
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.get-version.outputs.version }}
           files: build/*.zip
