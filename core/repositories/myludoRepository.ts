@@ -13,7 +13,7 @@ export default class myludoRepository {
                     throw new Error("Failed to extract CSRF token");
                 }
                 
-                return new Headers([["X-Csrf-Token", match[1]]]);
+                return new Headers([["X-Csrf-Token", match[1]!]]);
             })
             .catch((error) => { 
                 console.error("Error fetching Myludo headers:", error);

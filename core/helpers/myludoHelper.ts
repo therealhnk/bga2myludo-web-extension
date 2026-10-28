@@ -8,7 +8,7 @@ export default class myludoHelper {
         const match = text.match(/(\d+) ([\p{L}\s]+) (\d+)/u);
         if (match) {
             const [, day, month, year] = match;
-            const monthIndex = monthText.indexOf(month);
+            const monthIndex = monthText.indexOf(month!);
 
             if (monthIndex >= 0) {
                 result = new Date(Number(year), monthIndex, Number(day));

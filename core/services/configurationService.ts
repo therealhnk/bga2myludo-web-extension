@@ -49,9 +49,9 @@ export default class configurationService {
             return Object.keys(gamesMap).reduce((acc, key) => {
                 acc.push({
                     bgaId: key,
-                    defaultMyludoId: gamesMap[key],
+                    defaultMyludoId: gamesMap[key]!,
                     overridenMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId ?? '',
-                    currentMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId || gamesMap[key]
+                    currentMyludoId: configuration.overridenGames.find(item => item.bgaId === key)?.overridenMyludoId || gamesMap[key]!
                 });
                 return acc;
             }, [] as MappedGame[]);

@@ -118,7 +118,7 @@ export default defineContentScript({
                         const tableIdMatch = tableUrl?.match(/table=(\d+)/);
 
                         if (tableIdMatch) {
-                            const tableId = tableIdMatch[1];
+                            const tableId = tableIdMatch[1]!;
 
                             // Extraire l'ID du jeu depuis l'icône
                             const gameId = boardGameArenaHelper.extractGameIdFromIcon(gameIcon);

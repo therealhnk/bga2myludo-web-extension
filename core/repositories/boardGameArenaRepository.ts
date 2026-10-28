@@ -49,13 +49,13 @@ export default class boardGameArenaRepository {
                         const matchGameId = o.img.match(regexGameId);
 
                         if (match && match.length > 2 && matchGameId && matchGameId.length > 1) {
-                            const tableId = match[1];
+                            const tableId = match[1]!;
 
                             playerNotifications.push({
                                 id: o.id,
                                 type: o.news_type,
                                 timestamp: Number(o.timestamp) * 1000,
-                                bgaGameId: matchGameId[1],
+                                bgaGameId: matchGameId[1]!,
                                 tableId: tableId,
                                 timeAgoText: "n/a"
                             });
@@ -135,7 +135,7 @@ export default class boardGameArenaRepository {
                     throw new Error("Failed to extract request token");
                 }
 
-                return new Headers([["x-request-token", match[1]]]);
+                return new Headers([["x-request-token", match[1]!]]);
             })
             .catch((error) => {
                 console.error("Error fetching BGA headers:", error);

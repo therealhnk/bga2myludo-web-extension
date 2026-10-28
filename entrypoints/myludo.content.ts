@@ -48,7 +48,7 @@ export default defineContentScript({
             if (window.location.hash) {
                 const hashMatch = window.location.hash.match(/[?&]bgatableid=([^&]+)/);
                 if (hashMatch) {
-                    return hashMatch[1];
+                    return hashMatch[1]!;
                 }
             }
 
@@ -231,14 +231,14 @@ export default defineContentScript({
                                     const soloElement = document.getElementById('solo');
                                     if (soloElement) soloElement.click();
 
-                                    const score = data.players[0].score ?? 0;
+                                    const score = data.players[0]?.score ?? 0;
 
                                     if (score > 0) {
                                         documentHelper.getFirstHtmlElementByQuery('.btn-winner-player').click();
                                     }
 
                                     documentHelper.getFirstHtmlElementByQuery(`label[for="name-0"]`).click();
-                                    documentHelper.getInputById(`name-0`).value = data.players[0].name;
+                                    documentHelper.getInputById(`name-0`).value = data.players[0]?.name ?? '';
 
                                     documentHelper.getFirstHtmlElementByQuery(`label[for="score-0"]`).click();
                                     documentHelper.getInputById(`score-0`).value = score.toString();
@@ -246,7 +246,7 @@ export default defineContentScript({
                                     const coopElement = document.getElementById('coop');
                                     if (coopElement) coopElement.click();
 
-                                    const scoreCoop = data.players[0].score ?? 0;
+                                    const scoreCoop = data.players[0]?.score ?? 0;
 
                                     documentHelper.getFirstHtmlElementByQuery(`label[for="coopscore"]`).click();
                                     documentHelper.getInputById(`coopscore`).value = scoreCoop.toString();
@@ -291,7 +291,7 @@ export default defineContentScript({
                                     });
                                 }
 
-                                documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0];
+                                documentHelper.getInputById(`date`).value = new Date(data.end).toISOString().split('T')[0]!;
 
                                 if (configuration.fillPlace) {
                                     documentHelper.getFirstHtmlElementByQuery(`label[for="location"]`).click();

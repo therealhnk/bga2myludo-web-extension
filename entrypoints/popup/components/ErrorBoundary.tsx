@@ -20,12 +20,12 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         return { hasError: true, error };
     }
 
-    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         // Log the error for debugging
         console.error('Error caught by ErrorBoundary:', error, errorInfo);
     }
 
-    render() {
+    override render() {
         if (this.state.hasError) {
             // Fallback UI
             return (

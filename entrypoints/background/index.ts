@@ -44,8 +44,8 @@ export default defineBackground(() => {
             }
 
             // Migration v3.x.x vers v4.x.x : nettoyer le storage des notifications
-            const currentMajor = parseInt(manifestData.version.split('.')[0]);
-            const previousMajor = parseInt(previousVersion.split('.')[0]);
+            const currentMajor = parseInt(manifestData.version.split('.')[0]!);
+            const previousMajor = parseInt(previousVersion.split('.')[0]!);
 
             if (previousMajor < 4 && currentMajor >= 4) {
                 // Breaking change : structure PlayerNotification modifiée

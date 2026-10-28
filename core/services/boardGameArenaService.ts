@@ -75,7 +75,7 @@ export default class boardGameArenaService {
                 return best === null || (current.rank ?? Infinity) < (best.rank ?? Infinity) ? current : best;
             }, null as Player | null);
 
-            if (topOpponent) {
+            if (me && topOpponent) {
                 // le rang BGA d'origine peut ne plus désigner le vainqueur une fois les autres joueurs retirés
                 const meIsWinner = (me.rank ?? Infinity) <= (topOpponent.rank ?? Infinity);
                 me.rank = meIsWinner ? 1 : 2;

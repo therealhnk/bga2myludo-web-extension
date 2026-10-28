@@ -68,8 +68,8 @@ export default function UserMatching({ configuration, onConfigurationUpdated }: 
         let usersUpdated = [...configuration.users];
 
         if (userIdx >= 0) {
-            usersUpdated[userIdx].myludoUser = user.myludoUser.trim();
-            usersUpdated[userIdx].bgaUser = user.bgaUser.trim();
+            usersUpdated[userIdx]!.myludoUser = user.myludoUser.trim();
+            usersUpdated[userIdx]!.bgaUser = user.bgaUser.trim();
 
             onConfigurationUpdated({ ...configuration, users: usersUpdated });
         }
