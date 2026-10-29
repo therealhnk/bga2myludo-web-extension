@@ -105,6 +105,7 @@ jobs:
           node-version: 22
 
       - name: Resolve MyLudo IDs
+        id: resolve
         # Un échec (MyLudo/BGA indisponible) ne doit pas bloquer la mise à jour de la liste
         continue-on-error: true
         run: node .github/scripts/resolve-games.mjs assets/games.json resolve-report.md
@@ -174,7 +175,7 @@ jobs:
           - Updated game list from BGA (beta games + final released games)
           - Preserved existing game mappings
           - Added any new games found
-          - Resolved MyLudo IDs automatically when a single French edition matches the BGA title exactly
+          - Resolved MyLudo IDs automatically when the BGA title matches exactly (French edition first, most relevant search result when several match)
           - Sorted games: mapped games first (alphabetical), then unmapped games (alphabetical)
           - Bumped version patch number
 
@@ -194,6 +195,7 @@ jobs:
           } > pr-body.md
 
       - name: Create Pull Request
+        id: create_pr
         if: steps.check_changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
@@ -207,6 +209,16 @@ jobs:
             automated
             data-update
           assignees: therealhnk
+
+      # Tous les jeux ont un ID MyLudo (aucune fiche à créer) : fusion automatique une fois la CI verte.
+      # Si la résolution a échoué, la sortie est absente et la PR reste en revue manuelle.
+      - name: Enable auto-merge
+        if: steps.create_pr.outputs.pull-request-number && steps.resolve.outputs.unresolved == '0'
+        run: gh pr merge --auto --squash "$PR_NUMBER" --repo "$GITHUB_REPOSITORY"
+        env:
+          PR_NUMBER: ${{ steps.create_pr.outputs.pull-request-number }}
+          # PAT : un merge via GITHUB_TOKEN ne déclencherait pas publish.yml sur main
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
 
       - name: Cleanup
         if: always()

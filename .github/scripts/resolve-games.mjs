@@ -1,11 +1,12 @@
 // Résout automatiquement les jeux BGA sans identifiant MyLudo dans assets/games.json.
 // Pour chaque entrée vide : nom réel via la page BGA, recherche sur MyLudo,
-// et attribution de l'ID uniquement si un titre correspond exactement (après normalisation).
+// et attribution de l'ID si un titre correspond exactement (après normalisation) :
+// l'édition française en priorité, sinon une autre édition, la plus pertinente en cas de doublon.
 // Les cas non résolus sont listés dans un rapport Markdown (utilisé dans la PR).
 //
 // Usage : node .github/scripts/resolve-games.mjs [games.json] [report.md]
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { appendFile, readFile, writeFile } from 'node:fs/promises';
 
 const GAMES_PATH = process.argv[2] ?? 'assets/games.json';
 const REPORT_PATH = process.argv[3] ?? 'resolve-report.md';
@@ -106,16 +107,24 @@ async function resolve(session, bgaId) {
     const results = await searchMyludo(session, bga.name);
     const target = normalize(bga.name);
     const matches = results.filter((game) => ACCEPTED_TYPES.has(game.type) && normalize(game.title) === target);
-    if (matches.length === 1 && !matches[0].languages) {
-        matches[0].languages = (await getMyludoGame(session, matches[0].id)).languages;
+    for (const game of matches) {
+        if (!game.languages) game.languages = (await getMyludoGame(session, game.id)).languages;
     }
 
-    // Validation automatique uniquement si la correspondance est unique et en français :
-    // une édition non française peut cacher une édition FR au titre différent (ex. Forest Shuffle / Forêt Mixte)
-    if (matches.length === 1 && isFrench(matches[0])) return { status: 'resolved', bgaId, bga, game: matches[0] };
-    if (matches.length === 1) return { status: 'unverified', bgaId, bga, candidates: matches };
-    if (matches.length > 1) return { status: 'ambiguous', bgaId, bga, candidates: matches };
-    return { status: 'notfound', bgaId, bga, candidates: results.slice(0, 5) };
+    // Priorité aux éditions françaises ; à défaut, toutes les éditions présentes.
+    // Les résultats sont triés par pertinence (bymagic) : on retient le premier.
+    const french = matches.filter(isFrench);
+    const pool = french.length ? french : matches;
+    if (!pool.length) return { status: 'notfound', bgaId, bga, candidates: results.slice(0, 5) };
+    return {
+        status: 'resolved',
+        bgaId,
+        bga,
+        game: pool[0],
+        // Une édition FR peut exister sous un titre différent (ex. Forest Shuffle / Forêt Mixte) : signalé dans le rapport
+        nonFrench: !french.length,
+        others: pool.slice(1),
+    };
 }
 
 // Même tri que le workflow : jeux mappés puis non mappés, ordre alphabétique des clés
@@ -134,16 +143,19 @@ function buildReport(outcomes) {
     const resolved = byStatus('resolved');
     if (resolved.length) {
         lines.push(`### ✅ Résolus automatiquement (${resolved.length})`, '');
-        for (const o of resolved) lines.push(`- ${bgaLink(o)} ${o.bga.name} → ${myludoLink(o.game)}`);
+        for (const o of resolved) {
+            const warning = o.nonFrench ? ` ⚠️ _pas d’édition FR (${languages(o.game)}), vérifier s’il en existe une au titre différent_` : '';
+            lines.push(`- ${bgaLink(o)} ${o.bga.name} → ${myludoLink(o.game)}${warning}`);
+            if (o.others.length) lines.push(`  - ⚠️ _${o.others.length} autre(s) édition(s) au même titre, la plus pertinente a été retenue :_`);
+            for (const other of o.others) lines.push(`    - ${myludoLink(other)} _${other.type}, ${languages(other)}_`);
+        }
         lines.push('');
     }
 
     const reasons = {
-        unverified: 'correspondance unique mais sans édition française, vérifier s’il existe une édition FR au titre différent',
-        ambiguous: 'plusieurs éditions portent ce titre',
         notfound: 'aucune correspondance exacte',
     };
-    const pending = [...byStatus('unverified'), ...byStatus('ambiguous'), ...byStatus('notfound'), ...byStatus('error')];
+    const pending = [...byStatus('notfound'), ...byStatus('error')];
     if (pending.length) {
         lines.push(`### ⚠️ À traiter manuellement (${pending.length})`, '');
         for (const o of pending) {
@@ -180,3 +192,7 @@ if (unmapped.length) {
 
 await writeFile(GAMES_PATH, JSON.stringify(sortGames(games), null, 2) + '\n');
 await writeFile(REPORT_PATH, buildReport(outcomes));
+
+// Exposé au workflow : la PR n'est fusionnée automatiquement que si tout est résolu
+const unresolved = outcomes.filter((o) => o.status !== 'resolved').length;
+if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `unresolved=${unresolved}\n`);
