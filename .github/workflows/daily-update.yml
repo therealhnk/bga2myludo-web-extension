@@ -197,7 +197,7 @@ jobs:
       - name: Create Pull Request
         id: create_pr
         if: steps.check_changes.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v8
         with:
           # PAT plutôt que GITHUB_TOKEN : sinon la CI (check requis) ne se déclenche pas sur la PR
           token: ${{ secrets.BOT_TOKEN }}
