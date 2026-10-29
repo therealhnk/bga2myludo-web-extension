@@ -6,27 +6,16 @@ This PR updates the `games.json` file with the latest games from BoardGameArena.
 - Updated game list from BGA (beta games + final released games)
 - Preserved existing game mappings
 - Added any new games found
-- Resolved MyLudo IDs automatically when a single French edition matches the BGA title exactly
+- Resolved MyLudo IDs automatically when the BGA title matches exactly (French edition first, most relevant search result when several match)
 - Sorted games: mapped games first (alphabetical), then unmapped games (alphabetical)
 - Bumped version patch number
 
 ## MyLudo mapping
 
-### ✅ Résolus automatiquement (3)
+### ✅ Résolus automatiquement (2)
 
-- [`kingoftokyodueltokyobay`](https://en.boardgamearena.com/gamepanel?game=kingoftokyodueltokyobay) King of Tokyo Duel: Tokyo Bay → [King Of Tokyo Duel - Tokyo Bay (2026)](https://www.myludo.fr/#!/game/king-of-tokyo-duel-tokyo-bay-99632) `king-of-tokyo-duel-tokyo-bay-99632`
-- [`sugargliders`](https://en.boardgamearena.com/gamepanel?game=sugargliders) Sugar Gliders → [Sugar Gliders (2015)](https://www.myludo.fr/#!/game/sugar-gliders-28859) `sugar-gliders-28859`
-- [`zenso`](https://en.boardgamearena.com/gamepanel?game=zenso) Zenso → [Zenso (2026)](https://www.myludo.fr/#!/game/zenso-100361) `zenso-100361`
-
-### ⚠️ À traiter manuellement (2)
-
-- [`omega`](https://en.boardgamearena.com/gamepanel?game=omega) **Omega** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Omega/games/*/*/*/*/*/*/*/*/18/bymagic)
-  - [Killer Bunnies - Omega Series Cards (2001)](https://www.myludo.fr/#!/game/killer-bunnies-omega-series-cards-23738) `killer-bunnies-omega-series-cards-23738` _extension, gb_
-  - [Oméga - Missions Initiales (2020)](https://www.myludo.fr/#!/game/omega-missions-initiales-42588) `omega-missions-initiales-42588` _basegame, ?_
-  - [Oméga - Coffret Collector (2022)](https://www.myludo.fr/#!/game/omega-coffret-collector-57724) `omega-coffret-collector-57724` _basegame, ?_
-  - [Oméga - Livre de base (2022)](https://www.myludo.fr/#!/game/omega-livre-de-base-58692) `omega-livre-de-base-58692` _basegame, ?_
-  - [Deadzone 3.0 La Chute d'Omega VII - Starter 2 joueurs (2023)](https://www.myludo.fr/#!/game/deadzone-3-0-la-chute-d-omega-vii-starter-2-joueurs-71169) `deadzone-3-0-la-chute-d-omega-vii-starter-2-joueurs-71169` _basegame, ?_
-- [`risktheabyss`](https://en.boardgamearena.com/gamepanel?game=risktheabyss) **Risk the Abyss** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Risk%20the%20Abyss/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`omega`](https://en.boardgamearena.com/gamepanel?game=omega) Omega → [OMEGA (2010)](https://www.myludo.fr/#!/game/omega-102625) `omega-102625` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`risktheabyss`](https://en.boardgamearena.com/gamepanel?game=risktheabyss) Risk the Abyss → [Risk the Abyss (2026)](https://www.myludo.fr/#!/game/risk-the-abyss-102626) `risk-the-abyss-102626` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
 
 ### Source URLs
 - [Beta games](https://fr.boardgamearena.com/gamelist?isBetaStatus=) - Games currently in beta testing
