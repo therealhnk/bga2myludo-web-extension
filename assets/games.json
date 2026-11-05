@@ -131,6 +131,7 @@
   "bloodrage": "20017",
   "bloodyinn": "20781",
   "blooms": "63650",
+  "bloops": "bloops-93010",
   "blot": "75520",
   "blueskies": "42815",
   "bluffking": "bluff-king-96624",
@@ -322,6 +323,7 @@
   "darkagent": "20968",
   "darwinsjourney": "45795",
   "daybreak": "59170",
+  "daydream": "daydream-82800",
   "deadcells": "63401",
   "deadcellsnewcontent": "dead-cells-63401",
   "deadcellstheramparts": "63401",
@@ -1532,6 +1534,7 @@
   "widgetsndigits": "widgets-n-digit-101053",
   "wildspace": "wild-space-36729",
   "wingspan": "28349",
+  "winter": "winter-54726",
   "wispwood": "wispwood-87363",
   "wizard": "18994",
   "wizardextreme": "5612",
@@ -1566,5 +1569,8 @@
   "zombicidesecondedition": "zombicide-46953",
   "zookeepers": "61681",
   "zooloretto": "10968",
-  "zuuli": "69785"
+  "zuuli": "69785",
+  "girasoles": "",
+  "stackfive": "",
+  "yavalath": ""
 }
