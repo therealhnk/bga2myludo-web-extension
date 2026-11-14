@@ -12,19 +12,11 @@ This PR updates the `games.json` file with the latest games from BoardGameArena.
 
 ## MyLudo mapping
 
-### ✅ Résolus automatiquement (7)
+### ✅ Résolus automatiquement (1)
 
-- [`fountains`](https://en.boardgamearena.com/gamepanel?game=fountains) Fountains → [Fountains (2025)](https://www.myludo.fr/#!/game/fountains-90838) `fountains-90838` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
-- [`growsky`](https://en.boardgamearena.com/gamepanel?game=growsky) Grow Sky → [Grow Sky (2024)](https://www.myludo.fr/#!/game/grow-sky-80564) `grow-sky-80564` ⚠️ _pas d’édition FR (gb, jp), vérifier s’il en existe une au titre différent_
-- [`pipoca`](https://en.boardgamearena.com/gamepanel?game=pipoca) Pipoca → [Pipoca (2025)](https://www.myludo.fr/#!/game/pipoca-99639) `pipoca-99639` ⚠️ _pas d’édition FR (pt), vérifier s’il en existe une au titre différent_
-- [`rainbowallplay`](https://en.boardgamearena.com/gamepanel?game=rainbowallplay) Rainbow → [Rainbow (2026)](https://www.myludo.fr/#!/game/rainbow-96091) `rainbow-96091`
-  - ⚠️ _3 autre(s) édition(s) au même titre, la plus pertinente a été retenue :_
-    - [Rainbow (2010)](https://www.myludo.fr/#!/game/rainbow-5571) `rainbow-5571` _basegame, fr_
-    - [Rainbow (2021)](https://www.myludo.fr/#!/game/rainbow-53711) `rainbow-53711` _basegame, fr, de_
-    - [Rainbow (2019)](https://www.myludo.fr/#!/game/rainbow-59490) `rainbow-59490` _basegame, fr_
-- [`serenity`](https://en.boardgamearena.com/gamepanel?game=serenity) Serenity → [Serenity (2026)](https://www.myludo.fr/#!/game/serenity-100279) `serenity-100279`
-- [`throughthedesert`](https://en.boardgamearena.com/gamepanel?game=throughthedesert) Through the Desert → [Through the Desert (2025)](https://www.myludo.fr/#!/game/through-the-desert-91771) `through-the-desert-91771`
-- [`winecellar`](https://en.boardgamearena.com/gamepanel?game=winecellar) Wine Cellar → [Wine Cellar (2025)](https://www.myludo.fr/#!/game/wine-cellar-89061) `wine-cellar-89061` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`andromedasedge`](https://en.boardgamearena.com/gamepanel?game=andromedasedge) Andromeda's Edge → [Andromeda's Edge (2024)](https://www.myludo.fr/#!/game/andromeda-s-edge-63136) `andromeda-s-edge-63136`
+  - ⚠️ _1 autre(s) édition(s) au même titre, la plus pertinente a été retenue :_
+    - [Andromeda's Edge (2025)](https://www.myludo.fr/#!/game/andromeda-s-edge-83920) `andromeda-s-edge-83920` _basegame, fr_
 
 ### ⚠️ À traiter manuellement (5)
 
