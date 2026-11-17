@@ -1,21 +1,21 @@
-### ✅ Résolus automatiquement (7)
+### ✅ Résolus automatiquement (5)
 
-- [`fountains`](https://en.boardgamearena.com/gamepanel?game=fountains) Fountains → [Fountains (2025)](https://www.myludo.fr/#!/game/fountains-90838) `fountains-90838` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
-- [`growsky`](https://en.boardgamearena.com/gamepanel?game=growsky) Grow Sky → [Grow Sky (2024)](https://www.myludo.fr/#!/game/grow-sky-80564) `grow-sky-80564` ⚠️ _pas d’édition FR (gb, jp), vérifier s’il en existe une au titre différent_
-- [`pipoca`](https://en.boardgamearena.com/gamepanel?game=pipoca) Pipoca → [Pipoca (2025)](https://www.myludo.fr/#!/game/pipoca-99639) `pipoca-99639` ⚠️ _pas d’édition FR (pt), vérifier s’il en existe une au titre différent_
-- [`rainbowallplay`](https://en.boardgamearena.com/gamepanel?game=rainbowallplay) Rainbow → [Rainbow (2026)](https://www.myludo.fr/#!/game/rainbow-96091) `rainbow-96091`
-  - ⚠️ _3 autre(s) édition(s) au même titre, la plus pertinente a été retenue :_
-    - [Rainbow (2010)](https://www.myludo.fr/#!/game/rainbow-5571) `rainbow-5571` _basegame, fr_
-    - [Rainbow (2021)](https://www.myludo.fr/#!/game/rainbow-53711) `rainbow-53711` _basegame, fr, de_
-    - [Rainbow (2019)](https://www.myludo.fr/#!/game/rainbow-59490) `rainbow-59490` _basegame, fr_
-- [`serenity`](https://en.boardgamearena.com/gamepanel?game=serenity) Serenity → [Serenity (2026)](https://www.myludo.fr/#!/game/serenity-100279) `serenity-100279`
-- [`throughthedesert`](https://en.boardgamearena.com/gamepanel?game=throughthedesert) Through the Desert → [Through the Desert (2025)](https://www.myludo.fr/#!/game/through-the-desert-91771) `through-the-desert-91771`
-- [`winecellar`](https://en.boardgamearena.com/gamepanel?game=winecellar) Wine Cellar → [Wine Cellar (2025)](https://www.myludo.fr/#!/game/wine-cellar-89061) `wine-cellar-89061` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`andromedasedge`](https://en.boardgamearena.com/gamepanel?game=andromedasedge) Andromeda's Edge → [Andromeda's Edge (2024)](https://www.myludo.fr/#!/game/andromeda-s-edge-63136) `andromeda-s-edge-63136`
+  - ⚠️ _1 autre(s) édition(s) au même titre, la plus pertinente a été retenue :_
+    - [Andromeda's Edge (2025)](https://www.myludo.fr/#!/game/andromeda-s-edge-83920) `andromeda-s-edge-83920` _basegame, fr_
+- [`bigsur`](https://en.boardgamearena.com/gamepanel?game=bigsur) Big Sur → [Big Sur (2025)](https://www.myludo.fr/#!/game/big-sur-90792) `big-sur-90792` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`dropsofevil`](https://en.boardgamearena.com/gamepanel?game=dropsofevil) Drops of Evil → [Drops of Evil (2026)](https://www.myludo.fr/#!/game/drops-of-evil-100497) `drops-of-evil-100497` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`loyaltyrome`](https://en.boardgamearena.com/gamepanel?game=loyaltyrome) Loyalty: Rome → [Loyalty - Rome (2026)](https://www.myludo.fr/#!/game/loyalty-rome-100293) `loyalty-rome-100293` ⚠️ _pas d’édition FR (gb, de), vérifier s’il en existe une au titre différent_
+- [`wizardsgarden`](https://en.boardgamearena.com/gamepanel?game=wizardsgarden) Wizard's Garden → [Wizard's Garden (2019)](https://www.myludo.fr/#!/game/wizard-s-garden-34984) `wizard-s-garden-34984` ⚠️ _pas d’édition FR (gb, it), vérifier s’il en existe une au titre différent_
 
-### ⚠️ À traiter manuellement (5)
+### ⚠️ À traiter manuellement (8)
 
+- [`discipline`](https://en.boardgamearena.com/gamepanel?game=discipline) **Discipline: 3 Years at Jeremiah School of Magic** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Discipline%3A%203%20Years%20at%20Jeremiah%20School%20of%20Magic/games/*/*/*/*/*/*/*/*/18/bymagic)
 - [`girasoles`](https://en.boardgamearena.com/gamepanel?game=girasoles) **Girasoles** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Girasoles/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`gretchensgarden`](https://en.boardgamearena.com/gamepanel?game=gretchensgarden) **Gretchen's Garden** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Gretchen's%20Garden/games/*/*/*/*/*/*/*/*/18/bymagic)
 - [`grizzo`](https://en.boardgamearena.com/gamepanel?game=grizzo) **Grizzo** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Grizzo/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`makemeaplanet`](https://en.boardgamearena.com/gamepanel?game=makemeaplanet) **Make Me a Planet** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Make%20Me%20a%20Planet/games/*/*/*/*/*/*/*/*/18/bymagic)
+  - [Thirsty Sword Lesbians - Advanced Lovers & Lesbians (2022)](https://www.myludo.fr/#!/game/thirsty-sword-lesbians-advanced-lovers-lesbians-58699) `thirsty-sword-lesbians-advanced-lovers-lesbians-58699` _extension, gb_
 - [`phopho`](https://en.boardgamearena.com/gamepanel?game=phopho) **Pho Pho** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Pho%20Pho/games/*/*/*/*/*/*/*/*/18/bymagic)
   - [Photo Tour North America -  Photo Projects (2024)](https://www.myludo.fr/#!/game/photo-tour-north-america-photo-projects-98360) `photo-tour-north-america-photo-projects-98360` _extension, gb_
   - [Photo Tour - North America (2024)](https://www.myludo.fr/#!/game/photo-tour-north-america-98359) `photo-tour-north-america-98359` _basegame, gb_
