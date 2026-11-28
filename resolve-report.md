@@ -1,33 +1,41 @@
-### ✅ Résolus automatiquement (7)
+### ✅ Résolus automatiquement (15)
 
-- [`andromedasedge`](https://en.boardgamearena.com/gamepanel?game=andromedasedge) Andromeda's Edge → [Andromeda's Edge (2024)](https://www.myludo.fr/#!/game/andromeda-s-edge-63136) `andromeda-s-edge-63136`
+- [`alchimix`](https://en.boardgamearena.com/gamepanel?game=alchimix) Alchimix → [Alchimix (2026)](https://www.myludo.fr/#!/game/alchimix-89030) `alchimix-89030`
+- [`bottleimp`](https://en.boardgamearena.com/gamepanel?game=bottleimp) Bottle Imp → [Bottle Imp (1995)](https://www.myludo.fr/#!/game/bottle-imp-4658) `bottle-imp-4658` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`colorfield`](https://en.boardgamearena.com/gamepanel?game=colorfield) Colorfield → [Color Field (2023)](https://www.myludo.fr/#!/game/color-field-65524) `color-field-65524` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`courtisans`](https://en.boardgamearena.com/gamepanel?game=courtisans) Courtisans → [Courtisans (2024)](https://www.myludo.fr/#!/game/courtisans-73844) `courtisans-73844`
   - ⚠️ _1 autre(s) édition(s) au même titre, la plus pertinente a été retenue :_
-    - [Andromeda's Edge (2025)](https://www.myludo.fr/#!/game/andromeda-s-edge-83920) `andromeda-s-edge-83920` _basegame, fr_
-- [`bankorbust`](https://en.boardgamearena.com/gamepanel?game=bankorbust) Bank or Bust → [Bank or Bust (2026)](https://www.myludo.fr/#!/game/bank-or-bust-102593) `bank-or-bust-102593` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
-- [`bigsur`](https://en.boardgamearena.com/gamepanel?game=bigsur) Big Sur → [Big Sur (2025)](https://www.myludo.fr/#!/game/big-sur-90792) `big-sur-90792` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
-- [`dropsofevil`](https://en.boardgamearena.com/gamepanel?game=dropsofevil) Drops of Evil → [Drops of Evil (2026)](https://www.myludo.fr/#!/game/drops-of-evil-100497) `drops-of-evil-100497` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
-- [`fadenfroh`](https://en.boardgamearena.com/gamepanel?game=fadenfroh) Fadenfroh → [Fadenfroh (2026)](https://www.myludo.fr/#!/game/fadenfroh-101920) `fadenfroh-101920` ⚠️ _pas d’édition FR (gb, de), vérifier s’il en existe une au titre différent_
-- [`loyaltyrome`](https://en.boardgamearena.com/gamepanel?game=loyaltyrome) Loyalty: Rome → [Loyalty - Rome (2026)](https://www.myludo.fr/#!/game/loyalty-rome-100293) `loyalty-rome-100293` ⚠️ _pas d’édition FR (gb, de), vérifier s’il en existe une au titre différent_
-- [`wizardsgarden`](https://en.boardgamearena.com/gamepanel?game=wizardsgarden) Wizard's Garden → [Wizard's Garden (2019)](https://www.myludo.fr/#!/game/wizard-s-garden-34984) `wizard-s-garden-34984` ⚠️ _pas d’édition FR (gb, it), vérifier s’il en existe une au titre différent_
+    - [Courtisans (1998)](https://www.myludo.fr/#!/game/courtisans-18047) `courtisans-18047` _basegame, fr_
+- [`evenglow`](https://en.boardgamearena.com/gamepanel?game=evenglow) Evenglow → [Evenglow (2026)](https://www.myludo.fr/#!/game/evenglow-101188) `evenglow-101188` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`factoryfunner`](https://en.boardgamearena.com/gamepanel?game=factoryfunner) Factory Funner → [Factory Funner (2016)](https://www.myludo.fr/#!/game/factory-funner-26825) `factory-funner-26825`
+- [`greetingsfromearth`](https://en.boardgamearena.com/gamepanel?game=greetingsfromearth) Greetings from Earth → [Greetings from Earth (2026)](https://www.myludo.fr/#!/game/greetings-from-earth-102846) `greetings-from-earth-102846` ⚠️ _pas d’édition FR (gb, de), vérifier s’il en existe une au titre différent_
+- [`inanutshell`](https://en.boardgamearena.com/gamepanel?game=inanutshell) In a Nutshell → [In a Nut Shell (2025)](https://www.myludo.fr/#!/game/in-a-nut-shell-96240) `in-a-nut-shell-96240` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`minikincity`](https://en.boardgamearena.com/gamepanel?game=minikincity) Minikin City → [Minikin City (2026)](https://www.myludo.fr/#!/game/minikin-city-99499) `minikin-city-99499`
+- [`nightatthezoo`](https://en.boardgamearena.com/gamepanel?game=nightatthezoo) Night At The Zoo → [Night at the Zoo (2026)](https://www.myludo.fr/#!/game/night-at-the-zoo-100058) `night-at-the-zoo-100058` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`nine`](https://en.boardgamearena.com/gamepanel?game=nine) Nine → [Nine (2024)](https://www.myludo.fr/#!/game/nine-75471) `nine-75471`
+  - ⚠️ _1 autre(s) édition(s) au même titre, la plus pertinente a été retenue :_
+    - [Nine (2019)](https://www.myludo.fr/#!/game/nine-32481) `nine-32481` _basegame, fr, gb_
+- [`rebelprincess`](https://en.boardgamearena.com/gamepanel?game=rebelprincess) Rebel Princess → [Rebel Princess (2023)](https://www.myludo.fr/#!/game/rebel-princess-70848) `rebel-princess-70848` ⚠️ _pas d’édition FR (gb, es), vérifier s’il en existe une au titre différent_
+  - ⚠️ _1 autre(s) édition(s) au même titre, la plus pertinente a été retenue :_
+    - [Rebel Princess (2024)](https://www.myludo.fr/#!/game/rebel-princess-83779) `rebel-princess-83779` _basegame, gb_
+- [`tanbo`](https://en.boardgamearena.com/gamepanel?game=tanbo) Tanbo → [Tanbo (2025)](https://www.myludo.fr/#!/game/tanbo-83705) `tanbo-83705`
+- [`thecrewjourneyendearth`](https://en.boardgamearena.com/gamepanel?game=thecrewjourneyendearth) The Crew: Journey to the Ends of the Earth → [The Crew - Journey to the Ends of the Earth (2026)](https://www.myludo.fr/#!/game/the-crew-journey-to-the-ends-of-the-earth-94499) `the-crew-journey-to-the-ends-of-the-earth-94499` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
+- [`trinkettrove`](https://en.boardgamearena.com/gamepanel?game=trinkettrove) Trinket Trove → [Trinket Trove (2025)](https://www.myludo.fr/#!/game/trinket-trove-88975) `trinket-trove-88975` ⚠️ _pas d’édition FR (gb), vérifier s’il en existe une au titre différent_
 
-### ⚠️ À traiter manuellement (8)
+### ⚠️ À traiter manuellement (9)
 
-- [`discipline`](https://en.boardgamearena.com/gamepanel?game=discipline) **Discipline: 3 Years at Jeremiah School of Magic** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Discipline%3A%203%20Years%20at%20Jeremiah%20School%20of%20Magic/games/*/*/*/*/*/*/*/*/18/bymagic)
-- [`girasoles`](https://en.boardgamearena.com/gamepanel?game=girasoles) **Girasoles** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Girasoles/games/*/*/*/*/*/*/*/*/18/bymagic)
-- [`gretchensgarden`](https://en.boardgamearena.com/gamepanel?game=gretchensgarden) **Gretchen's Garden** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Gretchen's%20Garden/games/*/*/*/*/*/*/*/*/18/bymagic)
-- [`grizzo`](https://en.boardgamearena.com/gamepanel?game=grizzo) **Grizzo** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Grizzo/games/*/*/*/*/*/*/*/*/18/bymagic)
-- [`makemeaplanet`](https://en.boardgamearena.com/gamepanel?game=makemeaplanet) **The Little Prince: Make Me a Planet** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/The%20Little%20Prince%3A%20Make%20Me%20a%20Planet/games/*/*/*/*/*/*/*/*/18/bymagic)
-- [`phopho`](https://en.boardgamearena.com/gamepanel?game=phopho) **Pho Pho** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Pho%20Pho/games/*/*/*/*/*/*/*/*/18/bymagic)
-  - [Photo Tour North America -  Photo Projects (2024)](https://www.myludo.fr/#!/game/photo-tour-north-america-photo-projects-98360) `photo-tour-north-america-photo-projects-98360` _extension, gb_
-  - [Photo Tour - North America (2024)](https://www.myludo.fr/#!/game/photo-tour-north-america-98359) `photo-tour-north-america-98359` _basegame, gb_
-  - [Marvel Champions – Phoenix (2022)](https://www.myludo.fr/#!/game/marvel-champions-phoenix-59049) `marvel-champions-phoenix-59049` _extension, ?_
-  - [Photo Safari (2011)](https://www.myludo.fr/#!/game/photo-safari-45391) `photo-safari-45391` _basegame, ?_
-  - [Le Mother Phoquer (2019)](https://www.myludo.fr/#!/game/le-mother-phoquer-29673) `le-mother-phoquer-29673` _basegame, ?_
-- [`riviera`](https://en.boardgamearena.com/gamepanel?game=riviera) **Riviera** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Riviera/games/*/*/*/*/*/*/*/*/18/bymagic)
-  - [Riviera Quest (1989)](https://www.myludo.fr/#!/game/riviera-quest-49022) `riviera-quest-49022` _basegame, ?_
-  - [Moomins on the Riviera (2014)](https://www.myludo.fr/#!/game/moomins-on-the-riviera-30509) `moomins-on-the-riviera-30509` _basegame, ?_
-  - [Monopoly - Lombardia (2022)](https://www.myludo.fr/#!/game/monopoly-lombardia-83170) `monopoly-lombardia-83170` _basegame, it_
-  - [Age of Steam 2014 Sets (2014)](https://www.myludo.fr/#!/game/age-of-steam-2014-sets-42892) `age-of-steam-2014-sets-42892` _extension, ?_
-  - [Age of Steam 2016 Sets (2016)](https://www.myludo.fr/#!/game/age-of-steam-2016-sets-42894) `age-of-steam-2016-sets-42894` _extension, ?_
-- [`yavalath`](https://en.boardgamearena.com/gamepanel?game=yavalath) **Yavalath** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Yavalath/games/*/*/*/*/*/*/*/*/18/bymagic)
-  - [Mammalath (2019)](https://www.myludo.fr/#!/game/mammalath-51044) `mammalath-51044` _basegame, gb_
+- [`borealisarcticexpeditions`](https://en.boardgamearena.com/gamepanel?game=borealisarcticexpeditions) **Borealis: Arctic Expeditions** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Borealis%3A%20Arctic%20Expeditions/games/*/*/*/*/*/*/*/*/18/bymagic)
+  - [Borealis (2025)](https://www.myludo.fr/#!/game/borealis-88538) `borealis-88538` _basegame, gb_
+- [`eighteenroyalgorgerailsoffremont`](https://en.boardgamearena.com/gamepanel?game=eighteenroyalgorgerailsoffremont) **18RoyalGorge: The Rails of Fremont County and the Royal Gorge Wars** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/18RoyalGorge%3A%20The%20Rails%20of%20Fremont%20County%20and%20the%20Royal%20Gorge%20Wars/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`elenco`](https://en.boardgamearena.com/gamepanel?game=elenco) **Elenco** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Elenco/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`necklace`](https://en.boardgamearena.com/gamepanel?game=necklace) **Necklace** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Necklace/games/*/*/*/*/*/*/*/*/18/bymagic)
+  - [Scene Of The Crime (2022)](https://www.myludo.fr/#!/game/scene-of-the-crime-99054) `scene-of-the-crime-99054` _basegame, ?_
+  - [The Lost Necklace (2015)](https://www.myludo.fr/#!/game/the-lost-necklace-930) `the-lost-necklace-930` _basegame, ?_
+  - [Queen 's Necklace (2015)](https://www.myludo.fr/#!/game/queen-s-necklace-19102) `queen-s-necklace-19102` _basegame, gb_
+- [`snakesladders`](https://en.boardgamearena.com/gamepanel?game=snakesladders) **Snakes Ladders: Extreme Jungle Edition** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Snakes%20Ladders%3A%20Extreme%20Jungle%20Edition/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`tapfour`](https://en.boardgamearena.com/gamepanel?game=tapfour) **Tap 4e** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Tap%204e/games/*/*/*/*/*/*/*/*/18/bymagic)
+  - [Donning the Purple - Votes & Virtue expansion (2020)](https://www.myludo.fr/#!/game/donning-the-purple-votes-virtue-expansion-38833) `donning-the-purple-votes-virtue-expansion-38833` _extension, gb_
+  - [Flesh and Blood TCG - Tapis de jeu - Pulsewave Harpoon (2022)](https://www.myludo.fr/#!/game/flesh-and-blood-tcg-tapis-de-jeu-pulsewave-harpoon-66717) `flesh-and-blood-tcg-tapis-de-jeu-pulsewave-harpoon-66717` _accessoire, ?_
+- [`thestampgarden`](https://en.boardgamearena.com/gamepanel?game=thestampgarden) **The Stamp Garden** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/The%20Stamp%20Garden/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`trickstergods`](https://en.boardgamearena.com/gamepanel?game=trickstergods) **Trickster Gods** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Trickster%20Gods/games/*/*/*/*/*/*/*/*/18/bymagic)
+- [`zoolorettodice`](https://en.boardgamearena.com/gamepanel?game=zoolorettodice) **Zooloretto: The Dice Game** — aucune correspondance exacte · [Recherche MyLudo](https://www.myludo.fr/#!/search/Zooloretto%3A%20The%20Dice%20Game/games/*/*/*/*/*/*/*/*/18/bymagic)
